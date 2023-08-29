@@ -56,8 +56,8 @@ class Main:
                 logging.error('Could not switch_to_orders_page in wrapper')
                 return True, False, False
             # wait for ui to load dom prior to switching tabs
-            time.sleep(30)
             switched_to_history_tab = self.switch_to_history_tab()
+            time.sleep(30000)
             if not switched_to_history_tab:
                 logging.error('Could not switch_to_history_tab in wrapper')
                 return True, True, False
