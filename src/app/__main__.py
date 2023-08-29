@@ -56,7 +56,7 @@ class Main:
                 return True, False, False
             switched_to_history_tab = self.switch_to_history_tab()
             if not switched_to_history_tab:
-                logging.error('Could not switch_to_history_tab in wrapper'
+                logging.error('Could not switch_to_history_tab in wrapper')
                 return True, True, False
         except Exception as e:
             logging.exception(f'An error occurred attempting to 1) launch & login 2) switch from home to orders page 3) switch to history tab: {e}')
