@@ -4,7 +4,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from ..pages.loginpage import LoginPage
 from ..pages.homepage import HomePage
-# from ..pages.onlinereportspage import OnlineReportsPage
+from ..pages.orderspage import OrdersPage
 # from ..pages.dailysummaryascii import DailySummaryASCIIPage
 
 
@@ -75,3 +75,21 @@ class HomePageDriver:
         except Exception as e:
             logging.exception(f'An error occurred trying to switch_to_orders_page: {e}')
 
+class OrdersPageDriver:
+
+    def __init__(self, base_driver):
+        self.base_driver = base_driver
+        self.orders_page = OrdersPage(self.base_driver)
+
+
+    def switch_to_history_tab(self):
+        try:
+            switch_to_history_tab = self.orders_page.switch_to_history_tab()
+            if not switch_to_history_tab:
+                logging.error('Could not orders_page.switch_to_history_Tab')
+                return False
+            else:
+                logging.info('Succesfuly orders_page.switch_to_history_tab')
+                return True
+        except Exception as e:
+            logging.exception(f'An error occurred trying to orders_page.switch_to_history_tab: {e}')
