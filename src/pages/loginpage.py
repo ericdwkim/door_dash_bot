@@ -1,6 +1,9 @@
 import os
 import logging
+import time
 from src.pages.basepage import BasePage
+from selenium.webdriver.common.by import By
+
 
 class LoginPage(BasePage):
 
@@ -16,6 +19,7 @@ class LoginPage(BasePage):
         :return: bool
         """
         try:
+            logging.info('Launching DoorDash Merchant Portal....')
             self.driver.get(self.url)
             return True
         except Exception as e:
@@ -23,36 +27,37 @@ class LoginPage(BasePage):
 
     def enter_username(self):
         try:
-            was_clicked = self.find_element_and_click_and_send_keys("#FieldWrapper-0", self.username)
-            if not was_clicked:
-                return False
+            is_element_present, was_clicked, element_selector_clicked = self.wait_for_find_then_click_then_send_keys('//*[@id="FieldWrapper-0"]', keys_to_send=self.username, locator_type=By.XPATH)
+            if not is_element_present and not was_clicked and not element_selector_clicked:
+                return False, False, None
             else:
-                return True
+                return True, True, element_selector_clicked
         except Exception as e:
             logging.exception(f'An error occurred trying to enter_username: {e}')
-            return False
+            return False, False, None
 
     def enter_password(self):
         try:
-            was_clicked = self.find_element_and_click_and_send_keys("#FieldWrapper-1", self.password)
-            if not was_clicked:
-                return False
+            is_element_present, was_clicked, element_selector_clicked = self.wait_for_find_then_click_then_send_keys('//*[@id="FieldWrapper-1"]', keys_to_send=self.password, locator_type=By.XPATH)
+            if not is_element_present and not was_clicked and not element_selector_clicked:
+                return False, False, None
             else:
-                return True
+                return True, True, element_selector_clicked
         except Exception as e:
-            logging.exception(f'An error occurred trying to enter_password: {e}')
-            return False
+            logging.exception(f'An error occurred trying to enter_username: {e}')
+            return False, False, None
 
     def click_login_button(self):
         try:
-            was_clicked, element_selector_clicked = self.find_element_and_click("#cmdGo")
-            if not was_clicked:
-                return False
+            was_clicked, element_selector_clicked = self.wait_for_find_then_click('//*[@id="login-submit-button"]', locator_type=By.XPATH)
+            if not was_clicked and not element_selector_clicked:
+                logging.error('Could not click_login_button')
+                return False, None
             else:
-                return True
+                return True, element_selector_clicked
         except Exception as e:
             logging.exception(f'An error occurred trying to click_login_button: {e}')
-            return False
+            return False, None
 
     def login(self):
         try:
