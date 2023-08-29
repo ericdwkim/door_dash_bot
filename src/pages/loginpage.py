@@ -49,15 +49,15 @@ class LoginPage(BasePage):
 
     def click_login_button(self):
         try:
-            was_clicked, element_selector_clicked = self.wait_for_find_then_click('//*[@id="login-submit-button"]', locator_type=By.XPATH)
-            if not was_clicked and not element_selector_clicked:
+            was_clicked = self.wait_for_find_then_click('//*[@id="login-submit-button"]', locator_type=By.XPATH)
+            if not was_clicked:
                 logging.error('Could not click_login_button')
-                return False, None
+                return False
             else:
-                return True, element_selector_clicked
+                return True
         except Exception as e:
             logging.exception(f'An error occurred trying to click_login_button: {e}')
-            return False, None
+            return False
 
     def login(self):
         try:
