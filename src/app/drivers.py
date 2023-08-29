@@ -2,7 +2,7 @@ import logging
 import platform
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
-# from ..pages.loginpage import LoginPage
+from ..pages.loginpage import LoginPage
 # from ..pages.homepage import HomePage
 # from ..pages.onlinereportspage import OnlineReportsPage
 # from ..pages.dailysummaryascii import DailySummaryASCIIPage
