@@ -57,7 +57,7 @@ class BasePage(object):
             logging.exception(f'An error occurred: {str(e)}')
             return False
 
-    def wait_for_element(self, locator, locator_type=By.CSS_SELECTOR, timeout=30):
+    def wait_for_element(self, locator, locator_type=By.CSS_SELECTOR, timeout=10):
         """
         Waits for element by locator string using locator_type with a timeout
         :param locator:
