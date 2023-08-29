@@ -93,3 +93,15 @@ class OrdersPageDriver:
                 return True
         except Exception as e:
             logging.exception(f'An error occurred trying to orders_page.switch_to_history_tab: {e}')
+
+    def set_date_filter_to_yesterday(self):
+        try:
+            set_date_filter_to_yesterday = self.orders_page.set_date_filter_to_yesterday()
+            if not set_date_filter_to_yesterday:
+                logging.error('Could not orders_page.set_date_filter_to_yesterday')
+                return False
+            else:
+                logging.info('Successfully orders_page.set_date_filter_to_yesterday')
+                return True
+        except Exception as e:
+            logging.exception(f'An error occurred trying to orders_page.set_date_filter_to_yesterday: {e}')

@@ -23,3 +23,16 @@ class OrdersPage(BasePage):
             logging.exception(f'An error occurred trying to switch to History tab: {e}')
             return False
 
+    def set_date_filter_to_yesterday(self):
+        try:
+            is_element_clicked = self.wait_for_find_then_click('//span[@class="styles__TextElement-sc-3qedjx-0 bDqyqH" and text()="Yesterday"]', locator_type=By.XPATH, timeout=10)
+            if not is_element_clicked:
+                logging.error('Could not set date filter to yesterday')
+                return False
+            else:
+                logging.info('Successfully set date filter to yesterday')
+                return True
+        except Exception as e:
+            logging.exception(f'An error occurred trying to set date filter to yesterday: {e}')
+            return False
+

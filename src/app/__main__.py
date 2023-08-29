@@ -39,6 +39,14 @@ class Main:
             logging.info('Successfully orders_page_driver.switch_to_history_tab')
             return True
 
+    def set_date_filter_to_yesterday(self):
+        date_filter_set_to_yesterday = self.orders_page_driver.set_date_filter_to_yesterday()
+        if not date_filter_set_to_yesterday:
+            logging.error('Could not orders_page_driver.set_date_filter_to_yesterday')
+            return False
+        else:
+            logging.info('Successfully orders_page_driver.set_date_filter_to_yesterday')
+            return True
 
 
     def wrapper(self):
@@ -50,20 +58,23 @@ class Main:
             launched_and_logged_into_door_dash_homepage = self.launch_and_login_to_door_dash()
             if not launched_and_logged_into_door_dash_homepage:
                 logging.error('Could not launch_and_login_to_door_dash')
-                return False, False, False
+                return False, False, False, False
             switched_to_orders_page = self.switch_to_orders_page()
             if not switched_to_orders_page:
                 logging.error('Could not switch_to_orders_page in wrapper')
-                return True, False, False
+                return True, False, False, False
             # wait for ui to load dom prior to switching tabs
             switched_to_history_tab = self.switch_to_history_tab()
-            time.sleep(30000)
             if not switched_to_history_tab:
                 logging.error('Could not switch_to_history_tab in wrapper')
-                return True, True, False
+                return True, True, False, False
+            date_filter_set_to_yesterday = self.set_date_filter_to_yesterday()
+            if not date_filter_set_to_yesterday:
+                logging.error('Could not set_date_filter_to_yesterday in wrapper')
+                return True, True, True, False
         except Exception as e:
             logging.exception(f'An error occurred attempting to 1) launch & login 2) switch from home to orders page 3) switch to history tab: {e}')
-            return False, False, False
+            return False, False, False, False
 
 
 if __name__ == '__main__':
