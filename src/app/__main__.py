@@ -1,4 +1,4 @@
-from src.app.drivers import BaseDriver
+from src.app.drivers import BaseDriver, LoginPageDriver
 import os
 import argparse
 import logging
@@ -28,7 +28,7 @@ if __name__ == '__main__':
 
     md = Main(headless=args.headless)
 
-    md.wrapper()
+    md.launch_and_login_to_door_dash()
 
 
 
