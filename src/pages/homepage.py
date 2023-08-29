@@ -1,4 +1,3 @@
-import time
 import logging
 from src.pages.basepage import BasePage
 from selenium.webdriver.common.by import By
@@ -13,7 +12,7 @@ class HomePage(BasePage):
     def switch_to_orders_page(self):
 
         try:
-            is_element_clicked = self.wait_for_find_then_click('//*[@id="MerchantApp"]/div/div/div[1]/div/div[1]/ul/div[3]/div/div/span[5]/a/div/div', locator_type=By.XPATH)
+            is_element_clicked = self.wait_for_find_then_click('//*[@id="MerchantApp"]/div/div/div[1]/div/div[1]/ul/div[3]/div/div/span[5]/a/div/div', locator_type=By.XPATH, timeout=20)
             if not is_element_clicked:
                 logging.error(f'Could not switch to Orders page')
                 return False

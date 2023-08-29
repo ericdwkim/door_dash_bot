@@ -1,6 +1,5 @@
 import os
 import logging
-import time
 from src.pages.basepage import BasePage
 from selenium.webdriver.common.by import By
 
@@ -27,7 +26,7 @@ class LoginPage(BasePage):
 
     def enter_username(self):
         try:
-            is_element_present, was_clicked, element_selector_clicked = self.wait_for_find_then_click_then_send_keys('//*[@id="FieldWrapper-0"]', keys_to_send=self.username, locator_type=By.XPATH)
+            is_element_present, was_clicked, element_selector_clicked = self.wait_for_find_then_click_then_send_keys('//*[@id="FieldWrapper-0"]', keys_to_send=self.username, locator_type=By.XPATH, timeout=10)
             if not is_element_present and not was_clicked and not element_selector_clicked:
                 return False, False, None
             else:
@@ -38,7 +37,7 @@ class LoginPage(BasePage):
 
     def enter_password(self):
         try:
-            is_element_present, was_clicked, element_selector_clicked = self.wait_for_find_then_click_then_send_keys('//*[@id="FieldWrapper-1"]', keys_to_send=self.password, locator_type=By.XPATH)
+            is_element_present, was_clicked, element_selector_clicked = self.wait_for_find_then_click_then_send_keys('//*[@id="FieldWrapper-1"]', keys_to_send=self.password, locator_type=By.XPATH, timeout=10)
             if not is_element_present and not was_clicked and not element_selector_clicked:
                 return False, False, None
             else:
@@ -49,7 +48,7 @@ class LoginPage(BasePage):
 
     def click_login_button(self):
         try:
-            was_clicked = self.wait_for_find_then_click('//*[@id="login-submit-button"]', locator_type=By.XPATH)
+            was_clicked = self.wait_for_find_then_click('//*[@id="login-submit-button"]', locator_type=By.XPATH, timeout=10)
             if not was_clicked:
                 logging.error('Could not click_login_button')
                 return False

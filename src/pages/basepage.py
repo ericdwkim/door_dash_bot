@@ -1,4 +1,3 @@
-import time
 from selenium import webdriver
 import logging
 from selenium.webdriver.common.by import By
@@ -57,7 +56,7 @@ class BasePage(object):
             logging.exception(f'An error occurred: {str(e)}')
             return False
 
-    def wait_for_element(self, locator, locator_type=By.CSS_SELECTOR, timeout=10):
+    def wait_for_element(self, locator, locator_type, timeout):
         """
         Waits for element by locator string using locator_type with a timeout
         :param locator:
@@ -74,7 +73,7 @@ class BasePage(object):
             return False # If exception raised
 
 
-    def wait_for_find_then_click_then_send_keys(self, locator, keys_to_send, locator_type=By.CSS_SELECTOR):
+    def wait_for_find_then_click_then_send_keys(self, locator, keys_to_send, locator_type, timeout):
         """
 
         :param locator:
@@ -84,7 +83,7 @@ class BasePage(object):
         """
 
         try:
-            is_element_present = self.wait_for_element(locator, locator_type)
+            is_element_present = self.wait_for_element(locator, locator_type, timeout)
             if not is_element_present:
                 logging.error(f'Could not wait for element with locator: "{locator}" to be present on DOM')
                 return False, False, None
@@ -100,7 +99,7 @@ class BasePage(object):
             logging.exception(f'NoSuchElementException: The element "{locator}" was not found.')
             return False, False, None
 
-    def wait_for_find_then_click(self, locator, locator_type=By.CSS_SELECTOR):
+    def wait_for_find_then_click(self, locator, locator_type, timeout):
         """
         `wait_for_element()` + `find_element_and_click()`\n wrapper using `WebElement.click()`
         :param locator_type: default to CSS SELECTOR
@@ -108,7 +107,7 @@ class BasePage(object):
         :return: bool
         """
         try:
-            is_element_present = self.wait_for_element(locator, locator_type)
+            is_element_present = self.wait_for_element(locator, locator_type, timeout)
             if is_element_present:
                 element = self.find_element_and_click(locator, locator_type)
                 # print(f'Successfully clicked on the element: {element}')
