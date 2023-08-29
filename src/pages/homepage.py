@@ -13,14 +13,14 @@ class HomePage(BasePage):
     def switch_to_orders_page(self):
 
         try:
-            is_element_clicked = self.wait_for_find_then_click('//*[@id="Reporting_TreeItem_div"]/td[2]/table/tbody/tr[2]/td[2]/a', locator_type=By.XPATH)
+            is_element_clicked = self.wait_for_find_then_click('//*[@id="MerchantApp"]/div/div/div[1]/div/div[1]/ul/div[3]/div/div/span[5]/a/div/div', locator_type=By.XPATH)
             if not is_element_clicked:
-                logging.error(f'Could not switch to Online Reports')
+                logging.error(f'Could not switch to Orders page')
                 return False
             else:
                 return True
 
         except Exception as e:
-            logging.exception(f'An error occurred trying to drill into Online Reports: {e}')
+            logging.exception(f'An error occurred trying to switch to Orders page: {e}')
             return False
 
