@@ -41,18 +41,18 @@ class OrdersPage(BasePage):
                 return False, False, False
 
             # step 3
-            is_yesterday_selection_element_clicked = self.wait_for_find_then_click('#Popover-7 > div > div:nth-child(2) > button > div > div.StackChildren__StyledStackChildren-sc-5x3aej-0.fhlYGA.styles__MiddleContainer-sc-7lv6ab-1.eWgDxX > span > div', locator_type=By.CSS_SELECTOR, timeout=10)
+            is_yesterday_selection_element_clicked = self.wait_for_find_then_click('//div[@class="styles__MenuItemTitleWrapper-sc-8cd41l-3 cSfsq" and contains(text(),"Yesterday")]', locator_type=By.XPATH, timeout=10)
             if not is_yesterday_selection_element_clicked:
                 logging.error('Could not select yesterday as date filter')
                 return True, False, False
 
             # step 4
-            is_element_clicked = self.wait_for_presence_of_element_located('//span[@class="styles__TextElement-sc-3qedjx-0 bDqyqH" and text()="Yesterday"]', locator_type=By.XPATH, timeout=10)
-            if not is_element_clicked:
+            is_element_present = self.wait_for_presence_of_element_located('//span[@class="styles__TextElement-sc-3qedjx-0 bDqyqH" and text()="Yesterday"]', locator_type=By.XPATH, timeout=10)
+            if not is_element_present:
                 logging.error('Could not confirm date filter set to yesterday')
                 return True, True, False
 
-            if is_btn_element_clicked and is_yesterday_selection_element_clicked and is_element_clicked:
+            if is_btn_element_clicked and is_yesterday_selection_element_clicked and is_element_present:
                 logging.info('Successfully set date filter to yesterday')
                 return True, True, True
 
