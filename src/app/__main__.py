@@ -69,12 +69,12 @@ class Main:
                 logging.error('Could not switch_to_history_tab in wrapper')
                 return True, True, False, False
             date_filter_set_to_yesterday = self.set_date_filter_to_yesterday()
-            time.sleep(30000)
+            if date_filter_set_to_yesterday:
+                time.sleep(300)
+                logging.info('success!!!!!!!!')
             if not date_filter_set_to_yesterday:
                 logging.error('Could not set_date_filter_to_yesterday in wrapper')
                 return True, True, True, False
-            else:
-                logging.info('successssss!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
             if launched_and_logged_into_door_dash_homepage and switched_to_orders_page and switched_to_history_tab and date_filter_set_to_yesterday:
                 logging.error('Successfully wrapped!')
                 return True, True, True, True
