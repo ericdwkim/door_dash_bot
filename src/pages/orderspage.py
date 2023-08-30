@@ -41,7 +41,7 @@ class OrdersPage(BasePage):
                 return False, False, False
 
             # step 3
-            is_yesterday_selection_element_clicked = self.wait_for_find_then_click('//*[@id="Popover-9"]/div/div[2]/button/div/div[2]/span/div', locator_type=By.XPATH, timeout=10)
+            is_yesterday_selection_element_clicked = self.wait_for_find_then_click('//*[@id="Popover-7"]/div/div[2]/button/div/div[2]/span/div', locator_type=By.XPATH, timeout=10)
             if not is_yesterday_selection_element_clicked:
                 logging.error('Could not select yesterday as date filter')
                 return True, False, False
