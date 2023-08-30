@@ -55,6 +55,7 @@ class OrdersPage(BasePage):
             if is_btn_element_clicked and is_yesterday_selection_element_clicked and is_element_clicked:
                 logging.info('Successfully set date filter to yesterday')
                 return True, True, True
+
         except Exception as e:
             logging.exception(f'An error occurred trying to set date filter to yesterday: {e}')
             return False, False, False
