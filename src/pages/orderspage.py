@@ -23,16 +23,39 @@ class OrdersPage(BasePage):
             logging.exception(f'An error occurred trying to switch to History tab: {e}')
             return False
 
+
+
     def set_date_filter_to_yesterday(self):
+        """
+        1. wait for date filter button to load on dom
+        2. click date filter button to reveal all date filter option elements (today, yesterday, etc...) via xpath locator `//*[@id="MerchantApp"]/div/div/div[1]/div/div[2]/div[2]/div/div/div[4]/div/div/div[2]/div/div[3]/div/div/div/div/button`
+        3. wait, find, and click target date filter `yesterday` via xpath locator `//*[@id="Popover-9"]/div/div[2]/button/div/div[2]/span/div`
+        4. confirm date filter was set to target date by checking dom (after waiting for UI changes to load on dom) for yesterday `'//span[@class="styles__TextElement-sc-3qedjx-0 bDqyqH" and text()="Yesterday"]'`
+        :return: Tuple(bool, bool, bool)
+        """
         try:
-            is_element_clicked = self.wait_for_find_then_click('//span[@class="styles__TextElement-sc-3qedjx-0 bDqyqH" and text()="Yesterday"]', locator_type=By.XPATH, timeout=10)
+            # step 1 + 2
+            is_btn_element_clicked = self.wait_for_find_then_click('//*[@id="MerchantApp"]/div/div/div[1]/div/div[2]/div[2]/div/div/div[4]/div/div/div[2]/div/div[3]/div/div/div/div/button', locator_type=By.XPATH, timeout=10)
+            if not is_btn_element_clicked:
+                logging.error('Could not click date filter button')
+                return False, False, False
+
+            # step 3
+            is_yesterday_selection_element_clicked = self.wait_for_find_then_click('//*[@id="Popover-9"]/div/div[2]/button/div/div[2]/span/div', locator_type=By.XPATH, timeout=10)
+            if not is_yesterday_selection_element_clicked:
+                logging.error('Could not select yesterday as date filter')
+                return True, False, False
+
+            # step 4
+            is_element_clicked = self.wait_for_presence_of_element_located('//span[@class="styles__TextElement-sc-3qedjx-0 bDqyqH" and text()="Yesterday"]', locator_type=By.XPATH, timeout=10)
             if not is_element_clicked:
-                logging.error('Could not set date filter to yesterday')
-                return False
-            else:
+                logging.error('Could not confirm date filter set to yesterday')
+                return True, True, False
+
+            if is_btn_element_clicked and is_yesterday_selection_element_clicked and is_element_clicked:
                 logging.info('Successfully set date filter to yesterday')
-                return True
+                return True, True, True
         except Exception as e:
             logging.exception(f'An error occurred trying to set date filter to yesterday: {e}')
-            return False
+            return False, False, False
 
