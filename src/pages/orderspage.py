@@ -12,8 +12,9 @@ class OrdersPage(BasePage):
     def switch_to_history_tab(self):
 
         try:
-            is_element_clicked = self.wait_for_find_then_click('#MerchantApp > div > div > div.LayerManager__ChildrenContainer-sc-1k2ulq-0.cloAyl > div > div.sc-lkcIho.hTsMkk > div.Inset__StyledInset-sc-1phi2ey-0.cpCPLc.sc-hAGLhy.jjxnTg > div > div > div:nth-child(2) > div > div > div > div > span.styles__TextElement-sc-3qedjx-0.dDzmpz.sc-iJkHyd.jjmtDI'
-, locator_type=By.CSS_SELECTOR, timeout=25)
+            is_element_clicked = self.wait_for_find_then_click('//*[@id="MerchantApp"]/div/div/div[1]/div/div[2]/div[2]/div/div/div[2]/div/div/div/div/span[3]'
+, locator_type=By.XPATH, timeout=25)
+
             if not is_element_clicked:
                 logging.error(f'Could not switch to History tab')
                 return False
