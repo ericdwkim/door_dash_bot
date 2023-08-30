@@ -34,7 +34,7 @@ class BasePage(object):
             print(f'Element {locator} was not found.')
             return False, None
         except Exception as e:
-            print(f'Error occurred when trying to find and click element: {str(e)}')
+            print(f'Error occurred when trying to find and click element with locator: "{locator}" resulting in error message: {str(e)}')
             return False, None
 
     def find_element_and_click_and_send_keys(self, locator, locator_type, keys_to_send):
