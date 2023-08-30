@@ -76,7 +76,7 @@ class Main:
                 logging.error('Could not set_date_filter_to_yesterday in wrapper')
                 return True, True, True, False
             if launched_and_logged_into_door_dash_homepage and switched_to_orders_page and switched_to_history_tab and date_filter_set_to_yesterday:
-                logging.error('Successfully wrapped!')
+                logging.error(f'launched_and_logged_into_door_dash_homepage: {launched_and_logged_into_door_dash_homepage}\nswitched_to_orders_page: {switched_to_orders_page}\nswitched_to_history_tab: {switched_to_history_tab}\ndate_filter_set_to_yesterday: {date_filter_set_to_yesterday}\nSuccessfully wrapped!')
                 return True, True, True, True
         except Exception as e:
             logging.exception(f'An error occurred attempting to 1) launch & login 2) switch from home to orders page 3) switch to history tab: {e}')
