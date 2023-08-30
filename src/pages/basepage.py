@@ -118,3 +118,21 @@ class BasePage(object):
         except NoSuchElementException:
             print(f'NoSuchElementException: The element "{locator}" was not found.')
             return False
+
+    def wait_for_presence_of_element_located(self, locator, locator_type, timeout):
+        """
+        Checking for element to be visible
+        :param locator:
+        :param locator_type:
+        :param timeout:
+        :return: bool
+        """
+
+        try:
+            WebDriverWait(self.driver, timeout).until(
+                EC.presence_of_element_located((locator_type, locator))
+            )
+            return True
+        except (NoSuchElementException, TimeoutException):
+            logging.exception(f'Tried to check visibility of WebElement: {locator} using locator type: {locator_type}')
+            return False
