@@ -4,7 +4,6 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from ..pages.loginpage import LoginPage
 from ..pages.orderspage import OrdersPage
-# from ..pages.dailysummaryascii import DailySummaryASCIIPage
 
 
 class BaseDriver:
