@@ -4,6 +4,9 @@ import time
 import argparse
 import logging
 
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+
+
 class Main:
     def __init__(self, headless=False):
         # @dev: subclass drivers have and use base_driver
