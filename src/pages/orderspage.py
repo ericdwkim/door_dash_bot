@@ -43,7 +43,7 @@ class OrdersPage(BasePage):
                 logging.error('Could not click date filter button')
                 return False, False, False
 
-            logging.info('waiting for button to load on dom ....')
+            logging.info('waiting for button click to load on dom ....')
             time.sleep(5)
 
             # step 3
