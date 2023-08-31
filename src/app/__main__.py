@@ -60,10 +60,10 @@ class Main:
                 logging.error('Could not switch_to_history_tab in wrapper')
                 return True, True, False, False
 
-            # date_filter_set_to_yesterday = self.set_date_filter_to_yesterday()
-            # if date_filter_set_to_yesterday:
-            #     time.sleep(300)
-            #     logging.info('success!!!!!!!!')
+            date_filter_set_to_yesterday = self.set_date_filter_to_yesterday()
+            if date_filter_set_to_yesterday:
+                time.sleep(300)
+                logging.info('success!!!!!!!!')
             # if not date_filter_set_to_yesterday:
             #     logging.error('Could not set_date_filter_to_yesterday in wrapper')
             #     return True, True, True, False

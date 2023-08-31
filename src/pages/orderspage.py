@@ -1,4 +1,5 @@
 import logging
+import time
 from src.pages.basepage import BasePage
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -41,6 +42,9 @@ class OrdersPage(BasePage):
             if not is_btn_element_clicked:
                 logging.error('Could not click date filter button')
                 return False, False, False
+
+            logging.info('waiting for button to load on dom ....')
+            time.sleep(5)
 
             # step 3
             is_yesterday_selection_element_clicked = self.wait_for_find_then_click('//div[@class="styles__MenuItemTitleWrapper-sc-8cd41l-3 cSfsq" and contains(text(),"Yesterday")]', locator_type=By.XPATH, timeout=10)
