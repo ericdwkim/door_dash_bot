@@ -1,4 +1,4 @@
-from src.app.drivers import BaseDriver, LoginPageDriver, HomePageDriver, OrdersPageDriver
+from src.app.drivers import BaseDriver, LoginPageDriver, OrdersPageDriver
 import os
 import time
 import argparse
@@ -9,7 +9,6 @@ class Main:
         # @dev: subclass drivers have and use base_driver
         self.base_driver = BaseDriver(headless=headless)
         self.login_page_driver = LoginPageDriver(self.base_driver)
-        self.home_page_driver = HomePageDriver(self.base_driver)
         self.orders_page_driver = OrdersPageDriver(self.base_driver)
 
     def launch_and_login_to_door_dash(self):
@@ -21,14 +20,6 @@ class Main:
             logging.info('Successfully launched and logged into Door Dash.')
             return True
 
-    def switch_to_orders_page(self):
-        switched_to_orders_page = self.home_page_driver.switch_to_orders_page()
-        if not switched_to_orders_page:
-            logging.error('Could not switch_to_orders_page')
-            return False
-        else:
-            logging.info('Successfully switched to orders page from homepage')
-            return True
 
     def switch_to_history_tab(self):
         switched_to_history_tab = self.orders_page_driver.switch_to_history_tab()
@@ -55,29 +46,27 @@ class Main:
         :return: Tuple(bool, bool, bool)
         """
         try:
-            launched_and_logged_into_door_dash_homepage = self.launch_and_login_to_door_dash()
-            if not launched_and_logged_into_door_dash_homepage:
+            launched_and_logged_into_door_dash_orders_page = self.launch_and_login_to_door_dash()
+            if not launched_and_logged_into_door_dash_orders_page:
                 logging.error('Could not launch_and_login_to_door_dash')
                 return False, False, False, False
-            switched_to_orders_page = self.switch_to_orders_page()
-            if not switched_to_orders_page:
-                logging.error('Could not switch_to_orders_page in wrapper')
-                return True, False, False, False
+
             # wait for ui to load dom prior to switching tabs
             switched_to_history_tab = self.switch_to_history_tab()
             if not switched_to_history_tab:
                 logging.error('Could not switch_to_history_tab in wrapper')
                 return True, True, False, False
-            date_filter_set_to_yesterday = self.set_date_filter_to_yesterday()
-            if date_filter_set_to_yesterday:
-                time.sleep(300)
-                logging.info('success!!!!!!!!')
-            if not date_filter_set_to_yesterday:
-                logging.error('Could not set_date_filter_to_yesterday in wrapper')
-                return True, True, True, False
-            if launched_and_logged_into_door_dash_homepage and switched_to_orders_page and switched_to_history_tab and date_filter_set_to_yesterday:
-                # logging.info(f'launched_and_logged_into_door_dash_homepage: {launched_and_logged_into_door_dash_homepage}\nswitched_to_orders_page: {switched_to_orders_page}\nswitched_to_history_tab: {switched_to_history_tab}\ndate_filter_set_to_yesterday: {date_filter_set_to_yesterday}\nSuccessfully wrapped!')
-                return True, True, True, True
+
+            # date_filter_set_to_yesterday = self.set_date_filter_to_yesterday()
+            # if date_filter_set_to_yesterday:
+            #     time.sleep(300)
+            #     logging.info('success!!!!!!!!')
+            # if not date_filter_set_to_yesterday:
+            #     logging.error('Could not set_date_filter_to_yesterday in wrapper')
+            #     return True, True, True, False
+            # if launched_and_logged_into_door_dash_homepage and switched_to_orders_page and switched_to_history_tab and date_filter_set_to_yesterday:
+            #     # logging.info(f'launched_and_logged_into_door_dash_homepage: {launched_and_logged_into_door_dash_homepage}\nswitched_to_orders_page: {switched_to_orders_page}\nswitched_to_history_tab: {switched_to_history_tab}\ndate_filter_set_to_yesterday: {date_filter_set_to_yesterday}\nSuccessfully wrapped!')
+            #     return True, True, True, True
         except Exception as e:
             logging.exception(f'An error occurred attempting to 1) launch & login 2) switch from home to orders page 3) switch to history tab: {e}')
             return False, False, False, False
@@ -89,10 +78,11 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     md = Main(headless=args.headless)
+    md.wrapper()
 
-    launched_and_logged_into_door_dash_homepage, switched_to_orders_page, switched_to_history_tab, date_filter_set_to_yesterday = md.wrapper()
-    logging.info(
-    f'launched_and_logged_into_door_dash_homepage: {launched_and_logged_into_door_dash_homepage}\nswitched_to_orders_page: {switched_to_orders_page}\nswitched_to_history_tab: {switched_to_history_tab}\ndate_filter_set_to_yesterday: {date_filter_set_to_yesterday}\nSuccessfully wrapped!')
+    # launched_and_logged_into_door_dash_homepage, switched_to_orders_page, switched_to_history_tab, date_filter_set_to_yesterday = md.wrapper()
+    # logging.info(
+    # f'launched_and_logged_into_door_dash_homepage: {launched_and_logged_into_door_dash_homepage}\nswitched_to_orders_page: {switched_to_orders_page}\nswitched_to_history_tab: {switched_to_history_tab}\ndate_filter_set_to_yesterday: {date_filter_set_to_yesterday}\nSuccessfully wrapped!')
 
 
 

@@ -3,7 +3,6 @@ import platform
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from ..pages.loginpage import LoginPage
-from ..pages.homepage import HomePage
 from ..pages.orderspage import OrdersPage
 # from ..pages.dailysummaryascii import DailySummaryASCIIPage
 
@@ -57,23 +56,6 @@ class LoginPageDriver:
                 return True
         except Exception as e:
             print(f'An error occurred trying to visit_and_login: {e}')
-
-class HomePageDriver:
-
-    def __init__(self, base_driver):
-        self.base_driver = base_driver
-        self.home_page = HomePage(self.base_driver)
-
-    def switch_to_orders_page(self):
-        try:
-            switch_to_orders_page = self.home_page.switch_to_orders_page()
-            if not switch_to_orders_page:
-                logging.error('Could not home_page.switch_to_orders_page')
-                return False
-            else:
-                return True
-        except Exception as e:
-            logging.exception(f'An error occurred trying to switch_to_orders_page: {e}')
 
 class OrdersPageDriver:
 
