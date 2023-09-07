@@ -58,11 +58,30 @@ class LoginPage(BasePage):
             logging.exception(f'An error occurred trying to click_login_button: {e}')
             return False
 
+    # logic to dynamically fetch 2fa_code to pass into bypass_2fa()
+    def fetch_2fa_code(self):
+        pass
+    # todo: either from active directory or perhaps slack channel ?
+
+    # 2fa logic
+    def bypass_2fa(self, _2fa_code):
+        try:
+            waited_found_and_clicked_and_keys_sent = self.wait_for_find_then_click_then_send_keys('//input[@id="FieldWrapper-2"]', keys_to_send=_2fa_code, locator_type=By.XPATH, timeout=5)
+            if not waited_found_and_clicked_and_keys_sent:
+                logging.error('Could not bypass_2fa')
+                return False
+            else:
+                return True
+        except Exception as e:
+            logging.exception(f'An error occurred trying to bypass_2fa: {e}')
+            return False
+
     def login(self):
         try:
             username_entered = self.enter_username()
             password_entered = self.enter_password()
             login_btn_clicked = self.click_login_button()
+            # todo: add 2fa wrapper logic here
             if username_entered and password_entered and login_btn_clicked:
                 logging.info('Successfully logged in!')
                 return True
