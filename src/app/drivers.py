@@ -28,11 +28,14 @@ class BaseDriver:
 
     def _get_chrome_options(self):
         options = webdriver.ChromeOptions()
+        options.add_argument('--remote-debugging-port=9222')  # attach script instance to pre-launched instance
         if self.headless:
             options.add_argument('--headless=new')
         else:
             options.add_argument('--start-maximized')
         return options
+
+
 
     def _get_chromedriver_executable_path(self, os_type):
         return '/opt/homebrew/bin/chromedriver' if os_type == 'Darwin' else 'C:\\Users\\ekima\\AppData\\Local\\anaconda3\\envs\\bots\\Lib\\site-packages\\seleniumbase\\drivers\\chromedriver.exe'
