@@ -1,4 +1,6 @@
-from src.app.drivers import BaseDriver, LoginPageDriver, OrdersPageDriver
+from src.app.drivers import BaseDriver
+from src.pages.loginpage import LoginPage
+from src.pages.orderspage import OrdersPage
 import os
 import time
 import argparse
@@ -11,8 +13,10 @@ class Main:
     def __init__(self, headless=False):
         # @dev: subclass drivers have and use base_driver
         self.base_driver = BaseDriver(headless=headless)
-        self.login_page_driver = LoginPageDriver(self.base_driver)
-        self.orders_page_driver = OrdersPageDriver(self.base_driver)
+        self.login_page_driver = LoginPage(self.base_driver)
+        self.orders_page_driver = OrdersPage(self.base_driver)
+        # self.login_page_driver = LoginPageDriver(self.base_driver)
+        # self.orders_page_driver = OrdersPageDriver(self.base_driver)
 
     def launch_and_login_to_door_dash(self):
         login_to_dash = self.login_page_driver.visit_and_login()
@@ -52,31 +56,26 @@ class Main:
             launched_and_logged_into_door_dash_orders_page = self.launch_and_login_to_door_dash()
             if not launched_and_logged_into_door_dash_orders_page:
                 logging.error('Could not launch_and_login_to_door_dash')
-                return False
+                return False, False, False
+
+            # wait for ui to load dom prior to switching tabs
+            switched_to_history_tab = self.switch_to_history_tab()
+            if not switched_to_history_tab:
+                logging.error('Could not switch_to_history_tab in wrapper')
+                return True, False, False
+
+            date_filter_set_to_yesterday = self.set_date_filter_to_yesterday()
+            if not date_filter_set_to_yesterday:
+                logging.error('Could not set_date_filter_to_yesterday in wrapper')
+                return True, True, False
+
+            if launched_and_logged_into_door_dash_orders_page and switched_to_orders_page and switched_to_history_tab and date_filter_set_to_yesterday:
+                # logging.info(f'launched_and_logged_into_door_dash_orders_page: {launched_and_logged_into_door_dash_orders_page}\nswitched_to_orders_page: {switched_to_orders_page}\nswitched_to_history_tab: {switched_to_history_tab}\ndate_filter_set_to_yesterday: {date_filter_set_to_yesterday}\nSuccessfully wrapped!')
+                return True, True, True
 
         except Exception as e:
-            logging.exception(f'something happened: {e}')
-            return False
-                # return False, False, False
-
-        #     # wait for ui to load dom prior to switching tabs
-        #     switched_to_history_tab = self.switch_to_history_tab()
-        #     if not switched_to_history_tab:
-        #         logging.error('Could not switch_to_history_tab in wrapper')
-        #         return True, False, False
-        #
-        #     date_filter_set_to_yesterday = self.set_date_filter_to_yesterday()
-        #     if not date_filter_set_to_yesterday:
-        #         logging.error('Could not set_date_filter_to_yesterday in wrapper')
-        #         return True, True, False
-        #
-        #     if launched_and_logged_into_door_dash_orders_page and switched_to_orders_page and switched_to_history_tab and date_filter_set_to_yesterday:
-        #         # logging.info(f'launched_and_logged_into_door_dash_orders_page: {launched_and_logged_into_door_dash_orders_page}\nswitched_to_orders_page: {switched_to_orders_page}\nswitched_to_history_tab: {switched_to_history_tab}\ndate_filter_set_to_yesterday: {date_filter_set_to_yesterday}\nSuccessfully wrapped!')
-        #         return True, True, True
-        #
-        # except Exception as e:
-        #     logging.exception(f'An error occurred attempting to 1) launch & login 2) switch from home to orders page 3) switch to history tab: {e}')
-        #     return False, False, False
+            logging.exception(f'An error occurred attempting to 1) launch & login 2) switch from home to orders page 3) switch to history tab: {e}')
+            return False, False, False
 
 
 if __name__ == '__main__':
