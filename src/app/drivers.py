@@ -43,49 +43,49 @@ class BaseDriver:
     def teardown_driver(self):
         self.driver.quit()
 
-class LoginPageDriver:
-    def __init__(self, base_driver):
-        self.base_driver = base_driver
-        self.login_page = LoginPage(self.base_driver)
-
-
-    def visit_and_login(self):
-        try:
-            visit_and_login = self.login_page.visit_and_login()
-            if not visit_and_login:
-                return False
-            else:
-                return True
-        except Exception as e:
-            print(f'An error occurred trying to visit_and_login: {e}')
-
-class OrdersPageDriver:
-
-    def __init__(self, base_driver):
-        self.base_driver = base_driver
-        self.orders_page = OrdersPage(self.base_driver)
-
-
-    def switch_to_history_tab(self):
-        try:
-            switch_to_history_tab = self.orders_page.switch_to_history_tab()
-            if not switch_to_history_tab:
-                logging.error('Could not orders_page.switch_to_history_Tab')
-                return False
-            else:
-                logging.info('Successfully orders_page.switch_to_history_tab')
-                return True
-        except Exception as e:
-            logging.exception(f'An error occurred trying to orders_page.switch_to_history_tab: {e}')
-
-    def set_date_filter_to_yesterday(self):
-        try:
-            set_date_filter_to_yesterday = self.orders_page.set_date_filter_to_yesterday()
-            if not set_date_filter_to_yesterday:
-                logging.error('Could not orders_page.set_date_filter_to_yesterday')
-                return False
-            else:
-                logging.info('Successfully orders_page.set_date_filter_to_yesterday')
-                return True
-        except Exception as e:
-            logging.exception(f'An error occurred trying to orders_page.set_date_filter_to_yesterday: {e}')
+# class LoginPageDriver:
+#     def __init__(self, base_driver):
+#         self.base_driver = base_driver
+#         self.login_page = LoginPage(self.base_driver)
+#
+#
+#     def visit_and_login(self):
+#         try:
+#             visit_and_login = self.login_page.visit_and_login()
+#             if not visit_and_login:
+#                 return False
+#             else:
+#                 return True
+#         except Exception as e:
+#             print(f'An error occurred trying to visit_and_login: {e}')
+#
+# class OrdersPageDriver:
+#
+#     def __init__(self, base_driver):
+#         self.base_driver = base_driver
+#         self.orders_page = OrdersPage(self.base_driver)
+#
+#
+#     def switch_to_history_tab(self):
+#         try:
+#             switch_to_history_tab = self.orders_page.switch_to_history_tab()
+#             if not switch_to_history_tab:
+#                 logging.error('Could not orders_page.switch_to_history_Tab')
+#                 return False
+#             else:
+#                 logging.info('Successfully orders_page.switch_to_history_tab')
+#                 return True
+#         except Exception as e:
+#             logging.exception(f'An error occurred trying to orders_page.switch_to_history_tab: {e}')
+#
+#     def set_date_filter_to_yesterday(self):
+#         try:
+#             set_date_filter_to_yesterday = self.orders_page.set_date_filter_to_yesterday()
+#             if not set_date_filter_to_yesterday:
+#                 logging.error('Could not orders_page.set_date_filter_to_yesterday')
+#                 return False
+#             else:
+#                 logging.info('Successfully orders_page.set_date_filter_to_yesterday')
+#                 return True
+#         except Exception as e:
+#             logging.exception(f'An error occurred trying to orders_page.set_date_filter_to_yesterday: {e}')
