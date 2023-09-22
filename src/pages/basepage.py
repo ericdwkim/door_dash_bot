@@ -7,14 +7,14 @@ from selenium.common.exceptions import NoSuchElementException, TimeoutException
 from selenium.webdriver.common.action_chains import ActionChains
 
 class BasePage(object):
-    def __init__(self, base_driver):
+    def __init__(self, driver):
         """
 
         :param base_driver: instance of `BaseDriver` class
         `base_driver.driver`: instance of `ChromeDriver` class
         :return:
         """
-        self.driver = base_driver.driver
+        self.driver = driver
         self.action = ActionChains(self.driver)
 
 

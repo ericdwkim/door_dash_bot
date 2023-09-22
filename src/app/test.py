@@ -61,18 +61,12 @@ class LoginPage(BasePage):
             logging.exception(f'An error occurred trying to enter_username: {e}')
             return False, False, None
 
-    def enter_password(self):
-        try:
-            is_element_present, was_clicked, element_selector_clicked = self.wait_for_find_then_click_then_send_keys('//*[@id="FieldWrapper-1"]', keys_to_send=self.password, locator_type=By.XPATH, timeout=10)
-            if not is_element_present and not was_clicked and not element_selector_clicked:
-                return False, False, None
-            else:
-                return True, True, element_selector_clicked
-        except Exception as e:
-            logging.exception(f'An error occurred trying to enter_username: {e}')
-            return False, False, None
+class OrdersPage(BasePage):
 
-    def click_login_button(self):
+    def __init__(self, driver):
+        super(). __init__(driver)
+    def switch_to_history_tab(self):
+
         try:
             was_clicked = self.wait_for_find_then_click('//*[@id="login-submit-button"]', locator_type=By.XPATH, timeout=10)
             if not was_clicked:
