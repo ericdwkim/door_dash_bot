@@ -1,13 +1,18 @@
 from selenium import webdriver
 from selenium.webdriver import ChromeOptions
 from selenium.webdriver.chrome.service import Service
-from src.pages.basepage import BasePage
+# from src.pages.basepage import BasePage
 import os
 import logging
+import time
 from selenium.webdriver.common.by import By
+from selenium.common.exceptions import NoSuchElementException, TimeoutException
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
 
 
-class TestDriver:
+
+class WebDriverManager:
 
     def __init__(self):
         self.url = os.getenv('DD_MERCHANT_LOGIN_URL')
@@ -33,34 +38,55 @@ class TestDriver:
         self.driver.get(self.url)
         print(f'=----------------------------')
 
-
-class OrdersPage(BasePage):
-
-    def __init__(self, driver):
-        super(). __init__(driver)
-    def switch_to_history_tab(self):
-
-        try:
-            is_element_clicked = self.wait_for_find_then_click(
-                '//*[@id="MerchantApp"]/div/div/div[1]/div/div[2]/div[2]/div/div/div[2]/div/div/div/div/span[3]'
-                , locator_type=By.XPATH, timeout=25)
-
-            if not is_element_clicked:
-                logging.error(f'Could not switch to History tab')
-                return False
-            else:
-                return True
-
-        except Exception as e:
-            logging.exception(f'An error occurred trying to switch to History tab: {e}')
-            return False
+    def basic_find(self, locator, locator_type):
+        logging.info('trying to basic find')
+        elem = self.driver.find_element(locator_type, locator)
+        elem.click()
+        logging.info(f'----{self.driver}')
 
 
-td = TestDriver()
+    #
+    # def find_element_and_click(self, locator ,locator_type=By.CSS_SELECTOR):
+    #     """
+    #     Finds element and clicks it using `WebElement.click()`
+    #     :param locator:
+    #     :param locator_type:
+    #     :return: Tuple(bool, WebElement)
+    #     """
+    #     try:
+    #         logging.info(f'self.driver in find_element_and_click: {self.driver}')
+    #         element = self.driver.find_element(locator_type, locator)
+    #         element.click()
+    #         return True, element
+    #     except NoSuchElementException:
+    #         print(f'Element {locator} was not found.')
+    #         return False, None
+    #     except Exception as e:
+    #         print(f'Error occurred when trying to find and click element with locator: "{locator}" resulting in error message: {str(e)}')
+    #         return False, None
+    #
+    # def wait_for_element(self, locator, locator_type, timeout):
+    #     """
+    #     Waits for element by locator string using locator_type with a timeout
+    #     :param locator:
+    #     :param locator_type:
+    #     :param timeout:
+    #     :return: bool
+    #     """
+    #     try:
+    #         logging.info(f'self.driver in wait_for_element: {self.driver}')
+    #         WebDriverWait(self.driver, timeout).until(
+    #             EC.visibility_of_element_located((locator_type, locator))
+    #         )
+    #         return True # If element is found within `timeout`
+    #     except TimeoutException:
+    #         return False # If exception raised
 
-td.visit()
 
-op = OrdersPage(td)
+driver_manager = WebDriverManager()
 
-op.switch_to_history_tab()
+driver_manager.visit()
+# driver_manager.wait_for_element(locator='//*[@id="MerchantApp"]/div/div/div[1]/div/div[2]/div[2]/div/div/div[2]/div/div/div/div/span[3]', locator_type=By.XPATH, timeout=25)
+time.sleep(30)
+driver_manager.basic_find(locator='//*[@id="MerchantApp"]/div/div/div[1]/div/div/div[2]/div/div/div[2]/div/div/div/div/span[3]', locator_type=By.XPATH)
 

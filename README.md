@@ -5,6 +5,7 @@
 ```
 
 ```
+conda activate bots
 python -m src.app.test
 ```
 ```
