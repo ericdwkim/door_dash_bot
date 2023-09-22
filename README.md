@@ -14,3 +14,12 @@ ps aux | grep chrome\n
 lsof -i -P -n | grep <PID>
 
 ```
+
+
+```
+
+
+export DD_MERCHANT_LOGIN_URL='https://www.doordash.com/merchant/orders?business_id=11495418'
+export DEV_LOGIN_EMAIL='ekim@txbstores.com'
+export DEV_LOGIN_PASSWORD='3%rV@c7ixWgYVn'
+```
