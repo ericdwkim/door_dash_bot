@@ -28,7 +28,7 @@ class BaseDriver:
 
     def _get_chrome_options(self):
         options = webdriver.ChromeOptions()
-        options.add_argument('--remote-debugging-port=9222')  # attach script instance to pre-launched instance
+        options.add_experimental_option("debuggerAddress", "127.0.0.1:9222")
         if self.headless:
             options.add_argument('--headless=new')
         else:
