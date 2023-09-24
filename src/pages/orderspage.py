@@ -100,10 +100,13 @@ class OrdersPage(BasePage):
                 if not waited_for_sidesheetbody_and_is_visible:
                     logging.error(f'Tried waiting for sidesheetbody element to be visible, but could not locate within allotted time. waited_for_sidesheetbody_and_is_visible: {waited_for_sidesheetbody_and_is_visible}')
                     return True, True, False
+                logging.info(f'type(waited_for_sidesheetbody_and_is_visible): {type(waited_for_sidesheetbody_and_is_visible)}') # ideally an element to simply `.text` from, but unlikely...
+                logging.info(f'waited_for_sidesheetbody_and_is_visible.text: {waited_for_sidesheetbody_and_is_visible.text}')
 
-                else:
-                    logging.info(f'type(waited_for_sidesheetbody_and_is_visible): {type(waited_for_sidesheetbody_and_is_visible)}') # ideally an element to simply `.text` from, but unlikely...
-                    return True, True, True
+
+                # else:
+                #     logging.info(f'type(waited_for_sidesheetbody_and_is_visible): {type(waited_for_sidesheetbody_and_is_visible)}') # ideally an element to simply `.text` from, but unlikely...
+                #     return True, True, True
 
                 # todo: return `results`
         except Exception as e:
