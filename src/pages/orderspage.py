@@ -38,7 +38,7 @@ class OrdersPage(BasePage):
         """
         try:
             # step 1 + 2
-            is_btn_element_clicked = self.wait_for_find_then_click('//*[@id="MerchantApp"]/div/div/div[1]/div/div[2]/div[2]/div/div/div[4]/div/div/div[2]/div/div[3]/div/div/div/div/button', locator_type=By.XPATH, timeout=10)
+            is_btn_element_clicked = self.wait_for_find_then_click('//*[@id="MerchantApp"]/div/div/div[1]/div/div/div[2]/div/div/div[4]/div/div/div[2]/div/div[3]/div/div/div/div/button', locator_type=By.XPATH, timeout=10)
             if not is_btn_element_clicked:
                 logging.error('Could not click date filter button')
                 return False, False, False
