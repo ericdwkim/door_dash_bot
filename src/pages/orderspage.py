@@ -67,6 +67,8 @@ class OrdersPage(BasePage):
             return False, False, False
 
     def scrape_orders_table_data(self):
+        # todo: append each order content as string elem
+        # results = []
 
         try:
             # Locate the table body element
@@ -103,5 +105,6 @@ class OrdersPage(BasePage):
                     logging.info(f'type(waited_for_sidesheetbody_and_is_visible): {type(waited_for_sidesheetbody_and_is_visible)}') # ideally an element to simply `.text` from, but unlikely...
                     return True, True, True
 
+                # todo: return `results`
         except Exception as e:
             logging.exception(f'An error occurred trying to scrape_orders_table_data: {e}')
