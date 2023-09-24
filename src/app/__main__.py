@@ -1,4 +1,4 @@
-from src.app.drivers import BaseDriver, LoginPageDriver, OrdersPageDriver
+from src.app.drivers import BaseDriver, OrdersPageDriver
 import os
 import time
 import argparse
@@ -11,17 +11,8 @@ class Main:
     def __init__(self, headless=False):
         # @dev: subclass drivers have and use base_driver
         self.base_driver = BaseDriver(headless=headless)
-        self.login_page_driver = LoginPageDriver(self.base_driver)
         self.orders_page_driver = OrdersPageDriver(self.base_driver)
 
-    def launch_and_login_to_door_dash(self):
-        login_to_dash = self.login_page_driver.visit_and_login()
-        if not login_to_dash:
-            logging.error('Could not login_page_driver.launch_and_login_to_door_dash')
-            return False
-        else:
-            logging.info('Successfully launched and logged into Door Dash.')
-            return True
 
 
     def switch_to_history_tab(self):
@@ -46,13 +37,9 @@ class Main:
     def wrapper(self):
         """
 
-        :return: Tuple(bool, bool, bool)
+        :return: Tuple(bool, bool)
         """
         try:
-            launched_and_logged_into_door_dash_orders_page = self.launch_and_login_to_door_dash()
-            if not launched_and_logged_into_door_dash_orders_page:
-                logging.error('Could not launch_and_login_to_door_dash')
-                return False, False, False
 
             # wait for ui to load dom prior to switching tabs
             switched_to_history_tab = self.switch_to_history_tab()

@@ -2,7 +2,6 @@ import logging
 import platform
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
-from ..pages.loginpage import LoginPage
 from ..pages.orderspage import OrdersPage
 
 
@@ -40,22 +39,6 @@ class BaseDriver:
 
     def teardown_driver(self):
         self.driver.quit()
-
-class LoginPageDriver:
-    def __init__(self, base_driver):
-        self.base_driver = base_driver
-        self.login_page = LoginPage(self.base_driver)
-
-
-    def visit_and_login(self):
-        try:
-            visit_and_login = self.login_page.visit_and_login()
-            if not visit_and_login:
-                return False
-            else:
-                return True
-        except Exception as e:
-            print(f'An error occurred trying to visit_and_login: {e}')
 
 class OrdersPageDriver:
 
