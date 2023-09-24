@@ -58,6 +58,20 @@ class Main:
             logging.exception(f'An error occurred attempting to switch_to_history_tab_and_set_date_filter_to_yesterday {e}')
             return False, False
 
+    def drill_through_orders_table_and_scrape_each_order_row(self):
+
+        try:
+            scraped_orders_data = self.orders_page_driver.scrape_orders_data()
+            if not scraped_orders_data:
+                logging.error('Could not scrape orders data')
+                return False
+            else:
+                logging.info('Successfully scraped orders data')
+                return True
+        except Exception as e:
+            logging.exception(f'An error occurred : {e}')
+            return False
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='DoorDash Bot V1')
@@ -65,12 +79,10 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     md = Main(headless=args.headless)
-    md.switch_to_history_tab_and_set_date_filter_to_yesterday()
 
     switched_to_history_tab, date_filter_set_to_yesterday = md.switch_to_history_tab_and_set_date_filter_to_yesterday()
     logging.info(
         f'\nswitched_to_history_tab: {switched_to_history_tab}\ndate_filter_set_to_yesterday: {date_filter_set_to_yesterday}')
 
-
-
-
+    drilled_through_orders_and_scraped_data = md.drill_through_orders_table_and_scrape_each_order_row()
+    logging.info(f'drilled_through_orders_and_scraped_data: {drilled_through_orders_and_scraped_data}')
