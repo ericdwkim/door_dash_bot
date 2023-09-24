@@ -9,7 +9,6 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 
 class Main:
     def __init__(self, headless=False):
-        # @dev: subclass drivers have and use base_driver
         self.base_driver = BaseDriver(headless=headless)
         self.orders_page_driver = OrdersPageDriver(self.base_driver)
 
@@ -34,31 +33,30 @@ class Main:
             return True
 
 
-    def wrapper(self):
+    def switch_to_history_tab_and_set_date_filter_to_yesterday(self):
         """
 
         :return: Tuple(bool, bool)
         """
         try:
 
-            # wait for ui to load dom prior to switching tabs
             switched_to_history_tab = self.switch_to_history_tab()
             if not switched_to_history_tab:
-                logging.error('Could not switch_to_history_tab in wrapper')
-                return True, False, False
+                logging.error('Could not switch_to_history_tab in switch_to_history_tab_and_set_date_filter_to_yesterday')
+                return False, False
 
             date_filter_set_to_yesterday = self.set_date_filter_to_yesterday()
             if not date_filter_set_to_yesterday:
-                logging.error('Could not set_date_filter_to_yesterday in wrapper')
-                return True, True, False
+                logging.error('Could not set_date_filter_to_yesterday in switch_to_history_tab_and_set_date_filter_to_yesterday')
+                return True, False
 
-            if launched_and_logged_into_door_dash_orders_page and switched_to_orders_page and switched_to_history_tab and date_filter_set_to_yesterday:
-                # logging.info(f'launched_and_logged_into_door_dash_orders_page: {launched_and_logged_into_door_dash_orders_page}\nswitched_to_orders_page: {switched_to_orders_page}\nswitched_to_history_tab: {switched_to_history_tab}\ndate_filter_set_to_yesterday: {date_filter_set_to_yesterday}\nSuccessfully wrapped!')
-                return True, True, True
+            if switched_to_history_tab and date_filter_set_to_yesterday:
+                logging.info(f'Successfully switched_to_history_tab and date_filter_set_to_yesterday')
+                return True, True
 
         except Exception as e:
-            logging.exception(f'An error occurred attempting to 1) launch & login 2) switch from home to orders page 3) switch to history tab: {e}')
-            return False, False, False
+            logging.exception(f'An error occurred attempting to switch_to_history_tab_and_set_date_filter_to_yesterday {e}')
+            return False, False
 
 
 if __name__ == '__main__':
@@ -67,11 +65,11 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     md = Main(headless=args.headless)
-    md.wrapper()
+    md.switch_to_history_tab_and_set_date_filter_to_yesterday()
 
-    launched_and_logged_into_door_dash_orders_page, switched_to_orders_page, date_filter_set_to_yesterday = md.wrapper()
+    switched_to_history_tab, date_filter_set_to_yesterday = md.switch_to_history_tab_and_set_date_filter_to_yesterday()
     logging.info(
-    f'launched_and_logged_into_door_dash_orders_page: {launched_and_logged_into_door_dash_orders_page}\nswitched_to_orders_page: {switched_to_orders_page}\nswitched_to_history_tab: {switched_to_history_tab}\ndate_filter_set_to_yesterday: {date_filter_set_to_yesterday}\nSuccessfully wrapped!')
+        f'\nswitched_to_history_tab: {switched_to_history_tab}\ndate_filter_set_to_yesterday: {date_filter_set_to_yesterday}')
 
 
 
