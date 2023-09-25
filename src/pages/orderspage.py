@@ -87,63 +87,71 @@ class OrdersPage(BasePage):
 
     def get_table_rows(self):
         try:
-            # Locate the table body element
-            table_body = self.driver.find_element(By.XPATH,
-                                             '//*[@id="MerchantApp"]/div/div/div[1]/div/div/div[2]/div/div/div[4]/div/div/div[5]/div[1]/div/table')
-            if not table_body:
-                logging.error(f'Could not locate the table body of all Orders on DOM. table_body: {table_body}')
-                return False, False, None
-
-            logging.info(f'table_body: {table_body}')
-
             # Get a list of all table row elements
             table_rows = self.driver.find_elements(By.TAG_NAME, 'tr')
 
             if not table_rows:
                 logging.error(f'Could not locate the table rows for all Orders on DOM. table_Rows: {table_rows}')
-                return True, False, None
+                return None
             else:
                 logging.info(f'table_rows: {table_rows}')
-                return True, True, table_rows
+                return table_rows
 
         except Exception as e:
             logging.exception(f'An error occurred: {e}')
+            return None
+
 
     def scrape_orders_table_data(self):
         results = []
 
-        try:
-            located_table_body, located_table_rows, table_rows_element = self.get_table_rows()
+        table_rows = self.get_table_rows()
 
-            if located_table_body and located_table_rows and table_rows_element:
+        if not table_rows:
+            logging.error(f'Could not find Orders. table_rows:{table_rows}')
+            return None
 
+        # Iterate through each table row
+        for table_row_element in table_rows:
+            # Click table row element to trigger sidesheetbody per order
+            table_row_element.click()
+            # Wait for the sidesheetbody element to load
+            is_sidesheetbody_clicked, sidesheetbody_element = self.wait_for_find_then_click(locator='//*[@id="MerchantApp"]/div/div/div[3]/div[2]/div[2]/div', locator_type=By.XPATH, timeout=10)
+            if not is_sidesheetbody_clicked and not sidesheetbody_element:
+                logging.error(f'Tried waiting for sidesheetbody element to be visible, but could not locate on DOM. is_sidesheetbody_clicked: {is_sidesheetbody_clicked}\nsidesheetbody_element: {sidesheetbody_element}')
+                return None
 
-                # Iterate through each table row
-                for table_row in table_rows_element:
+            # print order text
+            logging.info(f'sidesheetbody_element.text: {sidesheetbody_element.text}')
 
-                    results.append(table_row.text)
+            # store order text
+            results.append(sidesheetbody_element.text)
 
-
-
-                # Click on the table row to trigger the sidesheetbody
-                # table_row.click()
-                # wait for dom to load sidesheetbody?
-                # time.sleep(20)
-
-                # Wait for the sidesheetbody element to load
-                # waited_for_sidesheetbody_and_is_visible = self.wait_for_element(locator='//*[@id="MerchantApp"]/div/div/div[3]/div[2]/div[2]/div/div', locator_type=By.XPATH, timeout=10)
-
-                # if not waited_for_sidesheetbody_and_is_visible:
-                #     logging.error(f'Tried waiting for sidesheetbody element to be visible, but could not locate within allotted time. waited_for_sidesheetbody_and_is_visible: {waited_for_sidesheetbody_and_is_visible}')
-                #     return True, True, False
-                # logging.info(f'type(waited_for_sidesheetbody_and_is_visible): {type(waited_for_sidesheetbody_and_is_visible)}') # ideally an element to simply `.text` from, but unlikely...
-                # logging.info(f'waited_for_sidesheetbody_and_is_visible.text: {waited_for_sidesheetbody_and_is_visible.text}')
+        # return list of orders
+        return results
 
 
-                # else:
-                #     logging.info(f'type(waited_for_sidesheetbody_and_is_visible): {type(waited_for_sidesheetbody_and_is_visible)}') # ideally an element to simply `.text` from, but unlikely...
-                #     return True, True, True
+    # todo: loop through `results` ; new func to loop through and create sheets to comprise csv
 
-                return results
-        except Exception as e:
-            logging.exception(f'An error occurred trying to scrape_orders_table_data: {e}')
+    """
+# # Create a Pandas Excel writer using XlsxWriter as the engine.
+# writer = pd.ExcelWriter('output.xlsx', engine='xlsxwriter')
+#
+# # Loop through order_contents and create a sheet for each order
+# for i, order_content in enumerate(order_contents):
+#     # Convert the order content to a DataFrame
+#     df = pd.DataFrame([order_content.split('\n')], columns=["Order Content"])
+#
+#     # Write the DataFrame to the Excel sheet
+#     df.to_excel(writer, sheet_name=f"Order_{i + 1}", index=False)
+#
+# # Close the Pandas Excel writer and save the file
+# writer.save()
+
+
+1) have main scraping func return list of strings where each string elem is each order content.
+2) create new func to accept this list of strings and to create each orders content as an excel sheet
+    2a) create a getter func to be called within this outter func that instantiates each order content string with its Order ID which should be the first line of text in eah order string element and with the order_id variable
+    2b) create a setter func that will set this order_id variable as the name of its sheet so that each sheet is named after its order_id
+3) save the final excel with all sheets as a single excel file
+"""
