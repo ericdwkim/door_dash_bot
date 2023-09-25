@@ -77,11 +77,11 @@ class OrdersPageDriver:
             scraped_orders_data = self.orders_page.scrape_orders_table_data()
             if not scraped_orders_data:
                 logging.error('Could not orders_page.scrape_orders_table_data')
-                return False, None
+                return None
             else:
                 logging.info('Successfully orders_page.scrape_orders_data')
-                return True, scraped_orders_data
+                return scraped_orders_data
         except Exception as e:
             logging.exception(f'An error occurred trying to orders_page.scrape_orders_table_data: {e}')
-            return False, None
+            return None
 

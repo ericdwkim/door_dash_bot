@@ -64,13 +64,13 @@ class Main:
             scraped_orders_data = self.orders_page_driver.scrape_orders_data()
             if not scraped_orders_data:
                 logging.error('Could not scrape orders data')
-                return False, None
+                return None
             else:
                 logging.info('Successfully scraped orders data')
-                return True, scraped_orders_data
+                return scraped_orders_data
         except Exception as e:
             logging.exception(f'An error occurred : {e}')
-            return False, None
+            return None
 
 
 if __name__ == '__main__':
@@ -85,5 +85,5 @@ if __name__ == '__main__':
         f'\nswitched_to_history_tab: {switched_to_history_tab}\ndate_filter_set_to_yesterday: {date_filter_set_to_yesterday}')
 
     # todo: need better bool, list var naming convention; too confusing
-    orders_data_scraped, scraped_orders_data = md.scrape_orders_data()
-    logging.info(f'orders_data_scraped: {orders_data_scraped}\nscraped_orders_data: {scraped_orders_data}')
+    scraped_orders_data = md.scrape_orders_data()
+    logging.info(f'scraped_orders_data: {scraped_orders_data}') # test: list of orders text via results.append(sidesheetbody_element.text)
