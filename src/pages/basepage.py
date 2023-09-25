@@ -17,8 +17,6 @@ class BasePage(object):
         self.driver = base_driver.driver
         self.action = ActionChains(self.driver)
 
-
-
     def find_element_and_click(self, locator ,locator_type=By.CSS_SELECTOR):
         """
         Finds element and clicks it using `WebElement.click()`
@@ -71,6 +69,24 @@ class BasePage(object):
             return True # If element is found within `timeout`
         except TimeoutException:
             return False # If exception raised
+
+    def wait_for_and_find_element(self, locator, locator_type, timeout):
+        try:
+            wait = self.wait_for_element(locator, locator_type, timeout)
+            if not wait:
+                logging.error(f'Tried to wait to locate element via locator "{locator}", but timed out')
+                return False, None
+            element = self.driver.find_element(locator_type, locator)
+            if not element:
+                logging.error(f'Could not find element via locator "{locator}"')
+                return True, None
+            if wait and element:
+                logging.info(f'Found and located element via locator "{locator}"')
+                return True, element
+
+        except Exception as NoSuchElementException:
+            logging.exception(f'An unexpected error occurred: {NoSuchElementException}')
+
 
 
     def wait_for_find_then_click_then_send_keys(self, locator, keys_to_send, locator_type, timeout):
