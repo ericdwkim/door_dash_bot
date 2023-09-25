@@ -15,7 +15,7 @@ def scrape_table_data(url):
 
     try:
         # Locate the table body element
-        table_body = driver.find_element(By.XPATH, '//*[@id="MerchantApp"]/div/div/div[1]/div/div[2]/div[2]/div/div/div[4]/div/div/div[5]/div[1]/div/table/tbody')
+        table_body = driver.find_element(By.XPATH, '//*[@id="MerchantApp"]/div/div/div[1]/div/div/div[2]/div/div/div[4]/div/div/div[5]/div[1]/div/table')
 
         # Get a list of all table row elements
         table_rows = table_body.find_elements(By.TAG_NAME, 'tr')

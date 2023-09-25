@@ -71,7 +71,7 @@ class OrdersPage(BasePage):
         try:
             # Locate the table body element
             table_body = self.driver.find_element(By.XPATH,
-                                             '//*[@id="MerchantApp"]/div/div/div[1]/div/div[2]/div[2]/div/div/div[4]/div/div/div[5]/div[1]/div/table/tbody')
+                                             '//*[@id="MerchantApp"]/div/div/div[1]/div/div/div[2]/div/div/div[4]/div/div/div[5]/div[1]/div/table')
             if not table_body:
                 logging.error(f'Could not locate the table body of all Orders on DOM. table_body: {table_body}')
                 return False, False, None
