@@ -89,10 +89,6 @@ class OrdersPage(BasePage):
 
         table_rows = self.get_table_rows()
 
-        if not table_rows:
-            logging.error(f'Could not find Orders. table_rows:{table_rows}')
-            return None
-
         # Iterate through each table row
         for idx, table_row_element in enumerate(table_rows):
             # skip table header row
@@ -107,9 +103,16 @@ class OrdersPage(BasePage):
                     return None
 
                 elif sidesheetbody_is_present and sidesheetbody_element:
-                    logging.info(f'Sidesheet element has been found. Scraping content for Order#: {idx} out of {len(table_rows)} orders...')
+                    logging.info(f'Sidesheet element has been found. Scraping data for Order #: {idx} out of {len(table_rows) - 1} orders...')
 
                     results.append(sidesheetbody_element.text)
+
+                    is_exit_btn_present_and_clicked, exit_btn_element = self.find_element_and_click(locator='//*[@id="MerchantApp"]/div/div/div[3]/div[2]/div[2]/div/div/div[1]/nav/div[1]/div[1]/div/button', locator_type=By.XPATH)
+
+                    if not is_exit_btn_present_and_clicked and not exit_btn_element:
+                        logging.error(f'Could not locate and click exit button on sidesheetbody.is_exit_btn_present_and_clicked: {is_exit_btn_present_and_clicked}|exit_btn_element: {exit_btn_element}')
+
+                    logging.info(f'Exiting sidesheetbody for Order #: {idx}')
 
         return results
 
