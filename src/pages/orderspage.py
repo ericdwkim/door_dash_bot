@@ -66,6 +66,24 @@ class OrdersPage(BasePage):
             logging.exception(f'An error occurred trying to set date filter to yesterday: {e}')
             return False, False, False
 
+    # @dev: don't really need table_body aside from sanity check
+    # def get_table_body(self):
+    #     try:
+    #         # Locate the table body element
+    #         table_body = self.driver.find_element(By.XPATH,
+    #                                          '//*[@id="MerchantApp"]/div/div/div[1]/div/div/div[2]/div/div/div[4]/div/div/div[5]/div[1]/div/table')
+    #         if not table_body:
+    #             logging.error(f'Could not locate the table body of all Orders on DOM. table_body: {table_body}')
+    #             return None
+    #
+    #         else:
+    #             # logging.info(f'table_body: {table_body}')
+    #             return table_body
+    #
+    #     except Exception as e:
+    #         logging.exception(f'An error occurred trying to get_table_body: {e}')
+    #         return None
+
 
     def get_table_rows(self):
         try:
