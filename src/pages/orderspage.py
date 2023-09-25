@@ -1,5 +1,6 @@
 import logging
 import time
+import pandas as pd
 from src.pages.basepage import BasePage
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
