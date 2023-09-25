@@ -26,13 +26,15 @@ class BasePage(object):
         """
         try:
             element = self.driver.find_element(locator_type, locator)
+            if not element:
+                logging.error(f'Could not locate element via locator "{locator}".')
             element.click()
             return True, element
         except NoSuchElementException:
-            print(f'Element {locator} was not found.')
+            logging.exception(f'Element {locator} was not found.')
             return False, None
         except Exception as e:
-            print(f'Error occurred when trying to find and click element with locator: "{locator}" resulting in error message: {str(e)}')
+            logging.exception(f'Error occurred when trying to find and click element with locator: "{locator}" resulting in error message: {str(e)}')
             return False, None
 
     def find_element_and_click_and_send_keys(self, locator, locator_type, keys_to_send):
@@ -131,7 +133,7 @@ class BasePage(object):
                 element = self.find_element_and_click(locator, locator_type)
                 return True, element
         except NoSuchElementException:
-            print(f'NoSuchElementException: The element "{locator}" was not found.')
+            logging.exception(f'NoSuchElementException: The element "{locator}" was not found.')
             return False, None
 
     def wait_for_presence_of_element_located(self, locator, locator_type, timeout):
