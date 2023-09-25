@@ -104,20 +104,19 @@ class BasePage(object):
         `wait_for_element()` + `find_element_and_click()`\n wrapper using `WebElement.click()`
         :param locator_type: default to CSS SELECTOR
         :param locator: locator string for element to wait and click
-        :return: bool
+        :return: bool, WebElement | None
         """
         try:
             is_element_present = self.wait_for_element(locator, locator_type, timeout)
-            if is_element_present:
-                element = self.find_element_and_click(locator, locator_type)
-                # print(f'Successfully clicked on the element: {element}')
-                return True
+            if not is_element_present:
+                logging.error(f'Element "{locator}" was not present.')
+                return False, None
             else:
-                print(f'Element "{locator}" was not present.')
-                return False
+                element = self.find_element_and_click(locator, locator_type)
+                return True, element
         except NoSuchElementException:
             print(f'NoSuchElementException: The element "{locator}" was not found.')
-            return False
+            return False, None
 
     def wait_for_presence_of_element_located(self, locator, locator_type, timeout):
         """
