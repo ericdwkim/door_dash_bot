@@ -88,15 +88,13 @@ class OrdersPage(BasePage):
 
     def get_table_rows(self):
         try:
-            # Get a list of all table row elements _WITHIN_ target `table_body` ?
+            # Get a list of all table row elements
             table_rows = self.driver.find_elements(By.TAG_NAME, 'tr')
-            # "//*[@class= 'styles__TableContent-sc-4myuz0-0 ihGsOe']/tbody/tr[1]"
-
-
 
             if not table_rows:
                 logging.error(f'Could not locate the table rows for all Orders on DOM. table_Rows: {table_rows}')
                 return None
+
             else:
                 logging.info(f'table_rows: {table_rows}')
                 return table_rows
@@ -122,19 +120,17 @@ class OrdersPage(BasePage):
             # Click table row element to trigger sidesheetbody per order
                 table_row_element.click()
 
-            # Wait for the sidesheetbody element to load
-            is_sidesheetbody_clicked, sidesheetbody_element = self.wait_for_find_then_click(locator='//*[@id="MerchantApp"]/div/div/div[3]/div[2]/div[2]/div', locator_type=By.XPATH, timeout=10)
-            if not is_sidesheetbody_clicked and not sidesheetbody_element:
-                logging.error(f'Tried waiting for sidesheetbody element to be visible, but could not locate on DOM. is_sidesheetbody_clicked: {is_sidesheetbody_clicked}\nsidesheetbody_element: {sidesheetbody_element}')
-                return None
+                sidesheetbody_is_present, sidesheetbody_element = self.wait_for_and_find_element(locator="//*[@class='styles__SidesheetContent-sc-czzuxh-2 hKVVOI']", locator_type=By.XPATH, timeout=10)
 
-            # print order text
-            logging.info(f'sidesheetbody_element.text: {sidesheetbody_element.text}')
+                if not sidesheetbody_is_present and not sidesheetbody_element:
+                    logging.error(f'Could not locate sidesheetbody within alloted time on DOM.\nsidesheetbody_is_present: {sidesheetbody_is_present}|sidesheetbody_element:{sidesheetbody_element}')
+                    return None
 
-            # store order text
-            results.append(sidesheetbody_element.text)
+                elif sidesheetbody_is_present and sidesheetbody_element:
+                    logging.info(f'Sidesheet element has been found. Scraping content for Order#: {idx} out of {len(table_rows)} orders...')
 
-        # return list of orders
+                    results.append(sidesheetbody_element.text)
+
         return results
 
 
