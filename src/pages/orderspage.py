@@ -66,18 +66,19 @@ class OrdersPage(BasePage):
             logging.exception(f'An error occurred trying to set date filter to yesterday: {e}')
             return False, False, False
 
-    # @dev: don't really need table_body aside from sanity check
+    # @dev don't need; only for sanity check of tbody webelement
     # def get_table_body(self):
     #     try:
     #         # Locate the table body element
     #         table_body = self.driver.find_element(By.XPATH,
-    #                                          '//*[@id="MerchantApp"]/div/div/div[1]/div/div/div[2]/div/div/div[4]/div/div/div[5]/div[1]/div/table')
+    #                                          "//*[@class= 'styles__TableContent-sc-4myuz0-0 ihGsOe']/tbody")
+    #
     #         if not table_body:
     #             logging.error(f'Could not locate the table body of all Orders on DOM. table_body: {table_body}')
     #             return None
     #
     #         else:
-    #             # logging.info(f'table_body: {table_body}')
+    #             logging.info(f'table_body: {table_body}')
     #             return table_body
     #
     #     except Exception as e:
@@ -87,8 +88,11 @@ class OrdersPage(BasePage):
 
     def get_table_rows(self):
         try:
-            # Get a list of all table row elements
+            # Get a list of all table row elements _WITHIN_ target `table_body` ?
             table_rows = self.driver.find_elements(By.TAG_NAME, 'tr')
+            # "//*[@class= 'styles__TableContent-sc-4myuz0-0 ihGsOe']/tbody/tr[1]"
+
+
 
             if not table_rows:
                 logging.error(f'Could not locate the table rows for all Orders on DOM. table_Rows: {table_rows}')
@@ -112,9 +116,12 @@ class OrdersPage(BasePage):
             return None
 
         # Iterate through each table row
-        for table_row_element in table_rows:
+        for idx, table_row_element in enumerate(table_rows):
+            # skip table header row
+            if idx >= 1:
             # Click table row element to trigger sidesheetbody per order
-            table_row_element.click()
+                table_row_element.click()
+
             # Wait for the sidesheetbody element to load
             is_sidesheetbody_clicked, sidesheetbody_element = self.wait_for_find_then_click(locator='//*[@id="MerchantApp"]/div/div/div[3]/div[2]/div[2]/div', locator_type=By.XPATH, timeout=10)
             if not is_sidesheetbody_clicked and not sidesheetbody_element:
@@ -154,4 +161,7 @@ class OrdersPage(BasePage):
     2a) create a getter func to be called within this outter func that instantiates each order content string with its Order ID which should be the first line of text in eah order string element and with the order_id variable
     2b) create a setter func that will set this order_id variable as the name of its sheet so that each sheet is named after its order_id
 3) save the final excel with all sheets as a single excel file
+
+
+
 """
