@@ -13,10 +13,10 @@ class OrdersPage(BasePage):
     def switch_to_history_tab(self):
 
         try:
-            is_element_clicked = self.wait_for_find_then_click('//*[@id="MerchantApp"]/div/div/div[1]/div/div/div[2]/div/div/div[2]/div/div/div/div/span[3]'
+            is_element_clicked, history_tab_element = self.wait_for_find_then_click('//*[@id="MerchantApp"]/div/div/div[1]/div/div/div[2]/div/div/div[2]/div/div/div/div/span[3]'
 , locator_type=By.XPATH, timeout=10)
 
-            if not is_element_clicked:
+            if not is_element_clicked and not history_tab_element:
                 logging.error(f'Could not switch to History tab')
                 return False
             else:
@@ -38,8 +38,8 @@ class OrdersPage(BasePage):
         """
         try:
             # step 1 + 2
-            is_btn_element_clicked = self.wait_for_find_then_click('//*[@id="MerchantApp"]/div/div/div[1]/div/div/div[2]/div/div/div[4]/div/div/div[2]/div/div[3]/div/div/div/div/button', locator_type=By.XPATH, timeout=10)
-            if not is_btn_element_clicked:
+            is_btn_element_clicked, button_element = self.wait_for_find_then_click('//*[@id="MerchantApp"]/div/div/div[1]/div/div/div[2]/div/div/div[4]/div/div/div[2]/div/div[3]/div/div/div/div/button', locator_type=By.XPATH, timeout=10)
+            if not is_btn_element_clicked and not button_element:
                 logging.error('Could not click date filter button')
                 return False, False, False
 
@@ -47,7 +47,7 @@ class OrdersPage(BasePage):
             time.sleep(5)
 
             # step 3
-            is_yesterday_selection_element_clicked = self.wait_for_find_then_click('//div[@class="styles__MenuItemTitleWrapper-sc-8cd41l-3 cSfsq" and contains(text(),"Yesterday")]', locator_type=By.XPATH, timeout=10)
+            is_yesterday_selection_element_clicked, yesterday_selector_element= self.wait_for_find_then_click('//div[@class="styles__MenuItemTitleWrapper-sc-8cd41l-3 cSfsq" and contains(text(),"Yesterday")]', locator_type=By.XPATH, timeout=10)
             if not is_yesterday_selection_element_clicked:
                 logging.error('Could not select yesterday as date filter')
                 return True, False, False
