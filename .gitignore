@@ -3,3 +3,4 @@
 __pycache__/
 /.idea/.gitignore
 /dev/output.xlsx
+/dev/~$output.xlsx
