@@ -41,3 +41,8 @@ For better UX, will need to have the desktop browser shortcut (w/ chrome browser
 
 
 - Shortcut should be configured to access `https://www.doordash.com/merchant/orders?business_id=11495418` as script picks up from browser on Orders page
+
+file dump path
+```
+G:\Imports\IR\Door Dash\DD Daily Order Details
+```
