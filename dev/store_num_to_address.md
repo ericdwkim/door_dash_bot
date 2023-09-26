@@ -1,4 +1,4 @@
-• TXB#68 (Kyle) 145 Lehman Rd, Kyle, TX 78640, USA
+• TXB#68 (Kyle) -  145 Lehman Rd, Kyle, TX 78640, USA
 • TXB#8 (Leonard)
 • TXB#62 (Spicewood)
 • TXB#10 (Bonham)
@@ -27,14 +27,14 @@
 • TXB#34 (Paris)
 • TXB#20 Greenville
 • TXB#24 Hugo
-• TXB#17 Trenton
+• TXB#17 Trenton - 13503 TX-121, Trenton, TX 75490, USA
 • TXB#13 (Calera)
 • TXB#12 (Achille)
 • TXB#27 Honey Grove
 • TXB#65 (Georgetown)
 • TXB#79 (Three Rivers)
 • ТХВ#64 (Lakeway)
-• TXB#6 N Center St
+• TXB#6 N Center St - 816 N Center St, Bonham, TX 75418, USA
 • TXB#16 Durant Main St
 • TXB#14 (Durant 9th St)
 • TXB#32 Van Alstyne
