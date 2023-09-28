@@ -74,15 +74,70 @@ class OrdersPage(BasePage):
 
             if not table_rows:
                 logging.error(f'Could not locate the table rows for all Orders on DOM. table_Rows: {table_rows}')
-                return None
+                return None, False
 
             else:
-                logging.info(f'table_rows: {table_rows}')
-                # Exclude header row elem
-                return table_rows[1:]
+                logging.info(f'Table rows elements found: {table_rows}')
+                # Exclude header row elem; inclusive from 1st idx
+                return table_rows[1:], True
 
         except Exception as e:
             logging.exception(f'An error occurred: {e}')
-            return None
+            return None, False
+
+    def find_and_click_exit_button(self):
+        exit_btn_clicked, _ = self.find_element_and_click(
+            locator='//*[@id="MerchantApp"]/div/div/div[3]/div[2]/div[2]/div/div/div[1]/nav/div[1]/div[1]/div/button',
+            locator_type=By.XPATH)
+        return exit_btn_clicked
+
+    def process_row(self, table_row, orders):
+        table_row.click()
+        time.sleep(5)  # wait for ssb to load on dom
+
+        found, elem = self.wait_for_and_find_element(locator="//*[@class='styles__SidesheetContent-sc-czzuxh-2 hKVVOI']",
+                                                locator_type=By.XPATH, timeout=10)
+
+        if found:
+            start_length = len(orders)
+            orders.append(elem.text)
+            end_length = len(orders)
+
+            if end_length > start_length:
+                exit_btn_clicked = self.find_and_click_exit_button()
+
+                if exit_btn_clicked:
+                    logging.info(f'Successfully processed Order. Exiting sidesheet body modal.')
+                    return True
+        return False
+
+    def iterate_table_rows(self, table_rows, orders):
+        idx = 0
+        while idx < len(table_rows):
+            table_row = table_rows[idx]
+
+            if self.process_row(table_row, orders):
+                idx += 1
+                logging.info(f'Iterating the next Order in the list. Order #: {idx + 1}')
+                return True
+            else:
+                logging.error(f"Failed to process Order #: {idx + 1}")
+                return False
 
 
+    def orders_scraper(self):
+        orders = []
+        table_rows, table_rows_present = self.get_all_table_rows_except_header_row()
+
+        if not table_rows and not table_rows_present:
+            logging.error(f'Could not find table_rows: {table_rows}| table_rows_present: {table_rows_present}')
+
+        table_rows_iterated = self.iterate_table_rows(table_rows, orders)
+
+        if not table_rows_iterated:
+            logging.error(f'Could not iterate through all of table_rows. table_rows_iterated: {table_rows_iterated}')
+
+        if table_rows and table_rows_present and table_rows_iterated:
+            logging.info(f'Successfully scraped all orders in the table. ')
+
+        return orders
