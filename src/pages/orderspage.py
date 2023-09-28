@@ -67,7 +67,7 @@ class OrdersPage(BasePage):
             logging.exception(f'An error occurred trying to set date filter to yesterday: {e}')
             return False, False, False
 
-    def get_table_rows(self):
+    def get_all_table_rows_except_header_row(self):
         try:
             # Get a list of all table row elements
             table_rows = self.driver.find_elements(By.TAG_NAME, 'tr')
@@ -78,70 +78,11 @@ class OrdersPage(BasePage):
 
             else:
                 logging.info(f'table_rows: {table_rows}')
-                return table_rows
+                # Exclude header row elem
+                return table_rows[1:]
 
         except Exception as e:
             logging.exception(f'An error occurred: {e}')
             return None
 
 
-    def scrape_orders_table_data(self):
-        results = []
-
-        table_rows = self.get_table_rows()
-
-        # Iterate through each table row
-        for idx, table_row_element in enumerate(table_rows):
-            # skip table header row
-            if idx >= 1:
-            # Click table row element to trigger sidesheetbody per order
-                table_row_element.click()
-
-                sidesheetbody_is_present, sidesheetbody_element = self.wait_for_and_find_element(locator="//*[@class='styles__SidesheetContent-sc-czzuxh-2 hKVVOI']", locator_type=By.XPATH, timeout=10)
-
-                if not sidesheetbody_is_present and not sidesheetbody_element:
-                    logging.error(f'Could not locate sidesheetbody within alloted time on DOM.\nsidesheetbody_is_present: {sidesheetbody_is_present}|sidesheetbody_element:{sidesheetbody_element}')
-                    return None
-
-                elif sidesheetbody_is_present and sidesheetbody_element:
-                    logging.info(f'Sidesheet element has been found. Scraping data for Order #: {idx} out of {len(table_rows) - 1} orders...')
-
-                    results.append(sidesheetbody_element.text)
-
-                    is_exit_btn_present_and_clicked, exit_btn_element = self.find_element_and_click(locator='//*[@id="MerchantApp"]/div/div/div[3]/div[2]/div[2]/div/div/div[1]/nav/div[1]/div[1]/div/button', locator_type=By.XPATH)
-
-                    if not is_exit_btn_present_and_clicked and not exit_btn_element:
-                        logging.error(f'Could not locate and click exit button on sidesheetbody.is_exit_btn_present_and_clicked: {is_exit_btn_present_and_clicked}|exit_btn_element: {exit_btn_element}')
-
-                    logging.info(f'Exiting sidesheetbody for Order #: {idx}')
-
-        return results
-
-
-    # todo: loop through `results` ; new func to loop through and create sheets to comprise csv
-
-    """
-# # Create a Pandas Excel writer using XlsxWriter as the engine.
-# writer = pd.ExcelWriter('output.xlsx', engine='xlsxwriter')
-#
-# # Loop through order_contents and create a sheet for each order
-# for i, order_content in enumerate(order_contents):
-#     # Convert the order content to a DataFrame
-#     df = pd.DataFrame([order_content.split('\n')], columns=["Order Content"])
-#
-#     # Write the DataFrame to the Excel sheet
-#     df.to_excel(writer, sheet_name=f"Order_{i + 1}", index=False)
-#
-# # Close the Pandas Excel writer and save the file
-# writer.save()
-
-
-1) have main scraping func return list of strings where each string elem is each order content.
-2) create new func to accept this list of strings and to create each orders content as an excel sheet
-    2a) create a getter func to be called within this outter func that instantiates each order content string with its Order ID which should be the first line of text in eah order string element and with the order_id variable
-    2b) create a setter func that will set this order_id variable as the name of its sheet so that each sheet is named after its order_id
-3) save the final excel with all sheets as a single excel file
-
-
-
-"""
