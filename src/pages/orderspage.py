@@ -71,15 +71,23 @@ class OrdersPage(BasePage):
         try:
             # Get a list of all table row elements
             table_rows = self.driver.find_elements(By.TAG_NAME, 'tr')
+            # logging.info(f'***************** table_rows: {len(table_rows)}') # table_rows with length of 16
 
             if not table_rows:
                 logging.error(f'Could not locate the table rows for all Orders on DOM. table_Rows: {table_rows}')
                 return None, False
 
             else:
-                logging.info(f'Table rows elements found: {table_rows}')
+                logging.info(f'Table rows elements found:\n {table_rows}\nTotal number of orders: {len(table_rows)}\n')
                 # Exclude header row elem; inclusive from 1st idx
-                return table_rows[1:], True
+
+                logging.info(f"First element before slicing: {table_rows[0].text}")
+                table_rows = table_rows[1:]
+                logging.info(f"First element after slicing: {table_rows[0].text}")
+
+
+                # logging.info(f'***************** table_rows: {len(table_rows)}')
+                return table_rows, True # this returns table_rows with length of 16
 
         except Exception as e:
             logging.exception(f'An error occurred: {e}')
@@ -139,5 +147,7 @@ class OrdersPage(BasePage):
 
         if table_rows and table_rows_present and table_rows_iterated:
             logging.info(f'Successfully scraped all orders in the table. ')
+
+        logging.info(f'\n***********************************\n {orders} \n********************************\n')
 
         return orders
