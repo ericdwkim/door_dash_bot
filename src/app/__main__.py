@@ -86,4 +86,4 @@ if __name__ == '__main__':
 
     # todo: need better bool, list var naming convention; too confusing
     scraped_orders_data = md.scrape_orders_data()
-    logging.info(f'scraped_orders_data:\n {scraped_orders_data}') # test: list of orders text via results.append(sidesheetbody_element.text)
+    logging.info(f'scraped_orders_data:\n {scraped_orders_data}')
