@@ -74,7 +74,7 @@ class OrdersPageDriver:
 
     def scrape_orders_data(self):
         try:
-            scraped_orders_data = self.orders_page.scrape_orders_table_data()
+            scraped_orders_data = self.orders_page.orders_scraper()
             if not scraped_orders_data:
                 logging.error('Could not orders_page.scrape_orders_table_data')
                 return None
