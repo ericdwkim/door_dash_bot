@@ -116,5 +116,60 @@ def prettify_list_of_dicts(list_of_dicts):
 
 
 print(prettify_list_of_dicts(results))
+# ---------------------------------------------------------------------
+import time
+from selenium.webdriver.common.by import By
+import logging
 
 
+def wait_for_element(locator, locator_type=By.XPATH, timeout=10):
+    # Implement the actual wait logic here
+    found, elem = wait_for_and_find_element(locator, locator_type, timeout)
+    return found, elem
+
+
+def find_and_click_exit_button():
+    exit_btn_clicked = find_element_and_click(
+        locator='//*[@id="MerchantApp"]/div/div/div[3]/div[2]/div[2]/div/div/div[1]/nav/div[1]/div[1]/div/button',
+        locator_type=By.XPATH)
+    return exit_btn_clicked
+
+
+def process_row(table_row, orders):
+    table_row.click()
+    time.sleep(5)  # wait for ssb to load on dom
+
+    found, elem = wait_for_element("//*[@class='styles__SidesheetContent-sc-czzuxh-2 hKVVOI']")
+
+    if found:
+        start_length = len(orders)
+        orders.append(elem.text)
+        end_length = len(orders)
+
+        if end_length > start_length:
+            exit_btn_clicked = find_and_click_exit_button()
+
+            if exit_btn_clicked:
+                logging.info(f'Exiting sidesheetbody for Order #: {len(orders)}')
+                return True
+    return False
+
+
+def iterate_table_rows(table_rows, orders):
+    idx = 1
+    while idx < len(table_rows):
+        table_row = table_rows[idx]
+
+        if process_row(table_row, orders):
+            idx += 1
+        else:
+            logging.error(f"Failed to process Order #: {idx}")
+
+
+def orders_scraper_wrapper():
+    orders = []
+    table_rows = get_table_rows_somehow()  # Implement this function to get table rows
+
+    iterate_table_rows(table_rows, orders)
+
+    return orders
