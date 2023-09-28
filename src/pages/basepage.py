@@ -76,7 +76,7 @@ class BasePage(object):
         try:
             wait = self.wait_for_element(locator, locator_type, timeout)
             if not wait:
-                logging.error(f'Tried to wait to locate element via locator "{locator}", but timed out')
+                logging.error(f'Tried to wait to locate element via locator "{locator}", but timed out. Please re-run the script with the cursor and screen focus on the Chrome Browser.')
                 return False, None
             element = self.driver.find_element(locator_type, locator)
             if not element:
