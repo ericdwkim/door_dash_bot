@@ -2,7 +2,6 @@ import json
 import re
 import logging
 def clean_order_text(order):
-    logging.info(f'Cleaning order data...')
     # Define the patterns in a list
     patterns = [
         re.compile(r'(Rate Dasher|Learn More|Get help).*?(?=Pick Up Location)', re.DOTALL),
