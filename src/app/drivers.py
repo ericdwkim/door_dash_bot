@@ -79,7 +79,7 @@ class OrdersPageDriver:
                 logging.error('Could not orders_page.scrape_orders_table_data')
                 return None
             else:
-                logging.info('Successfully orders_page.get_orders')
+                # logging.info('Successfully orders_page.get_orders')
                 return orders
         except Exception as e:
             logging.exception(f'An error occurred trying to orders_page.scrape_orders_table_data: {e}')

@@ -66,7 +66,7 @@ class Main:
                 logging.error('Could not scrape orders data')
                 return None
             else:
-                logging.info('Successfully scraped orders data')
+                # logging.info('Successfully scraped orders data')
                 return orders
         except Exception as e:
             logging.exception(f'An error occurred : {e}')
@@ -86,4 +86,4 @@ if __name__ == '__main__':
 
     # todo: need better bool, list var naming convention; too confusing
     orders = md.get_orders()
-    logging.info(f'orders:\n {orders}')
+    logging.info(f'\n***********************************\n {orders} \n********************************\n')

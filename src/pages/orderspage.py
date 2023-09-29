@@ -173,6 +173,4 @@ class OrdersPage(BasePage):
         if table_rows and table_rows_present and orders:
             logging.info(f'Successfully scraped all orders. ')
 
-        logging.info(f'\n***********************************\n {orders} \n********************************\n')
-
         return orders
