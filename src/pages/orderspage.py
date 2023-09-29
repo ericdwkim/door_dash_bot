@@ -81,7 +81,7 @@ class OrdersPage(BasePage):
 
                 # Exclude header row elem; inclusive from 1st idx
                 table_rows_minus_header = table_rows[1:]
-                logging.info(f'Removed header row. Total number of orders: {table_rows_minus_header} | Total number of rows: {table_rows}.')
+                logging.info(f'Removed header row. Total number of orders: "{len(table_rows_minus_header)}" out of "{len(table_rows)}".')
 
                 return table_rows_minus_header, True
 
