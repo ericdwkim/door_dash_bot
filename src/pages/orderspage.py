@@ -96,31 +96,38 @@ class OrdersPage(BasePage):
         return exit_btn_clicked
 
     def process_row(self, table_row, order_counter):
-        table_row.click()
-        time.sleep(5)  # wait for ssb to load on dom
+        try:
+            table_row.click()
+            time.sleep(5)  # wait for ssb to load on dom
 
-        found, elem = self.wait_for_and_find_element(locator="//*[@class='styles__SidesheetContent-sc-czzuxh-2 hKVVOI']",
-                                                locator_type=By.XPATH, timeout=10)
+            found, elem = self.wait_for_and_find_element(
+                locator="//*[@class='styles__SidesheetContent-sc-czzuxh-2 hKVVOI']",
+                locator_type=By.XPATH,
+                timeout=10
+            )
 
-        if not found or not elem:
-            logging.error(f'Could not extract order data in process_row for Order #: {order_counter}')
-            return None, order_counter
+            if not found or not elem:
+                logging.error(f'Could not extract order data in process_row for Order #: {order_counter}')
+                return None, None
 
-        current_order = elem.text
-        if not current_order:
-            logging.error(f'Could not get extract data from current order via element.text')
-            return None, order_counter
+            current_order = elem.text
+            if not current_order:
+                logging.error(f'Could not extract data from current order via element.text')
+                return None, None
 
-        logging.info(f'Extracted order data for Order #: {order_counter}')
+            logging.info(f'Extracted order data for Order #: {order_counter}')
 
-        exit_btn_clicked = self.find_and_click_exit_button()
+            if not self.find_and_click_exit_button():
+                logging.error(f'Could not click the exit button for Order #: {order_counter}')
+                return None, None
 
-        if exit_btn_clicked:
             logging.info(f'Exiting sidesheet body for Order #: {order_counter}')
-            return current_order, order_counter + 1  #@dev: increment counter
-        else:
-            logging.error(f'Could not click the exit button for Order #: {order_counter}')
-            return None, order_counter
+            return current_order, order_counter + 1  # increment counter
+
+        except Exception as e:
+            logging.error(
+                f'An exception occurred while processing the row for Order #: {order_counter}. Exception: {e}')
+            return None, None
 
     def _get_orders(self, table_rows):
         orders = []
@@ -143,8 +150,13 @@ class OrdersPage(BasePage):
                 logging.error(
                     f'Failed to update the order_counter for Order #: {order_counter}. Keeping the same counter.')
             else:
-                order_counter = new_order_counter  #@dev: reassign already incremented counter from process_row to order_counter
+                order_counter = new_order_counter  # reassign already incremented counter from process_row to order_counter
 
+            if len(orders) == len(table_rows):
+                logging.info('All table rows processed successfully. Exiting loop.')
+                return orders
+
+        logging.warning('Loop ended without processing all table rows.')
         return orders
 
     def get_orders(self):
