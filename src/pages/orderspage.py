@@ -67,7 +67,7 @@ class OrdersPage(BasePage):
             logging.exception(f'An error occurred trying to set date filter to yesterday: {e}')
             return False, False, False
 
-    def get_all_table_rows_except_header_row(self):
+    def get_table_rows_except_header(self):
         try:
             # Get a list of all table row elements
             table_rows = self.driver.find_elements(By.TAG_NAME, 'tr')
@@ -77,16 +77,13 @@ class OrdersPage(BasePage):
                 return None, False
 
             else:
-                logging.info(f'Table rows elements found:\n {table_rows}\nTotal number of orders: {len(table_rows)}\n')
+                logging.info(f'Table rows elements found:\n {table_rows}\nTotal number of rows from table: {len(table_rows)}\n')
+
                 # Exclude header row elem; inclusive from 1st idx
-
-                logging.info(f"First element before slicing: {table_rows[0].text}")
                 table_rows_minus_header = table_rows[1:]
-                logging.info(f"First element after slicing: {table_rows[0].text}")
+                logging.info(f'Removed header row. Total number of orders: {table_rows_minus_header} | Total number of rows: {table_rows}.')
 
-
-                # logging.info(f'***************** table_rows: {len(table_rows)}')
-                return table_rows_minus_header, True # this returns table_rows with length of 16
+                return table_rows_minus_header, True
 
         except Exception as e:
             logging.exception(f'An error occurred: {e}')
@@ -120,39 +117,49 @@ class OrdersPage(BasePage):
 
         if exit_btn_clicked:
             logging.info(f'Exiting sidesheet body for Order #: {order_counter}')
-            return current_order, order_counter + 1
+            return current_order, order_counter + 1  #@dev: increment counter
         else:
             logging.error(f'Could not click the exit button for Order #: {order_counter}')
             return None, order_counter
 
-    def iterate_table_rows(self, table_rows, orders):
-        idx = 0
-        while idx < len(table_rows):
-            table_row = table_rows[idx]
-
-            if self.process_row(table_row, orders):
-                idx += 1
-                logging.info(f'Iterating the next Order in the list. Order #: {idx + 1}')
-                return True
-            else:
-                logging.error(f"Failed to process Order #: {idx + 1}")
-                return False
-
-
-    def orders_scraper(self):
+    def _get_orders(self, table_rows):
         orders = []
-        table_rows, table_rows_present = self.get_all_table_rows_except_header_row()
+        order_counter = 1
+
+        if not table_rows:
+            logging.error('Received an empty list of table rows.')
+            return None
+
+        for table_row in table_rows:
+            current_order, new_order_counter = self.process_row(table_row, order_counter)
+
+            if current_order:
+                orders.append(current_order)
+                logging.info(f'Successfully processed and appended order for Order #: {order_counter}')
+            else:
+                logging.warning(f'Failed to process Order #: {order_counter}. Skipping to next.')
+
+            if new_order_counter is None:
+                logging.error(
+                    f'Failed to update the order_counter for Order #: {order_counter}. Keeping the same counter.')
+            else:
+                order_counter = new_order_counter  #@dev: reassign already incremented counter from process_row to order_counter
+
+        return orders
+
+    def get_orders(self):
+        table_rows, table_rows_present = self.get_table_rows_except_header()
 
         if not table_rows and not table_rows_present:
             logging.error(f'Could not find table_rows: {table_rows}| table_rows_present: {table_rows_present}')
 
-        table_rows_iterated = self.iterate_table_rows(table_rows, orders)
+        orders = self._get_orders(table_rows)
 
-        if not table_rows_iterated:
-            logging.error(f'Could not iterate through all of table_rows. table_rows_iterated: {table_rows_iterated}')
+        if not orders:
+            logging.error(f'Received empty list of orders. orders: {orders}')
 
-        if table_rows and table_rows_present and table_rows_iterated:
-            logging.info(f'Successfully scraped all orders in the table. ')
+        if table_rows and table_rows_present and orders:
+            logging.info(f'Successfully scraped all orders. ')
 
         logging.info(f'\n***********************************\n {orders} \n********************************\n')
 
