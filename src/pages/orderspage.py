@@ -71,7 +71,6 @@ class OrdersPage(BasePage):
         try:
             # Get a list of all table row elements
             table_rows = self.driver.find_elements(By.TAG_NAME, 'tr')
-            # logging.info(f'***************** table_rows: {len(table_rows)}') # table_rows with length of 16
 
             if not table_rows:
                 logging.error(f'Could not locate the table rows for all Orders on DOM. table_Rows: {table_rows}')
@@ -82,12 +81,12 @@ class OrdersPage(BasePage):
                 # Exclude header row elem; inclusive from 1st idx
 
                 logging.info(f"First element before slicing: {table_rows[0].text}")
-                table_rows = table_rows[1:]
+                table_rows_minus_header = table_rows[1:]
                 logging.info(f"First element after slicing: {table_rows[0].text}")
 
 
                 # logging.info(f'***************** table_rows: {len(table_rows)}')
-                return table_rows, True # this returns table_rows with length of 16
+                return table_rows_minus_header, True # this returns table_rows with length of 16
 
         except Exception as e:
             logging.exception(f'An error occurred: {e}')
