@@ -58,16 +58,16 @@ class Main:
             logging.exception(f'An error occurred attempting to switch_to_history_tab_and_set_date_filter_to_yesterday {e}')
             return False, False
 
-    def scrape_orders_data(self):
+    def get_orders(self):
 
         try:
-            scraped_orders_data = self.orders_page_driver.scrape_orders_data()
-            if not scraped_orders_data:
+            orders = self.orders_page_driver.get_orders()
+            if not orders:
                 logging.error('Could not scrape orders data')
                 return None
             else:
                 logging.info('Successfully scraped orders data')
-                return scraped_orders_data
+                return orders
         except Exception as e:
             logging.exception(f'An error occurred : {e}')
             return None
@@ -85,5 +85,5 @@ if __name__ == '__main__':
         f'\nswitched_to_history_tab: {switched_to_history_tab}\ndate_filter_set_to_yesterday: {date_filter_set_to_yesterday}')
 
     # todo: need better bool, list var naming convention; too confusing
-    scraped_orders_data = md.scrape_orders_data()
-    logging.info(f'scraped_orders_data:\n {scraped_orders_data}')
+    orders = md.get_orders()
+    logging.info(f'orders:\n {orders}')

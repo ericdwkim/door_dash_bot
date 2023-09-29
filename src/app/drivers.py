@@ -72,15 +72,15 @@ class OrdersPageDriver:
             logging.exception(f'An error occurred trying to orders_page.set_date_filter_to_yesterday: {e}')
 
 
-    def scrape_orders_data(self):
+    def get_orders(self):
         try:
-            scraped_orders_data = self.orders_page.orders_scraper()
-            if not scraped_orders_data:
+            orders = self.orders_page.get_orders()
+            if not orders:
                 logging.error('Could not orders_page.scrape_orders_table_data')
                 return None
             else:
-                logging.info('Successfully orders_page.scrape_orders_data')
-                return scraped_orders_data
+                logging.info('Successfully orders_page.get_orders')
+                return orders
         except Exception as e:
             logging.exception(f'An error occurred trying to orders_page.scrape_orders_table_data: {e}')
             return None
