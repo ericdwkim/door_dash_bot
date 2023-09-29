@@ -98,25 +98,32 @@ class OrdersPage(BasePage):
             locator_type=By.XPATH)
         return exit_btn_clicked
 
-    def process_row(self, table_row, orders):
+    def process_row(self, table_row, order_counter):
         table_row.click()
         time.sleep(5)  # wait for ssb to load on dom
 
         found, elem = self.wait_for_and_find_element(locator="//*[@class='styles__SidesheetContent-sc-czzuxh-2 hKVVOI']",
                                                 locator_type=By.XPATH, timeout=10)
 
-        if found:
-            start_length = len(orders)
-            orders.append(elem.text)
-            end_length = len(orders)
+        if not found or not elem:
+            logging.error(f'Could not extract order data in process_row for Order #: {order_counter}')
+            return None, order_counter
 
-            if end_length > start_length:
-                exit_btn_clicked = self.find_and_click_exit_button()
+        current_order = elem.text
+        if not current_order:
+            logging.error(f'Could not get extract data from current order via element.text')
+            return None, order_counter
 
-                if exit_btn_clicked:
-                    logging.info(f'Successfully processed Order. Exiting sidesheet body modal.')
-                    return True
-        return False
+        logging.info(f'Extracted order data for Order #: {order_counter}')
+
+        exit_btn_clicked = self.find_and_click_exit_button()
+
+        if exit_btn_clicked:
+            logging.info(f'Exiting sidesheet body for Order #: {order_counter}')
+            return current_order, order_counter + 1
+        else:
+            logging.error(f'Could not click the exit button for Order #: {order_counter}')
+            return None, order_counter
 
     def iterate_table_rows(self, table_rows, orders):
         idx = 0
