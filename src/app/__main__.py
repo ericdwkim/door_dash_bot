@@ -3,6 +3,7 @@ import os
 import time
 import argparse
 import logging
+from src.utils.data_handler import get_prettified_and_mapped_orders
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
@@ -84,6 +85,10 @@ if __name__ == '__main__':
     logging.info(
         f'\nswitched_to_history_tab: {switched_to_history_tab}\ndate_filter_set_to_yesterday: {date_filter_set_to_yesterday}')
 
-    # todo: need better bool, list var naming convention; too confusing
     orders = md.get_orders()
-    logging.info(f'\n***********************************\n {orders} \n********************************\n')
+    # logging.info(f'\n***********************************\n {orders} \n********************************\n')
+
+    orders_json = get_prettified_and_mapped_orders(orders)
+
+
+    logging.info(f'\n***********************************\n {orders_json} \n********************************\n')

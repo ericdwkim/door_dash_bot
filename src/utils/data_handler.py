@@ -9,7 +9,7 @@ def clean_order_text(order):
 
     ]
 
-    # Apply each pattern
+    # Remove irrelevant data using regex patterns
     for pattern in patterns:
         order = re.sub(pattern, '', order).strip()
 
@@ -36,7 +36,7 @@ def parse_menu_items(price_as_value):
     return item_name_to_item_price
 
 
-def parse_order(order):
+def get_mapped_order(order):
     # Define the known keys with their regex patterns
     known_keys = [r'\bOrder: \b', r'\bDelivered\b', r'\bCustomer\sPicked\sUp\b', r'\bCancelled\s-\sNot\sPaid\b',
                   r'\bCancelled\s-\sPaid\b', r'\bPick Up Location\b', r'\bOrder Details\b',
@@ -76,22 +76,28 @@ def parse_order(order):
     return order_dict
 
 
-def main_looper_func(orders):
-    results = []
+def get_prettified_results(results):
+    return json.dumps(results, indent=4)
 
+
+def get_prettified_and_mapped_orders(orders):
+    
+    results = []
+    
     for order in orders:
-        # 1. Get order strings squeaky clean!
+        
         order_cleaned = clean_order_text(order)
 
-        # 2. Parse each cleaned order string into formatted key/value pairs
-        parsed_order = parse_order(order_cleaned)
+        mapped_order = get_mapped_order(order_cleaned)
 
-        results.append(parsed_order)
-
-    return results
+        results.append(mapped_order)
 
 
-def prettify_results():
-    orders = orders_scraper()
+    prettified_results = get_prettified_results(results)
 
-    return j
+    return prettified_results
+
+        
+        
+    
+    
