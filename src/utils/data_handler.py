@@ -1,5 +1,8 @@
 import json
+import re
+import logging
 def clean_order_text(order):
+    logging.info(f'Cleaning order data...')
     # Define the patterns in a list
     patterns = [
         re.compile(r'(Rate Dasher|Learn More|Get help).*?(?=Pick Up Location)', re.DOTALL),
@@ -20,6 +23,8 @@ def clean_order_text(order):
 
 
 def parse_menu_items(price_as_value):
+
+
     # Initialize a dictionary for the nested order details
     item_name_to_item_price = {}
 
@@ -77,6 +82,7 @@ def get_mapped_order(order):
 
 
 def get_prettified_results(results):
+    logging.info(f'Prettifying data...')
     return json.dumps(results, indent=4)
 
 
