@@ -90,5 +90,5 @@ if __name__ == '__main__':
 
     orders_json = get_prettified_and_mapped_orders(orders)
 
-
+    # orders in json (list of dicts) --> pandas
     logging.info(f'\n***********************************\n {orders_json} \n********************************\n')
