@@ -89,6 +89,6 @@ if __name__ == '__main__':
     # logging.info(f'\n***********************************\n {orders} \n********************************\n')
 
     orders_json = get_prettified_and_mapped_orders(orders)
-
+    # todo: have orders_json stdout as csv; will be good to have for debugging purposes
     # orders in json (list of dicts) --> pandas
     logging.info(f'\n***********************************\n {orders_json} \n********************************\n')
