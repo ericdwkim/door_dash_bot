@@ -16,9 +16,9 @@ def clean_order_text(order):
         order = re.sub(pattern, '', order).strip()
 
     # Replace newline characters with spaces
-    order = order.replace('\n', ' ')
+    _order = order.replace('\n', ' ')
 
-    return order
+    return _order
 
 
 def parse_menu_items(price_as_value):
@@ -86,23 +86,48 @@ def get_prettified_results(results):
 
 
 def get_prettified_and_mapped_orders(orders):
-    
     results = []
-    
+
     for order in orders:
-        
         order_cleaned = clean_order_text(order)
 
         mapped_order = get_mapped_order(order_cleaned)
 
         results.append(mapped_order)
 
-
     prettified_results = get_prettified_results(results)
 
     return prettified_results
 
-        
-        
-    
-    
+def get_flatten_order(d, parent_key='', sep='.'):
+    order = {}
+    for k, v in d.items():
+        new_key = f'{parent_key}{sep}{k}' if parent_key else k
+        if isinstance(v, dict):
+            order.update(get_flatten_order(v, new_key, sep=sep))
+        else:
+            order[new_key] = v
+    return order
+
+def get_flattened_orders(orders):
+    flattened_orders = []
+    for order in orders:
+        flattened_order = get_flatten_order(order)
+        flattened_orders.append(flattened_order)
+    return flattened_orders
+
+
+def convert_orders_to_dataframes(flattened_orders):
+    dfs = []
+    for order in flattened_orders:
+        s = pd.Series(order)
+        df = pd.DataFrame(s)
+        dfs.append(df)
+
+    return dfs
+
+def convert_flattened_orders_to_df(orders):
+    flattened_orders = get_flattened_orders(orders)
+    dfs = convert_orders_to_dataframes(flattened_orders)
+
+    return dfs
