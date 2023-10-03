@@ -5,7 +5,7 @@ import argparse
 import pandas as pd
 from datetime import datetime
 import logging
-from src.utils.data_handler import get_prettified_and_mapped_orders, convert_flattened_orders_to_df, json_str_to_csv
+from src.utils.data_handler import get_prettified_and_mapped_orders, convert_flattened_orders_to_df, json_str_to_stdout
 from src.utils.data_merger import DataMerger
 from src.utils.excel_formatter import ExcelFormatter
 
@@ -108,7 +108,7 @@ if __name__ == '__main__':
     # -------------------------- just for dev and stdout -------------------------------
     orders_json = get_prettified_and_mapped_orders(orders)
     # stdout as csv; will be good to have for debugging purposes
-    json_str_to_csv(orders_json)
+    json_str_to_stdout(orders_json)
     # -------------------------- just for dev and stdout -------------------------------
 
     # create orders dfs
