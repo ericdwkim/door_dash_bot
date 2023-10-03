@@ -57,18 +57,12 @@ class ExcelFormatter:
         self.apply_first_column_format()
 
 
-    def get_sheet_name(self):
-        # logic to map `Pick Up Location`
-        pass
-
-
-# Usage example
-def get_xlsx_from_dfs(dfs):
-    excel_file_name = "your_file_name_here.xlsx"
-    with pd.ExcelWriter(excel_file_name, engine='xlsxwriter') as writer:
-        for idx, df in enumerate(dfs):
-            sheet_name = f'Sheet{idx + 1}'  # or any other way to get sheet name
-            df.to_excel(writer, sheet_name, header=False, index=True)
-
-            formatter = ExcelFormatter(writer, sheet_name, df)
-            formatter.apply_sheet_formats()
+    # def get_xlsx_from_dfs(self, dfs):
+    #     with pd.ExcelWriter(self.excel_file_name, engine='xlsxwriter') as writer:
+    #         for idx, df in enumerate(dfs):
+    #             sheet_name = f'Sheet{idx + 1}'  # or any other way to get sheet name
+    #             df.to_excel(writer, sheet_name, header=False, index=True)
+    #
+    #             formatter = ExcelFormatter(writer, sheet_name, df)
+    #             formatter.apply_sheet_formats()
+    #
