@@ -1,5 +1,6 @@
 import json
 import re
+import csv
 import logging
 def clean_order_text(order):
     # Define the patterns in a list
@@ -131,3 +132,23 @@ def convert_flattened_orders_to_df(orders):
     dfs = convert_orders_to_dataframes(flattened_orders)
 
     return dfs
+
+output_filepath = '/Users/ekim/workspace/personal/dd-bot/dev/build/orders_json.csv'
+def json_str_to_csv(json_str):
+    # Deserialize JSON string to a Python object (list of dictionaries)
+    orders_lst = json.loads(json_str)
+
+    # Check if the list is empty
+    if not orders_lst:
+        print("List is empty")
+        return
+
+    # Get the headers (keys of the first dictionary in the list)
+    headers = orders_lst[0].keys()
+
+    # Write to CSV
+    with open(output_filepath, 'w', newline='') as csv_file:
+        writer = csv.DictWriter(csv_file, fieldnames=headers)
+        writer.writeheader()
+        for row in orders_lst:
+            writer.writerow(row)
