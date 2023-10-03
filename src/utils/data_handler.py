@@ -2,6 +2,7 @@ import json
 import re
 import csv
 import logging
+import pandas as pd
 def clean_order_text(order):
     # Define the patterns in a list
     patterns = [
