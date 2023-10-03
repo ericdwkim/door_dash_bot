@@ -306,18 +306,19 @@ class DataMerger:
                 complete_orders.append(order)
         return complete_orders
 
-    def order_id_to_pickup_location(self):
+    # @dev: not sure why param is even needed; shouldn't orders instance get updated to completed_orders and so referencing self.orders in place of complete_orders param in this func work?
+    def order_id_to_pickup_location(self, complete_orders):
         order_id_to_pickup_location = {}
-        for order in self.orders:
+        for order in complete_orders:
             order_id = order['Order']
             store_addrs = order['Pick Up Location']
             order_id_to_pickup_location[order_id] = store_addrs
         return order_id_to_pickup_location
 
     def get_raw_order_to_location_df(self):
-        self.remove_incomplete_orders()
-        self.order_id_to_pickup_location()
-        order_to_location_pairs = list(raw_orders_to_location.items())
+        complete_orders = self.remove_incomplete_orders()
+        order_id_to_pickup_location = self.order_id_to_pickup_location(complete_orders)
+        order_to_location_pairs = list(order_id_to_pickup_location.items())
         self.order_to_location_df = pd.DataFrame(order_to_location_pairs, columns=['order_id', 'pickup_location'])
 
     def splitup_pickup_location(self):
@@ -359,20 +360,20 @@ class DataMerger:
         self.get_merged_and_organized_master_df()
 
 
-    def store_num_to_order_ids_from_order_id_to_store_num(self, original_dict):
+    def _get_store_num_to_order_ids(self, order_id_to_store_num):
         """
         convert duplicate store_num value from order to site num mapping to aggregated store_num : {order_ids}
         :return:
         """
 
-        for order_id, store_num in original_dict.items():
-            if store_num not in store_num_to_order_ids:
+        for order_id, store_num in order_id_to_store_num.items():
+            if store_num not in self.store_num_to_order_ids:
                 self.store_num_to_order_ids[store_num] = set()
             self.store_num_to_order_ids[store_num].add(order_id)
 
     def get_store_num_to_order_ids_from_merged_df(self):
         order_id_to_store_num = self.merged_df.set_index('order_id')['Site #'].to_dict()
-        self.store_num_to_order_ids_from_order_id_to_store_num(order_id_to_store_num)
+        self._get_store_num_to_order_ids(order_id_to_store_num)
 
     def get_store_num_to_order_ids(self):
         self.get_merged_df()
