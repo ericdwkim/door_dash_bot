@@ -2,8 +2,13 @@ from src.app.drivers import BaseDriver, OrdersPageDriver
 import os
 import time
 import argparse
+import pandas as pd
+from datetime import datetime
 import logging
-from src.utils.data_handler import get_prettified_and_mapped_orders
+from src.utils.data_handler import get_prettified_and_mapped_orders, convert_flattened_orders_to_df
+from src.utils.stdout_orders_json_test import json_str_to_csv
+from src.utils.data_merger import DataMerger
+from src.utils.excel_formatter import ExcelFormatter
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
@@ -12,6 +17,8 @@ class Main:
     def __init__(self, headless=False):
         self.base_driver = BaseDriver(headless=headless)
         self.orders_page_driver = OrdersPageDriver(self.base_driver)
+        self.today = datetime.today().strftime('%m.%d.%y')
+        self.excel_file_name = f'DD {self.today}.xlsx'
 
 
 
@@ -73,6 +80,17 @@ class Main:
             logging.exception(f'An error occurred : {e}')
             return None
 
+    def get_excel_output(self, orders_dfs):
+        with pd.ExcelWriter(self.excel_file_name, engine='xlsxwriter') as writer:
+            for idx, df in enumerate(orders_dfs):
+                sheet_name = f'sheetname'
+                df.to_excel(writer, sheet_name, header=False, index=True)
+
+                formatter = ExcelFormatter(writer, sheet_name, df)
+                formatter.apply_sheet_formats()
+
+
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='DoorDash Bot V1')
@@ -89,6 +107,17 @@ if __name__ == '__main__':
     # logging.info(f'\n***********************************\n {orders} \n********************************\n')
 
     orders_json = get_prettified_and_mapped_orders(orders)
-    # todo: have orders_json stdout as csv; will be good to have for debugging purposes
-    # orders in json (list of dicts) --> pandas
+    # stdout as csv; will be good to have for debugging purposes
+    json_str_to_csv(orders_json)
+
+    # create orders dfs
+    orders_dfs = convert_flattened_orders_to_df(orders)
+
+    md.get_excel_output(orders_dfs)
+
+    # write_json_to_csv(orders_json)
     logging.info(f'\n***********************************\n {orders_json} \n********************************\n')
+
+
+    # data_merger = DataMerger()
+    # data_merger.add_store_numbers_to_orders()
