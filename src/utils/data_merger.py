@@ -4,7 +4,6 @@ import json
 import csv
 from datetime import datetime
 
-
 orders =  [
     {
         "Order": "42C2A525",
@@ -304,10 +303,13 @@ class DataMerger:
         for order in self.orders:
             if len(order) >= 7:  # presumes a complete order to have at least 7 keys as brief testing showed 8 - 10 with avg being ~10
                 complete_orders.append(order)
+
         self.orders = complete_orders
 
-    def order_id_to_pickup_location(self, ):
+
+    def order_id_to_pickup_location(self):
         order_id_to_pickup_location = {}
+
         for order in self.orders:
             order_id = order['Order']
             store_addrs = order['Pick Up Location']
@@ -380,6 +382,7 @@ class DataMerger:
 
     def add_store_numbers_to_orders(self):
         self.get_store_num_to_order_ids()  # calls and gives access to changed mapping instance from order_id:store_num --> store_num: {order_ids}
+
         for order in self.orders:
             order_id = order.get('Order')
             found = False # var to keep track if order_id was found in set or not
@@ -392,8 +395,11 @@ class DataMerger:
             if not found:
                 order['Store Number'] = 'N/A'
 
-dm = DataMerger(orders)
 
+
+
+dm = DataMerger(orders)
 dm.add_store_numbers_to_orders()
 
-print(orders)
+
+print(dm.orders)
