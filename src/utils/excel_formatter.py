@@ -57,12 +57,3 @@ class ExcelFormatter:
         self.apply_first_column_format()
 
 
-    # def get_xlsx_from_dfs(self, dfs):
-    #     with pd.ExcelWriter(self.excel_file_name, engine='xlsxwriter') as writer:
-    #         for idx, df in enumerate(dfs):
-    #             sheet_name = f'Sheet{idx + 1}'  # or any other way to get sheet name
-    #             df.to_excel(writer, sheet_name, header=False, index=True)
-    #
-    #             formatter = ExcelFormatter(writer, sheet_name, df)
-    #             formatter.apply_sheet_formats()
-    #
