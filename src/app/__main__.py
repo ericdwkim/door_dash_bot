@@ -78,7 +78,7 @@ class Main:
         except Exception as e:
             logging.exception(f'An error occurred : {e}')
             return None
-
+    # todo: add_store_numbers_to_orders --> self.sheet_name ; should be an instance attribute; leverage each order's `df` in for loop below and without adding new k/v pair, instantiate self.sheet_name from `order_id_to_site_name` mapping
     def get_excel_output(self, orders_dfs):
         with pd.ExcelWriter(self.excel_file_name, engine='xlsxwriter') as writer:
             for idx, df in enumerate(orders_dfs):

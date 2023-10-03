@@ -10,7 +10,7 @@ class DataMerger:
     def __init__(self):
         self.master_dataset_file_path = '/Users/ekim/workspace/personal/dd-bot/dev/store_list.xlsx'
         self.json_output_filepath = '/Users/ekim/workspace/personal/dd-bot/dev/build/orders_json.csv'  # testing purposes only from disk
-        self.orders = orders  # prod ; from mem (equivalen tto json_output_filepath)
+        # self.orders = orders  # prod ; from mem (equivalen tto json_output_filepath)
         self.master_df = None
         self.order_to_location_df = None
         self.merged_df = None
@@ -106,6 +106,7 @@ class DataMerger:
         self.get_order_id_to_site_num_from_merged_df()
 
     # todo: change to self.orders when done testing
+    # @dev: todo: would prefer not to add new k/v into orders as it could mess up col/row positioning of sheets; need to rethink
     def add_store_numbers_to_orders(self):
         order_id_to_site_name = self.get_order_id_to_site_num()
 
