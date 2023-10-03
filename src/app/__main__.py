@@ -105,9 +105,11 @@ if __name__ == '__main__':
     orders = md.get_orders()
     # logging.info(f'\n***********************************\n {orders} \n********************************\n')
 
+    # -------------------------- just for dev and stdout -------------------------------
     orders_json = get_prettified_and_mapped_orders(orders)
     # stdout as csv; will be good to have for debugging purposes
     json_str_to_csv(orders_json)
+    # -------------------------- just for dev and stdout -------------------------------
 
     # create orders dfs
     orders_dfs = convert_flattened_orders_to_df(orders)
