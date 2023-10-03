@@ -6,9 +6,11 @@ from datetime import datetime
 
 
 class DataMerger:
+    # def __init__(self, orders): # prod; pass in orders list of dicts to alter (add store number k/v in each dict) in mem
     def __init__(self):
         self.master_dataset_file_path = '/Users/ekim/workspace/personal/dd-bot/dev/store_list.xlsx'
-        self.json_output_filepath = '/Users/ekim/workspace/personal/dd-bot/dev/json.csv'
+        self.json_output_filepath = '/Users/ekim/workspace/personal/dd-bot/dev/build/orders_json.csv'  # testing purposes only from disk
+        self.orders = orders  # prod ; from mem (equivalen tto json_output_filepath)
         self.master_df = None
         self.order_to_location_df = None
         self.merged_df = None
@@ -33,12 +35,13 @@ class DataMerger:
         self.read_masterdataset_excel()
         self.add_cols_to_masterset_df()
 
+    #todo: disable when done testing
     def read_orders(self):
         with open(self.json_output_filepath, 'r') as f:
             orders = json.load(f)
         return orders
 
-
+    # todo: change to self.orders and remove param when done testing
     def order_id_to_pickup_location(self, orders):
         order_id_to_pickup_location = {}
         for order in orders:
@@ -73,7 +76,6 @@ class DataMerger:
         self.order_to_location_df = pd.concat([self.order_to_location_df, addrs_extracted_df], axis=1)
 
 
-
     def get_order_to_location_df(self):
         self.get_raw_order_to_location_df()
         self.splitup_pickup_location()
@@ -94,14 +96,27 @@ class DataMerger:
         self.get_order_to_location_df()
         self.get_merged_and_organized_master_df()
 
-    def get_order_id_to_site_num(self):
+    def get_order_id_to_site_num_from_merged_df(self):
         order_id_to_site_num = self.merged_df.set_index('order_id')['Site #'].to_dict()
         print(f'*****************************************\n{order_id_to_site_num}\n*****************************************')
 
 
-    def wrapper(self):
+    def get_order_id_to_site_num(self):
         self.get_merged_df()
-        self.get_order_id_to_site_num()
+        self.get_order_id_to_site_num_from_merged_df()
 
-data_merger = DataMerger()
-order_to_location_df = data_merger.wrapper()
+    # todo: change to self.orders when done testing
+    def add_store_numbers_to_orders(self):
+        order_id_to_site_name = self.get_order_id_to_site_num()
+
+        # loop through orders
+        orders = self.read_orders()
+        for order in orders:
+            order_id = order.get('Order')
+            if order_id in order_id_to_site_name:
+                store_num = order_id_to_site_name[order_id]
+                order['Store Number'] = store_num
+            else:
+                order['Store Number'] = 'N/A'
+
+
