@@ -5,3 +5,4 @@ __pycache__/
 /dev/*.csv
 /dev/*.xlsx
 /dev/build/orders_json.csv
+/src/utils/*.xlsx
