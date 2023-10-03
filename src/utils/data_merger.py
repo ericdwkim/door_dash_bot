@@ -50,6 +50,7 @@ class DataMerger:
             order_id_to_pickup_location[order_id] = store_addrs
         return order_id_to_pickup_location
 
+    # todo: self.orders
     def get_raw_order_to_location_df(self):
         orders = self.read_orders()
         raw_orders_to_location = self.order_id_to_pickup_location(orders)
