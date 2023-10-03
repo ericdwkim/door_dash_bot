@@ -137,6 +137,6 @@ output_filepath = '/Users/ekim/workspace/personal/dd-bot/dev/build/orders_json.c
 
 def json_str_to_stdout(json_str):
     with open(output_filepath, 'w') as f:
-        logging.info(f'Writing orders_json to text file...')
+        logging.info(f'Writing orders_json stdout...')
         f.write(json_str)
 
