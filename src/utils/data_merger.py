@@ -304,20 +304,19 @@ class DataMerger:
         for order in self.orders:
             if len(order) >= 7:  # presumes a complete order to have at least 7 keys as brief testing showed 8 - 10 with avg being ~10
                 complete_orders.append(order)
-        return complete_orders
+        self.orders = complete_orders
 
-    # @dev: not sure why param is even needed; shouldn't orders instance get updated to completed_orders and so referencing self.orders in place of complete_orders param in this func work?
-    def order_id_to_pickup_location(self, complete_orders):
+    def order_id_to_pickup_location(self, ):
         order_id_to_pickup_location = {}
-        for order in complete_orders:
+        for order in self.orders:
             order_id = order['Order']
             store_addrs = order['Pick Up Location']
             order_id_to_pickup_location[order_id] = store_addrs
         return order_id_to_pickup_location
 
     def get_raw_order_to_location_df(self):
-        complete_orders = self.remove_incomplete_orders()
-        order_id_to_pickup_location = self.order_id_to_pickup_location(complete_orders)
+        self.remove_incomplete_orders()
+        order_id_to_pickup_location = self.order_id_to_pickup_location()
         order_to_location_pairs = list(order_id_to_pickup_location.items())
         self.order_to_location_df = pd.DataFrame(order_to_location_pairs, columns=['order_id', 'pickup_location'])
 
