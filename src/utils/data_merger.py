@@ -3,16 +3,20 @@ import re
 import json
 import csv
 from datetime import datetime
+import logging
 
 class DataMerger:
     def __init__(self, orders):
         self.master_dataset_file_path = '/Users/ekim/workspace/personal/dd-bot/dev/store_list.xlsx'
-
         self.orders = orders
         self.master_df = None
         self.order_to_location_df = None
         self.merged_df = None
         self.store_num_to_order_ids = {}
+
+    # `orders` passed into constructor of DataMerger cls is a serialized json string
+    def deserialize_orders(self):
+        json.loads(self.orders)
 
     def read_masterdataset_excel(self):
         self.master_df = pd.read_excel(self.master_dataset_file_path, index_col=0)
@@ -42,7 +46,10 @@ class DataMerger:
         :return:
         """
         complete_orders = []
+        logging.info(f'\n******************111111111111***************************************\n{self.orders}\n********************11111111**********************************\n')
+
         for order in self.orders:
+            logging.info(f'***********len(order)************* {len(order)} *******************')
             if len(order) >= 7:  # presumes a complete order to have at least 7 keys as brief testing showed 8 - 10 with avg being ~10
                 complete_orders.append(order)
 
@@ -52,13 +59,18 @@ class DataMerger:
     def order_id_to_pickup_location(self):
         order_id_to_pickup_location = {}
 
+
+        logging.info(f'\n****************33333333333************************\n{self.orders}\n******************************************************\n')
+
         for order in self.orders:
+            logging.info(f'type: {type(order)}')
             order_id = order['Order']
             store_addrs = order['Pick Up Location']
             order_id_to_pickup_location[order_id] = store_addrs
         return order_id_to_pickup_location
 
     def get_raw_order_to_location_df(self):
+        self.deserialize_orders()
         self.remove_incomplete_orders()
         order_id_to_pickup_location = self.order_id_to_pickup_location()
         order_to_location_pairs = list(order_id_to_pickup_location.items())
