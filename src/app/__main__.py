@@ -10,8 +10,6 @@ from src.utils.data_handler import get_prettified_and_mapped_orders, convert_fla
 from src.utils.data_merger import DataMerger
 from src.utils.excel_formatter import ExcelFormatter
 
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-
 
 class Main:
     def __init__(self, headless=False):
@@ -103,6 +101,7 @@ class Main:
 
 
 if __name__ == '__main__':
+    setup_logger()
     parser = argparse.ArgumentParser(description='DoorDash Bot V1')
     parser.add_argument('--headless', required=False, action='store_true', help='Run in headless mode')
     args = parser.parse_args()
