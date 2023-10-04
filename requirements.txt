@@ -26,6 +26,7 @@ debugpy==1.6.7
 decorator==5.1.1
 defusedxml==0.7.1
 deprecation==2.1.0
+et-xmlfile==1.1.0
 exceptiongroup==1.1.3
 execnet==2.0.2
 executing==1.2.0
@@ -72,6 +73,7 @@ notebook==6.5.4
 notebook_shim==0.2.3
 numexpr @ file:///private/var/folders/sy/f16zz6x50xz3113nwtb9bvq00000gp/T/abs_1b50c1js9s/croot/numexpr_1683227065029/work
 numpy @ file:///private/var/folders/c_/qfmhj66j0tn016nkx_th4hxm0000gp/T/abs_2ajpp3regc/croot/numpy_and_numpy_base_1691164374110/work
+openpyxl==3.0.10
 outcome==1.2.0
 overrides==7.3.1
 packaging==23.1
@@ -142,7 +144,7 @@ traitlets==5.9.0
 trio==0.22.2
 trio-websocket==0.10.3
 tzdata @ file:///croot/python-tzdata_1690578112552/work
-undetected-chromedriver==3.5.2
+undetected-chromedriver==3.5.3
 uri-template==1.2.0
 urllib3==2.0.4
 userpath==1.8.0

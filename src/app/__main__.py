@@ -10,7 +10,7 @@ from src.utils.data_handler import get_prettified_and_mapped_orders, convert_fla
 from src.utils.data_merger import DataMerger
 from src.utils.excel_formatter import ExcelFormatter
 
-# logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 
 class Main:
