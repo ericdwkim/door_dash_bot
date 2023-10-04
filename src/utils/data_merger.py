@@ -49,6 +49,7 @@ class DataMerger:
 
         for order in self.orders:
             # @dev: mainly to help catch potential de/serialization issues
+            # todo: this needs to be much cleaner/robust for other edge cases, such as if len(order) is b/w 2 - 6
             if len(order) <= 1:
                 logging.error(f'Deserialization did not work properly. Please confirm proper dtype of `orders` instance')
             if len(order) >= 7:  # presumes a complete order to have at least 7 keys as brief testing showed 8 - 10 with avg being ~10
