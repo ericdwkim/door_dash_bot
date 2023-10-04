@@ -18,6 +18,11 @@ class Main:
         self.orders_page_driver = OrdersPageDriver(self.base_driver)
         self.today = datetime.today().strftime('%m.%d.%y')
         self.excel_file_name = f'DD {self.today}.xlsx'
+        self.excel_output_file_path = f"/Users/ekim/workspace/txb/mock/g-drive/imports/ir/Door Dash/DD Daily Order Details/{self.excel_file_name}"
+
+        # G:\Imports\IR\Door Dash\DD Daily Order Details # prod
+        # /Users/ekim/workspace/txb/mock/g-drive/imports/ir/Door Dash/DD Daily Order Details # dev on mac
+
 
 
 
@@ -85,6 +90,7 @@ class Main:
         sheet_name = f'#{store_num}'
         return sheet_name
 
+
     def get_excel_output(self, orders_dfs):
         with pd.ExcelWriter(self.excel_file_name, engine='xlsxwriter') as writer:
             for idx, order_df in enumerate(orders_dfs):
@@ -93,8 +99,6 @@ class Main:
 
                 formatter = ExcelFormatter(writer, sheet_name, order_df)
                 formatter.apply_sheet_formats()
-
-
 
 
 if __name__ == '__main__':
