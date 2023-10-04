@@ -110,10 +110,10 @@ if __name__ == '__main__':
     orders = md.get_orders()  # todo: rename as raw_orders or something to indicate it is the uncleaned list of strings
     # logging.info(f'\n***********************************\n {orders} \n********************************\n')
 
-    # -------------------------- just for dev and stdout-------------------------------
     orders_json = get_prettified_and_mapped_orders(orders)
     json_str_to_stdout(orders_json)
-    # -------------------------- just for dev and stdout -------------------------------
+    logging.info(
+        f'\n****************************orders_json*****************************\n{orders_json}\n**************************orders_json****************************\n')
 
     dm = DataMerger(orders_json)
     orders_with_store_nums = dm.add_store_numbers_to_orders()
