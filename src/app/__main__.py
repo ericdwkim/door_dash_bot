@@ -134,3 +134,5 @@ if __name__ == '__main__':
 
 
     md.get_excel_output(orders_dfs)
+    logging.info(f'Orders Spreadsheet has been saved to: {md.excel_output_file_path}')
+    # todos: 1) add error handling truthy/falsy returns 2) code clean up 3) tackle blemishes
