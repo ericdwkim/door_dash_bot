@@ -107,15 +107,15 @@ if __name__ == '__main__':
     logging.info(
         f'\nswitched_to_history_tab: {switched_to_history_tab}\ndate_filter_set_to_yesterday: {date_filter_set_to_yesterday}')
 
-    orders = md.get_orders()
+    orders = md.get_orders()  # todo: rename as raw_orders or something to indicate it is the uncleaned list of strings
     # logging.info(f'\n***********************************\n {orders} \n********************************\n')
 
     # -------------------------- just for dev and stdout-------------------------------
-    # orders_json = get_prettified_and_mapped_orders(orders)
-    # json_str_to_stdout(orders_json)
+    orders_json = get_prettified_and_mapped_orders(orders)
+    json_str_to_stdout(orders_json)
     # -------------------------- just for dev and stdout -------------------------------
 
-    dm = DataMerger(orders)
+    dm = DataMerger(orders_json)
     orders_with_store_nums = dm.add_store_numbers_to_orders()
 
     # create orders dfs
