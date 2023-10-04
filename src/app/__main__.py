@@ -92,7 +92,7 @@ class Main:
 
 
     def get_excel_output(self, orders_dfs):
-        with pd.ExcelWriter(self.excel_file_name, engine='xlsxwriter') as writer:
+        with pd.ExcelWriter(self.excel_output_file_path, engine='xlsxwriter') as writer:
             for idx, order_df in enumerate(orders_dfs):
                 sheet_name = self.get_sheet_name(order_df)
                 order_df.to_excel(writer, sheet_name, header=False, index=True)
