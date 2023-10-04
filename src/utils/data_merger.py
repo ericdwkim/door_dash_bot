@@ -16,7 +16,7 @@ class DataMerger:
 
     # `orders` passed into constructor of DataMerger cls is a serialized json string
     def deserialize_orders(self):
-        json.loads(self.orders)
+        self.orders = json.loads(self.orders)
 
     def read_masterdataset_excel(self):
         self.master_df = pd.read_excel(self.master_dataset_file_path, index_col=0)
@@ -49,7 +49,7 @@ class DataMerger:
         logging.info(f'\n******************111111111111***************************************\n{self.orders}\n********************11111111**********************************\n')
 
         for order in self.orders:
-            logging.info(f'***********len(order)************* {len(order)} *******************')
+            # logging.info(f'***********len(order)************* {len(order)} *******************')
             if len(order) >= 7:  # presumes a complete order to have at least 7 keys as brief testing showed 8 - 10 with avg being ~10
                 complete_orders.append(order)
 
