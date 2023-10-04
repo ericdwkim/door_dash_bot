@@ -44,7 +44,7 @@ class OrdersPage(BasePage):
                 logging.error('Could not click date filter button')
                 return False, False, False
 
-            logging.info('waiting for button click to load on dom ....')
+            logging.info('Waiting for date filter button click to load on DOM ....')
             time.sleep(5)
 
             # step 3
@@ -52,6 +52,9 @@ class OrdersPage(BasePage):
             if not is_yesterday_selection_element_clicked:
                 logging.error('Could not select yesterday as date filter')
                 return True, False, False
+
+            logging.info('Waiting for yesterday date filter selection click to load on DOM...')
+            time.sleep(5)
 
             # step 4
             is_element_present = self.wait_for_presence_of_element_located('//span[@class="styles__TextElement-sc-3qedjx-0 bDqyqH" and text()="Yesterday"]', locator_type=By.XPATH, timeout=10)
@@ -144,7 +147,7 @@ class OrdersPage(BasePage):
                 orders.append(current_order)
                 logging.info(f'Successfully processed and appended order for Order #: {order_counter}')
             else:
-                logging.warning(f'Failed to process Order #: {order_counter}. Skipping to next.')
+                logging.warning(f'Failed to process Order #: {order_counter}. Skipping to next.')  # feat: retry logic from currently failed order and then continue
 
             if new_order_counter is None:
                 logging.error(
