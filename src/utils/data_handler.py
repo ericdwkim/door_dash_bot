@@ -88,19 +88,20 @@ def get_prettified_results(results):
     return json.dumps(results, indent=4)
 
 # todo: move to separate module
-def get_prettified_and_mapped_orders(orders):
+def get_prettified_and_mapped_orders(orders, with_store_nums=False):
+    """
+    Takes in a deserialized string (Python object of list of dicts)
+    and returns a serialized JSON string.
+    """
     results = []
 
     for order in orders:
-        order_cleaned = clean_order_text(order)
+        if not with_store_nums:
+            order = get_mapped_order(clean_order_text(order))
+        results.append(order)
 
-        mapped_order = get_mapped_order(order_cleaned)
+    return get_prettified_results(results)
 
-        results.append(mapped_order)
-
-    prettified_results = get_prettified_results(results)
-
-    return prettified_results
 
 def get_flatten_order(d, parent_key='', sep='.'):
     order = {}
@@ -137,9 +138,7 @@ def convert_flattened_orders_to_df(orders):
 
 
 # todo: move to separate module
-output_filepath = '/Users/ekim/workspace/personal/dd-bot/dev/build/orders_json.csv'
-def json_str_to_stdout(json_str):
+def json_str_to_file(json_str, output_filepath, log_message):
     with open(output_filepath, 'w') as f:
-        logging.info(f'Writing orders_json stdout...')
+        logging.info(log_message)
         f.write(json_str)
-
