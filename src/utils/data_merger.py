@@ -136,12 +136,5 @@ class DataMerger:
                     break  # exit loop if order_id is found
             if not found:
                 order['Store Number'] = 'N/A'
-
-
-
-
-dm = DataMerger(orders)
-dm.add_store_numbers_to_orders()
-
-
-print(dm.orders)
+        orders_with_store_nums = self.orders
+        return orders_with_store_nums
