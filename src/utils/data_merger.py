@@ -60,12 +60,7 @@ class DataMerger:
 
     def order_id_to_pickup_location(self):
         order_id_to_pickup_location = {}
-
-
-        logging.info(f'\n****************33333333333************************\n{self.orders}\n******************************************************\n')
-
         for order in self.orders:
-            logging.info(f'type: {type(order)}')
             order_id = order['Order']
             store_addrs = order['Pick Up Location']
             order_id_to_pickup_location[order_id] = store_addrs
@@ -149,6 +144,6 @@ class DataMerger:
                     found = True
                     break  # exit loop if order_id is found
             if not found:
-                order['Store Number'] = 'N/A'
+                order['Store Number'] = 'NaN'
         orders_with_store_nums = self.orders
         return orders_with_store_nums
