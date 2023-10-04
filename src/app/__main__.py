@@ -6,7 +6,7 @@ import pandas as pd
 from datetime import datetime
 import logging
 from src.utils.log_config import setup_logger
-from src.utils.data_handler import get_prettified_and_mapped_orders, convert_flattened_orders_to_df, json_str_to_stdout
+from src.utils.data_handler import get_prettified_and_mapped_orders, convert_flattened_orders_to_df, json_str_to_file
 from src.utils.data_merger import DataMerger
 from src.utils.excel_formatter import ExcelFormatter
 
@@ -29,7 +29,7 @@ class Main:
 
     def switch_to_history_tab(self):
         switched_to_history_tab = self.orders_page_driver.switch_to_history_tab()
-        if switched_to_history_tab:
+        if switched_to_history_tab:  # todo: add `not` back after testing new logging configs
             logging.error('Could not orders_page_driver.switch_to_history_tab')
             return False
         else:
@@ -113,15 +113,25 @@ if __name__ == '__main__':
     logging.info(
         f'\nswitched_to_history_tab: {switched_to_history_tab}\ndate_filter_set_to_yesterday: {date_filter_set_to_yesterday}')
 
-    orders = md.get_orders()  # todo: rename as raw_orders or something to indicate it is the uncleaned list of strings
+    orders = md.get_orders()  # todo: rename as raw_orders or something to indicate it is the uncleaned list of strings; @dev: `orders` is a python object (list of dicts)
 
+    # todo: create wrapper for prettifying + stdout'ing
     orders_json = get_prettified_and_mapped_orders(orders)  # @dev: `orders_json` is a serialized (str) json
-    json_str_to_stdout(orders_json)
+    output_filepath1 = '/Users/ekim/workspace/personal/dd-bot/dev/build/orders_json.csv'
+    log_message1 = 'Writing orders_json stdout...'
+    json_str_to_file(json_str=orders_json, output_filepath=output_filepath1, log_message=log_message1)
 
     dm = DataMerger(orders_json)
-    orders_with_store_nums = dm.add_store_numbers_to_orders()
+    orders_with_store_nums = dm.add_store_numbers_to_orders()  #@dev: `orders_with_store_nums` is a python obj list of dicts
+
+    orders_json_with_store_nums = get_prettified_and_mapped_orders(orders_with_store_nums, with_store_nums=True)
+    output_filepath2 = '/Users/ekim/workspace/personal/dd-bot/dev/build/orders_json_with_store_nums.csv'
+    log_message2 = 'Writing orders_json with store_num to stdout...'
+    json_str_to_file(json_str=orders_json_with_store_nums, output_filepath=output_filepath2, log_message=log_message2)
+
 
     # create orders dfs
-    orders_dfs = convert_flattened_orders_to_df(orders_with_store_nums)
+    orders_dfs = convert_flattened_orders_to_df(orders_with_store_nums)  #@dev `orders_dfs` is a list of DFs
+
 
     md.get_excel_output(orders_dfs)
