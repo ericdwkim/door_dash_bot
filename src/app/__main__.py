@@ -5,11 +5,12 @@ import argparse
 import pandas as pd
 from datetime import datetime
 import logging
+from src.utils.log_config import setup_logger
 from src.utils.data_handler import get_prettified_and_mapped_orders, convert_flattened_orders_to_df, json_str_to_stdout
 from src.utils.data_merger import DataMerger
 from src.utils.excel_formatter import ExcelFormatter
 
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+# logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 
 class Main:
@@ -28,7 +29,7 @@ class Main:
 
     def switch_to_history_tab(self):
         switched_to_history_tab = self.orders_page_driver.switch_to_history_tab()
-        if not switched_to_history_tab:
+        if switched_to_history_tab:
             logging.error('Could not orders_page_driver.switch_to_history_tab')
             return False
         else:
