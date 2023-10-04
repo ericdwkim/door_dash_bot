@@ -80,18 +80,17 @@ class Main:
             return None
     # todo: self.sheet_name ; should be an instance attribute
 
-    # todo: add store num getter
-    def get_store_num(order_df):
+    def get_store_num(self, order_df):
         store_num = order_df[0]['Store Number']
         return store_num
 
     def get_excel_output(self, orders_dfs):
         with pd.ExcelWriter(self.excel_file_name, engine='xlsxwriter') as writer:
-            for idx, df in enumerate(orders_dfs):
-                sheet_name = f'sheetname'
-                df.to_excel(writer, sheet_name, header=False, index=True)
+            for idx, order_df in enumerate(orders_dfs):
+                sheet_name = self.get_store_num(order_df)
+                order_df.to_excel(writer, sheet_name, header=False, index=True)
 
-                formatter = ExcelFormatter(writer, sheet_name, df)
+                formatter = ExcelFormatter(writer, sheet_name, order_df)
                 formatter.apply_sheet_formats()
 
 
@@ -111,20 +110,15 @@ if __name__ == '__main__':
     orders = md.get_orders()
     # logging.info(f'\n***********************************\n {orders} \n********************************\n')
 
+    # -------------------------- just for dev and stdout-------------------------------
+    # orders_json = get_prettified_and_mapped_orders(orders)
+    # json_str_to_stdout(orders_json)
     # -------------------------- just for dev and stdout -------------------------------
-    orders_json = get_prettified_and_mapped_orders(orders)
-    # stdout as csv; will be good to have for debugging purposes
-    json_str_to_stdout(orders_json)
-    # -------------------------- just for dev and stdout -------------------------------
+
+    dm = DataMerger(orders)
+    orders_with_store_nums = dm.add_store_numbers_to_orders()
 
     # create orders dfs
-    orders_dfs = convert_flattened_orders_to_df(orders)
+    orders_dfs = convert_flattened_orders_to_df(orders_with_store_nums)
 
     md.get_excel_output(orders_dfs)
-
-    # write_json_to_csv(orders_json)
-    logging.info(f'\n***********************************\n {orders_json} \n********************************\n')
-
-
-    # data_merger = DataMerger()
-    # data_merger.add_store_numbers_to_orders()
