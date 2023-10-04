@@ -29,7 +29,7 @@ class Main:
 
     def switch_to_history_tab(self):
         switched_to_history_tab = self.orders_page_driver.switch_to_history_tab()
-        if switched_to_history_tab:  # todo: add `not` back after testing new logging configs
+        if not switched_to_history_tab:
             logging.error('Could not orders_page_driver.switch_to_history_tab')
             return False
         else:
