@@ -82,11 +82,12 @@ def get_mapped_order(order):
     return order_dict
 
 
+# todo: move to separate module
 def get_prettified_results(results):
     logging.info(f'Prettifying data...')
     return json.dumps(results, indent=4)
 
-
+# todo: move to separate module
 def get_prettified_and_mapped_orders(orders):
     results = []
 
@@ -134,8 +135,9 @@ def convert_flattened_orders_to_df(orders):
 
     return dfs
 
-output_filepath = '/Users/ekim/workspace/personal/dd-bot/dev/build/orders_json.csv'
 
+# todo: move to separate module
+output_filepath = '/Users/ekim/workspace/personal/dd-bot/dev/build/orders_json.csv'
 def json_str_to_stdout(json_str):
     with open(output_filepath, 'w') as f:
         logging.info(f'Writing orders_json stdout...')
