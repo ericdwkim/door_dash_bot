@@ -80,14 +80,15 @@ class Main:
             return None
     # todo: self.sheet_name ; should be an instance attribute
 
-    def get_store_num(self, order_df):
+    def get_sheet_name(self, order_df):
         store_num = order_df[0]['Store Number']
-        return store_num
+        sheet_name = f'#{store_num}'
+        return sheet_name
 
     def get_excel_output(self, orders_dfs):
         with pd.ExcelWriter(self.excel_file_name, engine='xlsxwriter') as writer:
             for idx, order_df in enumerate(orders_dfs):
-                sheet_name = self.get_store_num(order_df)
+                sheet_name = self.get_sheet_name(order_df)
                 order_df.to_excel(writer, sheet_name, header=False, index=True)
 
                 formatter = ExcelFormatter(writer, sheet_name, order_df)
