@@ -46,7 +46,7 @@ def parse_menu_items(price_as_value):
 
 def get_mapped_order(order):
     # Define the known keys with their regex patterns
-    known_keys = [r'\bOrder: \b', r'\bDelivered\b', r'\bCustomer\sPicked\sUp\b', r'\bCancelled\s-\sNot\sPaid\b',
+    known_keys = [r'\bOrder: \b', r'\bDelivered\b', r'\Could\sNot\sDeliver\b', r'\bCustomer\sPicked\sUp\b', r'\bCancelled\s-\sNot\sPaid\b',
                   r'\bCancelled\s-\sPaid\b', r'\bPick Up Location\b', r'\bOrder Details\b',
                   r'\bSubtotal\b(?=\s[^a-zA-Z])', r'\bSubtotal\sTax\b', r'Commission \(\d+%\)',
                   r'\bTotal Customer Refund\b', r'\bEstimated Payout\b', r'\bAssociated Transactions \(\d+%\)',
