@@ -54,7 +54,7 @@ class OrdersPageDriver:
                 logging.error('Could not orders_page.switch_to_history_Tab')
                 return False
             else:
-                logging.info('Succesfuly orders_page.switch_to_history_tab')
+                logging.info('Successfully orders_page.switch_to_history_tab')
                 return True
         except Exception as e:
             logging.exception(f'An error occurred trying to orders_page.switch_to_history_tab: {e}')
