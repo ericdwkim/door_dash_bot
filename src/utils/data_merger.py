@@ -21,22 +21,15 @@ class DataMerger:
     def read_masterdataset_excel(self):
         self.master_df = pd.read_excel(self.master_dataset_file_path, index_col=0)
 
-    def add_cols_to_masterset_df(self):
-        # Create pattern for street_num col
-        street_num_pattern = r'(?P<street_num>\b\d{3,5}\b)'
-        street_num_df = self.master_df['Address'].str.extract(street_num_pattern)
-
-        # Add street_num col to df
-        self.master_df = pd.concat([self.master_df, street_num_df], axis=1)
+    def cast_int_to_str(self):
 
         # Cast int64 default dtype cols to strings for proper JOINs
         self.master_df['Site #'] = self.master_df['Site #'].astype(str)
         self.master_df['Zip'] = self.master_df['Zip'].astype(str)
-        self.master_df['street_num'] = self.master_df['street_num'].astype(str)
 
     def get_masterdataset_df(self):
         self.read_masterdataset_excel()
-        self.add_cols_to_masterset_df()
+        self.cast_int_to_str()
 
 
     def remove_incomplete_orders(self):
@@ -87,11 +80,17 @@ class DataMerger:
         state_list = []
         zip_code_list = []
 
+        logging.info(f'\n******************************\n {self.order_to_location_df} \n******************\n')
+
         # Loop over each row to process
         for pickup_location in self.order_to_location_df['pickup_location']:
             parts = pickup_location.split(" ")
+            logging.info(f' \n************************ parts:\n {parts} \n************************\n')
+            # logging.info(f' \n************************ length(parts):\n {len(parts)} \n************************\n')
             zip_code = parts[-1]
+            logging.info(f' \n************************ zip_code:\n {zip_code} \n************************\n')
             state = parts[-2]
+
 
             # Initialize variables to hold potential matches
             longest_city_match = ""
@@ -127,23 +126,14 @@ class DataMerger:
         # Concatenate the extracted DataFrame to the original DataFrame
         self.order_to_location_df = pd.concat([self.order_to_location_df, df_extracted], axis=1)
 
-    def add_street_num_col(self):
-        street_num_pattern = r'(?P<street_num>\b\d{3,5}\b)'
-
-        addrs_extracted_df = self.order_to_location_df['address'].str.extract(street_num_pattern)
-
-        self.order_to_location_df = pd.concat([self.order_to_location_df, addrs_extracted_df], axis=1)
-
     def get_order_to_location_df(self):
         self.get_raw_order_to_location_df()
         self.splitup_pickup_location()
-        self.add_street_num_col()
 
     def get_merged_and_organized_master_df(self):
-        self.merged_df = pd.merge(self.master_df, self.order_to_location_df, left_on=['Zip', 'street_num'], right_on=['zip_code', 'street_num'], how='inner')
+        self.merged_df = pd.merge(self.master_df, self.order_to_location_df, left_on=['Zip'], right_on=['zip_code'], how='inner')
 
-        self.merged_df.drop(['Site Description', 'City', 'County', 'State', 'address', 'city', 'state', 'Zip', 'zip_code', 'Notes',
-         'street_num'], axis=1, inplace=True)
+        self.merged_df.drop(['Site Description', 'City', 'County', 'State', 'address', 'city', 'state', 'Zip', 'zip_code', 'Notes'], axis=1, inplace=True)
 
         self.merged_df = self.merged_df[['Site #', 'order_id', 'Address', 'pickup_location']]
 
