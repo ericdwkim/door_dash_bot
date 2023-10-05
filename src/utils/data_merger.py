@@ -74,15 +74,57 @@ class DataMerger:
         self.order_to_location_df = pd.DataFrame(order_to_location_pairs, columns=['order_id', 'pickup_location'])
 
     def splitup_pickup_location(self):
-        # Remove all commas
+        # Preprocess the city names to remove duplicates and convert to set for quick lookup
+        unique_cities = set(self.master_df['City'].dropna().unique())
+
+        # Remove commas and 'USA' substring
         self.order_to_location_df['pickup_location'] = self.order_to_location_df['pickup_location'].str.replace(',', '')
+        self.order_to_location_df['pickup_location'] = self.order_to_location_df['pickup_location'].str.replace(' USA', '')
 
-        # Remove "USA" substring
-        self.order_to_location_df['pickup_location'] = self.order_to_location_df['pickup_location'].str.replace('USA', '')
+        # Initialize lists to hold the extracted parts of the pickup location
+        address_list = []
+        city_list = []
+        state_list = []
+        zip_code_list = []
 
-        pattern = r'(?P<address>^.+?)\s(?P<city>\w+\s*\w*)\s(?P<state>[A-Z]{2})\s(?P<zip_code>\d{5})'
-        df_extracted = self.order_to_location_df['pickup_location'].str.extract(pattern)
+        # Loop over each row to process
+        for pickup_location in self.order_to_location_df['pickup_location']:
+            parts = pickup_location.split(" ")
+            zip_code = parts[-1]
+            state = parts[-2]
 
+            # Initialize variables to hold potential matches
+            longest_city_match = ""
+
+            # Loop over unique cities to find the longest matching city name in the string
+            for city in unique_cities:
+                if city in pickup_location:
+                    if len(city) > len(longest_city_match):
+                        longest_city_match = city
+
+            # If a city match is found, then get the address part
+            if longest_city_match:
+                start_idx = pickup_location.index(longest_city_match)
+                address = pickup_location[:start_idx].strip()
+            else:
+                address = "Unmatched"
+                longest_city_match = "Unmatched"
+
+            # Append the extracted data to the lists
+            address_list.append(address)
+            city_list.append(longest_city_match)
+            state_list.append(state)
+            zip_code_list.append(zip_code)
+
+        # Create a DataFrame with the lists
+        df_extracted = pd.DataFrame({
+            'address': address_list,
+            'city': city_list,
+            'state': state_list,
+            'zip_code': zip_code_list
+        })
+
+        # Concatenate the extracted DataFrame to the original DataFrame
         self.order_to_location_df = pd.concat([self.order_to_location_df, df_extracted], axis=1)
 
     def add_street_num_col(self):
