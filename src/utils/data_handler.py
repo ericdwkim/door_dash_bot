@@ -3,6 +3,8 @@ import re
 import csv
 import logging
 import pandas as pd
+
+# todo: C7B1DB1A edge case; turn into oop via order_handler
 def clean_order_text(order):
     # Define the patterns in a list
     patterns = [
@@ -88,14 +90,14 @@ def get_prettified_results(results):
     return json.dumps(results, indent=4)
 
 # todo: move to separate module
-def get_prettified_and_mapped_orders(orders, with_store_nums=False):
+def get_prettified_and_mapped_orders(raw_orders, with_store_nums=False):
     """
     Takes in a deserialized string (Python object of list of dicts)
     and returns a serialized JSON string.
     """
     results = []
 
-    for order in orders:
+    for order in raw_orders:
         if not with_store_nums:
             order = get_mapped_order(clean_order_text(order))
         results.append(order)
