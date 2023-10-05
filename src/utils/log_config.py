@@ -21,33 +21,15 @@ class CustomFormatter(logging.Formatter):
         return formatter.format(record)
 
 
+# @dev: removing existing handler before establishing new handler; prevents duplicate logs with `INFO.root:`
 def setup_logger():
     logger = logging.getLogger()
     logger.setLevel(logging.INFO)
 
+    # Remove all existing handlers
+    for handler in logger.handlers[:]:
+        logger.removeHandler(handler)
+
     ch = logging.StreamHandler()
     ch.setFormatter(CustomFormatter())
     logger.addHandler(ch)
-
-# checking for existing hadlers
-# def setup_logger():
-#     logger = logging.getLogger()
-#     if not logger.hasHandlers():  # Check if the logger already has handlers
-#         logger.setLevel(logging.INFO)
-#
-#         ch = logging.StreamHandler()
-#         ch.setFormatter(CustomFormatter())
-#         logger.addHandler(ch)
-
-# removing existing handler before establishing new handler
-# def setup_logger():
-#     logger = logging.getLogger()
-#     logger.setLevel(logging.INFO)
-#
-#     # Remove all existing handlers
-#     for handler in logger.handlers[:]:
-#         logger.removeHandler(handler)
-#
-#     ch = logging.StreamHandler()
-#     ch.setFormatter(CustomFormatter())
-#     logger.addHandler(ch)
