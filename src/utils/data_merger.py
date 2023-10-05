@@ -31,22 +31,33 @@ class DataMerger:
         self.read_masterdataset_excel()
         self.cast_int_to_str()
 
+    def is_order_complete(self, order):
+        """
+        Check if the order is complete based on the number of keys.
+        :param order: Dictionary representing an order
+        :return: Boolean indicating if the order is complete
+        """
+        MIN_KEYS = 7  # Minimum keys required for an order to be complete
+
+        if not isinstance(order, dict):
+            logging.error(f"Order is not a dictionary: {order}. Deserialization issue suspected.")
+            return False
+
+        if len(order) < MIN_KEYS:
+            logging.warning(f"Incomplete order detected. Order has fewer than {MIN_KEYS} keys: {order}")
+            return False
+
+        # Additional validation checks can be added here if needed
+        return True
 
     def remove_incomplete_orders(self):
         """
-        prevents incomplete order dicts from causing NoneType errors when accessing specific fields
-        :param orders:
-        :return:
+        Remove incomplete orders to prevent errors when accessing specific fields.
         """
-        complete_orders = []
+        complete_orders = [order for order in self.orders if self.is_order_complete(order)]
 
-        for order in self.orders:
-            # @dev: mainly to help catch potential de/serialization issues
-            # todo: this needs to be much cleaner/robust for other edge cases, such as if len(order) is b/w 2 - 6
-            if len(order) <= 1:
-                logging.error(f'Deserialization did not work properly. Please confirm proper dtype of `orders` instance')
-            if len(order) >= 7:  # presumes a complete order to have at least 7 keys as brief testing showed 8 - 10 with avg being ~10
-                complete_orders.append(order)
+        if not complete_orders:
+            logging.error("No complete orders found. Setting self.orders to an empty list.")
 
         self.orders = complete_orders
 
