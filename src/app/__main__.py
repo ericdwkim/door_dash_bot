@@ -4,7 +4,7 @@ import time
 import argparse
 import pandas as pd
 from datetime import datetime
-# import logging
+import logging
 from src.utils.log_config import setup_logger
 from src.utils.data_handler import get_prettified_and_mapped_orders, convert_flattened_orders_to_df, json_str_to_file
 from src.utils.data_merger import DataMerger
