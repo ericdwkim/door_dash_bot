@@ -111,10 +111,11 @@ class DataMerger:
         self.get_order_to_location_df()
         self.get_merged_and_organized_master_df()
 
+    # TODO: (feat) instead of going from `order_id: store_num` first from the merged_df , just groupby store_num df col along with address and pickup_location df cols; essentially skip this extra pythonic step of having a mapping to then convert to another mapping; def can do it with the df objects themselves; would be more efficient
 
     def _get_store_num_to_order_ids(self, order_id_to_store_num):
         """
-        convert duplicate store_num value from order to site num mapping to aggregated store_num : {order_ids}
+        groupby `storenum: {order_ids}`
         :return:
         """
 
