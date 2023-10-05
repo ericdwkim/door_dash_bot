@@ -50,14 +50,54 @@ class DataMerger:
 
         self.orders = complete_orders
 
+    def validate_and_clean_order_id(self, order):
+        if 'Order' not in order:
+            logging.error(f' Missing "Order" key in the order dictionary: {order}')
+            return None
 
-    def order_id_to_pickup_location(self):
-        order_id_to_pickup_location = {}
+        order_id = order['Order']
+        if len(order_id) > 8:
+            logging.warning(f' OrderID is too long. Truncating OrderID to 8 characters...')
+            return order_id[:8]
+        elif len(order_id) == 0:
+            logging.error(f' OrderID is missing. Please evaluate the order: \n{order}')
+            return None
+        else:
+            return order_id
+
+    def validate_and_clean_store_addrs(self, order):
+        if 'Pick Up Location' not in order:
+            logging.error(f' Missing "Pick Up Location" key in the order dictionary: {order}')
+            return None
+
+        store_addrs = order['Pick Up Location']
+        if len(store_addrs) == 0:
+            logging.warning(f' Pick Up location is missing from Order. Adding placeholder...')
+            store_addrs = '000 Placeholder Address'
+        return store_addrs
+
+    def order_id_to_pickup_location_fixed(self):
+        order_id_to_pickup_location_map = {}
+        if not self.orders:
+            logging.error(' orders_json is empty or None. Please provide a valid orders_json.')
+            return None
+
         for order in self.orders:
-            order_id = order['Order']
-            store_addrs = order['Pick Up Location']
-            order_id_to_pickup_location[order_id] = store_addrs
-        return order_id_to_pickup_location
+            order_id = validate_and_clean_order_id(order)
+            if order_id is None:
+                continue
+
+            store_addrs = validate_and_clean_store_addrs(order)
+            if store_addrs is None:
+                continue
+
+            order_id_to_pickup_location_map[order_id] = store_addrs
+
+        if not order_id_to_pickup_location_map:
+            logging.error(' No valid orders found. Returning None.')
+            return None
+
+        return order_id_to_pickup_location_map
 
     def get_raw_order_to_location_df(self):
         self.deserialize_orders()
