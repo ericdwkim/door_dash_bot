@@ -44,7 +44,7 @@ def post_to_slack(file_path, slack_token):
             'file': (file_name, file),
         }
         data = {
-            'channels': '#dd_bot',
+            'channels': '#dd_bot_orders',
             'title': title,
             'filename': file_name,
         }

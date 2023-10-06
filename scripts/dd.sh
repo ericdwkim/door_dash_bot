@@ -2,7 +2,7 @@
 eval "$(conda shell.bash hook)"
 conda activate bots
 export PYTHONPATH="$HOME/workspace/personal/dd-bot/src/"
-export SLACK_OAUTH_TOKEN="xoxb-4099486963537-5704022177687-ZVzgnbQHqtX2FzO8svV4ziCI"
+export SLACK_OAUTH_TOKEN="xoxb-4099486963537-6000372605090-4MtiYma3T9ewvSzDJmqavbQc"
 
 echo "PYTHONPATH has been set to: $PYTHONPATH"
 
