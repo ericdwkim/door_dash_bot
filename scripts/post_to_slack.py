@@ -4,17 +4,14 @@ import datetime
 
 today = datetime.date.today().strftime('%m-%d-%Y')
 
+# DEV
 stdout_file_path=f"/Users/ekim/workspace/personal/dd-bot/dev/build/logs/stdout/{today}_out.log"
 stderr_file_path=f"/Users/ekim/workspace/personal/dd-bot/dev/build/logs/stderr/{today}_err.log"
 
-# TODO
-# File paths stage
-# stdout_file_path = f'C:\\Users\\ekima\\workspace\\DTN BOT\\stdout\\{today}_out.log'
-# stderr_file_path = f'C:\\Users\\ekima\\workspace\\DTN BOT\\stderr\\{today}_err.log'
 
 # File paths prod
-# stdout_file_path = f'C:\\Users\\bots\\workspace\\DTN BOT\\stdout\\{today}_out.log'
-# stderr_file_path = f'C:\\Users\\bots\\workspace\\DTN BOT\\stderr\\{today}_err.log'
+# stdout_file_path = f'C:\\Users\\bots\\workspace\\doordash\\logs\\stdout\\{today}_out.log'
+# stderr_file_path = f'C:\\Users\\bots\\workspace\\doordash\\logs\\stderr\\{today}_err.log'
 
 # OAuth token with `files:write`
 slack_token = os.getenv('SLACK_OAUTH_TOKEN')
