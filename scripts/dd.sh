@@ -9,8 +9,8 @@ echo "PYTHONPATH has been set to: $PYTHONPATH"
 today=$(date +"%m-%d-%Y")
 
 # Define the output directories
-stdout_dir="/Users/ekim/workspace/txb/dd-bot/dev/build/logs/stdout"
-stderr_dir="/Users/ekim/workspace/txb/dd-bot/dev/build/logs/stderr"
+stdout_dir="/Users/ekim/workspace/personal/dd-bot/dev/build/logs/stdout"
+stderr_dir="/Users/ekim/workspace/personal/dd-bot/dev/build/logs/stderr"
 
 # prod stdout/stderr
 #stdout_dir="C:/Users/bots/workspace/doordash/stdout"
