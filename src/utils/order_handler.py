@@ -71,12 +71,12 @@ class OrderHandler:
         logging.info(f'Prettifying data...')
         return json.dumps(results, indent=4)
 
-    def get_prettified_and_mapped_orders(self, orders):
+    def get_prettified_and_mapped_orders(self, orders, is_raw):
         results = []
         for order in orders:
-            order_cleaned = self.clean_order_text(order)
-            mapped_order = self.get_mapped_order(order_cleaned)
-            results.append(mapped_order)
+            if is_raw:
+                order = self.get_mapped_order(self.clean_order_text(order))
+            results.append(order)
         return self.get_prettified_results(results)
 
     @staticmethod
