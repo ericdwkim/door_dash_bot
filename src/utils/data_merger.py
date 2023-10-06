@@ -84,7 +84,7 @@ class DataMerger:
         store_addrs = order['Pick Up Location']
         if len(store_addrs) == 0:
             logging.warning(f' Pick Up location is missing from Order. Adding placeholder...')
-            store_addrs = '000 Placeholder Address'
+            store_addrs = '000 Placeholder St PlaceholderCity TX 10101'
         return store_addrs
 
     def order_id_to_pickup_location(self):
