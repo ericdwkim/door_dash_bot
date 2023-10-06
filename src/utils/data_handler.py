@@ -46,11 +46,23 @@ def parse_menu_items(price_as_value):
 
 def get_mapped_order(order):
     # Define the known keys with their regex patterns
-    known_keys = [r'\bOrder: \b', r'\bDelivered\b', r'\Could\sNot\sDeliver\b', r'\bCustomer\sPicked\sUp\b', r'\bCancelled\s-\sNot\sPaid\b',
-                  r'\bCancelled\s-\sPaid\b', r'\bPick Up Location\b', r'\bOrder Details\b',
-                  r'\bSubtotal\b(?=\s[^a-zA-Z])', r'\bSubtotal\sTax\b', r'Commission \(\d+%\)',
-                  r'\bTotal Customer Refund\b', r'\bEstimated Payout\b', r'\bAssociated Transactions \(\d+%\)',
-                  r'Transaction #\d+ - Delivery']
+    known_keys = [
+        r'\bOrder:',
+        r'\bDelivered\b',
+        r'Could Not Deliver\b',
+        r'\bCustomer Picked Up\b',
+        r'\bCancelled - Not Paid\b',
+        r'\bCancelled - Paid\b',
+        r'\bPick Up Location\b',
+        r'\bOrder Details\b',
+        r'\bSubtotal\b(?=\s[^a-zA-Z])',
+        r'\bSubtotal Tax\b',
+        r'Commission \(\d+%\)',
+        r'\bTotal Customer Refund\b',
+        r'\bEstimated Payout\b',
+        r'\bAssociated Transactions \(\d+%\)',
+        r'Transaction #\d+ - Delivery'
+    ]
 
     # Initialize the dictionary to store our parsed values
     order_dict = {}
