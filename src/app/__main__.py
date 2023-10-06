@@ -73,8 +73,8 @@ class Main:
 
             if sheet_name == '#NaN':
                 logging.warning(
-                    f"Order: '{order_df[0]['Order']}'\'s Store Number could not be properly matched using Pick Up Location: '{order_df[0]['Pick Up Location']}'. Sheet name has been set to NaN.")
-
+                    f"For OrderID: '{order_df[0]['Order']}' 'Store Number' could not be matched using Pick Up Location: '{order_df[0]['Pick Up Location']}'. Sheet name has been set to OrderID: '{order_df[0]['Order']}'.")
+                sheet_name = order_df[0]['Order']
             return sheet_name, True
         except Exception as e:
             logging.exception(f"An error occurred while getting sheet name: {e}")
