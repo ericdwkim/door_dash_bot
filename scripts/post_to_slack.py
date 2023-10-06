@@ -4,8 +4,8 @@ import datetime
 
 today = datetime.date.today().strftime('%m-%d-%Y')
 
-stdout_file_path=f"/Users/ekim/workspace/personal/dd-bot/dev/build/logs/stdout/${today}_out.log"
-stderr_file_path=f"/Users/ekim/workspace/personal/dd-bot/dev/build/logs/stderr/${today}_err.log"
+stdout_file_path=f"/Users/ekim/workspace/personal/dd-bot/dev/build/logs/stdout/{today}_out.log"
+stderr_file_path=f"/Users/ekim/workspace/personal/dd-bot/dev/build/logs/stderr/{today}_err.log"
 
 # TODO
 # File paths stage
