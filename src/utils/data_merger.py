@@ -87,7 +87,7 @@ class DataMerger:
             store_addrs = '000 Placeholder Address'
         return store_addrs
 
-    def order_id_to_pickup_location_fixed(self):
+    def order_id_to_pickup_location(self):
         order_id_to_pickup_location_map = {}
         if not self.orders:
             logging.error(' orders_json is empty or None. Please provide a valid orders_json.')
