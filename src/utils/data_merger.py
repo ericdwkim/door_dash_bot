@@ -130,15 +130,12 @@ class DataMerger:
         state_list = []
         zip_code_list = []
 
-        logging.info(f'\n******************************\n {self.order_to_location_df} \n******************\n')
+        logging.info(f'\n************************************************************\n {self.order_to_location_df} \n************************************************************\n')
 
         # Loop over each row to process
         for pickup_location in self.order_to_location_df['pickup_location']:
             parts = pickup_location.split(" ")
-            logging.info(f' \n************************ parts:\n {parts} \n************************\n')
-            # logging.info(f' \n************************ length(parts):\n {len(parts)} \n************************\n')
             zip_code = parts[-1]
-            logging.info(f' \n************************ zip_code:\n {zip_code} \n************************\n')
             state = parts[-2]
 
 
