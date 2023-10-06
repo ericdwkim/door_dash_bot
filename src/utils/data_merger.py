@@ -94,11 +94,11 @@ class DataMerger:
             return None
 
         for order in self.orders:
-            order_id = validate_and_clean_order_id(order)
+            order_id = self.validate_and_clean_order_id(order)
             if order_id is None:
                 continue
 
-            store_addrs = validate_and_clean_store_addrs(order)
+            store_addrs = self.validate_and_clean_store_addrs(order)
             if store_addrs is None:
                 continue
 
