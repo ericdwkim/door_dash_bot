@@ -1,7 +1,6 @@
 import pandas as pd
 import re
 import json
-import csv
 from datetime import datetime
 import logging
 

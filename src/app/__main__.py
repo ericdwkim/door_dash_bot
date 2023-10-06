@@ -1,6 +1,5 @@
 from src.app.drivers import BaseDriver, OrdersPageDriver
 import os
-import time
 import argparse
 import pandas as pd
 from datetime import datetime
