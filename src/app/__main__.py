@@ -92,14 +92,23 @@ class Main:
             logging.exception(f'An error occurred: {e}')
             return None
 
-    # 
     def get_excel_output(self, orders_dfs):
         try:
+            sheet_name_count = {}  # This dictionary will store the frequency of each sheet_name
             with pd.ExcelWriter(self.excel_output_file_path, engine='xlsxwriter') as writer:
                 for idx, order_df in enumerate(orders_dfs):
                     sheet_name, success = self.get_sheet_name(order_df)
                     if not success:
                         return False
+
+                    # Check if the sheet_name is already used
+                    if sheet_name in sheet_name_count:
+                        sheet_name_count[sheet_name] += 1  # Increment the frequency
+                        suffix = chr(96 + sheet_name_count[
+                            sheet_name])  # Convert frequency to alphabet (1 -> 'a', 2 -> 'b', ...)
+                        sheet_name = f"{sheet_name}{suffix}"  # Append suffix to sheet_name
+                    else:
+                        sheet_name_count[sheet_name] = 1  # This is the first occurrence of this sheet_name
 
                     order_df.to_excel(writer, sheet_name, header=False, index=True)
 
