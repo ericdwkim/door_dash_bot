@@ -4,13 +4,25 @@ import logging
 import pandas as pd
 
 
-class OrderParser:
+class OrderHandler:
     def __init__(self):
-        self.known_keys = [r'\bOrder: \b', r'\bDelivered\b', r'\bCustomer\sPicked\sUp\b', r'\bCancelled\s-\sNot\sPaid\b',
-                           r'\bCancelled\s-\sPaid\b', r'\bPick Up Location\b', r'\bOrder Details\b',
-                           r'\bSubtotal\b(?=\s[^a-zA-Z])', r'\bSubtotal\sTax\b', r'Commission \(\d+%\)',
-                           r'\bTotal Customer Refund\b', r'\bEstimated Payout\b', r'\bAssociated Transactions \(\d+%\)',
-                           r'Transaction #\d+ - Delivery']
+        self.known_keys = [
+                            r'\bOrder:',
+                            r'\bDelivered\b',
+                            r'Could Not Deliver\b',
+                            r'\bCustomer Picked Up\b',
+                            r'\bCancelled - Not Paid\b',
+                            r'\bCancelled - Paid\b',
+                            r'\bPick Up Location\b',
+                            r'\bOrder Details\b',
+                            r'\bSubtotal\b(?=\s[^a-zA-Z])',
+                            r'\bSubtotal Tax\b',
+                            r'Commission \(\d+%\)',
+                            r'\bTotal Customer Refund\b',
+                            r'\bEstimated Payout\b',
+                            r'\bAssociated Transactions \(\d+%\)',
+                            r'Transaction #\d+ - Delivery'
+                        ]
 
     @staticmethod
     def clean_order_text(order):
@@ -73,7 +85,7 @@ class OrderParser:
         for k, v in d.items():
             new_key = f'{parent_key}{sep}{k}' if parent_key else k
             if isinstance(v, dict):
-                order.update(OrderParser.get_flatten_order(v, new_key, sep=sep))
+                order.update(OrderHandler.get_flatten_order(v, new_key, sep=sep))
             else:
                 order[new_key] = v
         return order
@@ -87,3 +99,8 @@ class OrderParser:
     def convert_flattened_orders_to_df(self, orders):
         flattened_orders = self.get_flattened_orders(orders)
         return self.convert_orders_to_dataframes(flattened_orders)
+
+    def json_str_to_file(self, json_str, output_filepath, log_message):
+        with open(output_filepath, 'w') as f:
+            logging.info(log_message)
+            f.write(json_str)

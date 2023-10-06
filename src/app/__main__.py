@@ -6,7 +6,7 @@ import pandas as pd
 from datetime import datetime
 import logging
 from src.utils.log_config import setup_logger
-from src.utils.data_handler import get_prettified_and_mapped_orders, convert_flattened_orders_to_df, json_str_to_file
+from src.utils.order_handler import OrderHandler
 from src.utils.data_merger import DataMerger
 from src.utils.excel_formatter import ExcelFormatter
 
@@ -19,6 +19,7 @@ class Main:
         self.today = datetime.today().strftime('%m.%d.%y')
         self.excel_file_name = f'DD {self.today}.xlsx'
         self.excel_output_file_path = f"/Users/ekim/workspace/txb/mock/g-drive/imports/ir/Door Dash/DD Daily Order Details/{self.excel_file_name}"
+        self.stdout_file_path = '/Users/ekim/workspace/personal/dd-bot/dev/build'
 
         # G:\Imports\IR\Door Dash\DD Daily Order Details # prod
 
@@ -144,22 +145,23 @@ class Main:
         return self.get_orders()
 
     def merge_data(self, raw_orders):
-        orders_json = get_prettified_and_mapped_orders(raw_orders)
+        order_handler = OrderHandler()
+        orders_json = order_handler.get_prettified_and_mapped_orders(raw_orders)
         self.output_json(orders_json, 'orders_json.csv', 'Writing orders_json stdout...')
 
-        dm = DataMerger(orders_json)
-        return dm.add_store_numbers_to_orders()
+        data_merger = DataMerger(orders_json)
+        return data_merger.add_store_numbers_to_orders()
 
     def output_json(self, json_str, filepath, log_message):
-        output_filepath = os.path.join('/Users/ekim/workspace/personal/dd-bot/dev/build', filepath)
-        json_str_to_file(json_str=json_str, output_filepath=output_filepath, log_message=log_message)
+        output_filepath = os.path.join(self.stdout_file_path, filepath)
+        order_handler.json_str_to_file(json_str=json_str, output_filepath=output_filepath, log_message=log_message)
 
     def convert_to_dataframes(self, orders_with_store_nums):
-        orders_json_with_store_nums = get_prettified_and_mapped_orders(orders_with_store_nums, with_store_nums=True)
+        orders_json_with_store_nums = order_handler.get_prettified_and_mapped_orders(orders_with_store_nums, with_store_nums=True)
         self.output_json(orders_json_with_store_nums, 'orders_json_with_store_nums.csv',
                          'Writing orders_json with store_num to stdout...')
 
-        return convert_flattened_orders_to_df(orders_with_store_nums)
+        return order_handler.convert_flattened_orders_to_df(orders_with_store_nums)
 
     def export_to_excel(self, orders_dfs):
         self.get_excel_output(orders_dfs)
