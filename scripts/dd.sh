@@ -28,4 +28,4 @@ python -m src.app.__main__ > "${stdout_dir}/${today}_out.log" 2> "${stderr_dir}/
 echo "Redirection complete. Check ${stdout_dir}/${today}_out.log and ${stderr_dir}/${today}_err.log for logs."
 
 echo "Posting stderr and stdout to Slack channel"
-python /c/Users/ekima/workspace/dd-bot/scripts/post_to_slack.py
+python /Users/ekim/workspace/personal/dd-bot/scripts/post_to_slack.py
