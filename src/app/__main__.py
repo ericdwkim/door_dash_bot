@@ -135,8 +135,12 @@ class Main:
         orders_with_store_nums = self.merge_data(raw_orders)
         orders_dfs = self.convert_to_dataframes(orders_with_store_nums)
 
-        self.export_to_excel(orders_dfs)
-        logging.info(f'Orders Spreadsheet has been saved to: {self.excel_output_file_path}')
+        excel_output = self.export_to_excel(orders_dfs)
+        if not excel_output:
+            logging.error(f'Orders spreadsheet could not be exported.')
+        else:
+            logging.info(f'Orders Spreadsheet has been saved to: {self.excel_output_file_path}\nExiting....')
+            self.base_driver.teardown_driver()
 
     def setup(self):
         setup_logger()
@@ -163,7 +167,8 @@ class Main:
         return self.order_handler.convert_flattened_orders_to_df(orders_with_store_nums)
 
     def export_to_excel(self, orders_dfs):
-        self.get_excel_output(orders_dfs)
+        excel_output = self.get_excel_output(orders_dfs)
+        return excel_output
 
 
 if __name__ == '__main__':

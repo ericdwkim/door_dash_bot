@@ -8,21 +8,26 @@ from ..pages.orderspage import OrdersPage
 class BaseDriver:
     def __init__(self, headless=False):
         self.headless = headless
+        self.os_type = platform.system()
         self.setup_driver()
 
     def setup_driver(self):
-        logging.info('Initializing BaseDriver...')
+        print('Initializing BaseDriver...')
+        # logging.info('Initializing BaseDriver...')
         options = self._get_chrome_options()
-        os_type = platform.system()
-        chromedriver_executable_path = self._get_chromedriver_executable_path(os_type)
+        chromedriver_executable_path = self._get_chromedriver_executable_path()
 
         self.driver = webdriver.Chrome(
             service=Service(executable_path=chromedriver_executable_path),
             options=options
         )
 
-        logging.info(
-            f'Using operating system: "{os_type}".\nConstructing chromedriver instance using executable_path: "{chromedriver_executable_path}"'
+        # logging.info(
+        #     f'Using operating system: "{self.os_type}".\nConstructing chromedriver instance using executable_path: "{chromedriver_executable_path}"'
+        # )
+
+        print(
+            f'Using operating system: "{self.os_type}".\nConstructing chromedriver instance using executable_path: "{chromedriver_executable_path}"'
         )
 
     def _get_chrome_options(self):
@@ -34,8 +39,8 @@ class BaseDriver:
             options.add_argument('--start-maximized')
         return options
 
-    def _get_chromedriver_executable_path(self, os_type):
-        return '/opt/homebrew/bin/chromedriver' if os_type == 'Darwin' else 'C:\\Users\\ekima\\AppData\\Local\\anaconda3\\envs\\bots\\Lib\\site-packages\\seleniumbase\\drivers\\chromedriver.exe'
+    def _get_chromedriver_executable_path(self):
+        return '/opt/homebrew/bin/chromedriver' if self.os_type == 'Darwin' else 'C:\\Users\\ekima\\AppData\\Local\\anaconda3\\envs\\bots\\Lib\\site-packages\\seleniumbase\\drivers\\chromedriver.exe'
 
     def teardown_driver(self):
         self.driver.quit()
