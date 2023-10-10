@@ -15,6 +15,7 @@ class Main:
     # ---------------------------------- Instance attributes ----------------------------------
     def __init__(self, headless=False):
         self.base_driver = BaseDriver(headless=headless)
+        self.os_type = self.base_driver.os_type
         self.orders_page_driver = OrdersPageDriver(self.base_driver)
         self.order_handler = OrderHandler()
         self.today = datetime.today().strftime('%m.%d.%y')
@@ -169,11 +170,12 @@ class Main:
         excel_output = self.get_excel_output(orders_dfs)
         return excel_output
 
-
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='DoorDash Bot V1')
     parser.add_argument('--headless', required=False, action='store_true', help='Run in headless mode')
+    parser.add_argument('--env', type=str, default='dev', help='an environment type (default: dev)')
     args = parser.parse_args()
 
-    md = Main(headless=args.headless)
+    path_handler = PathHandler(env_type=args.env)
+    md = Main(headless=args.headless, path_handler=path_handler)
     md.run_main()
