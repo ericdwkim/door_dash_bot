@@ -19,10 +19,8 @@ class Main:
         self.order_handler = OrderHandler()
         self.today = datetime.today().strftime('%m.%d.%y')
         self.excel_file_name = f'DD {self.today}.xlsx'
+        self.json_build_file_path = os.environ.get('DARWIN_DEV_JSON_BUILDS_PATH')
         self.excel_output_file_path = f"/Users/ekim/workspace/txb/mock/g-drive/imports/ir/Door Dash/DD Daily Order Details/{self.excel_file_name}"
-        self.json_build_file_path = '/Users/ekim/workspace/personal/dd-bot/dev/build'
-
-        # G:\Imports\IR\Door Dash\DD Daily Order Details # prod
 
     # ---------------------------------- Instance attributes ----------------------------------
 
