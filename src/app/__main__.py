@@ -19,7 +19,7 @@ class Main:
         self.today = datetime.today().strftime('%m.%d.%y')
         self.excel_file_name = f'DD {self.today}.xlsx'
         self.excel_output_file_path = f"/Users/ekim/workspace/txb/mock/g-drive/imports/ir/Door Dash/DD Daily Order Details/{self.excel_file_name}"
-        self.stdout_file_path = '/Users/ekim/workspace/personal/dd-bot/dev/build'
+        self.json_build_file_path = '/Users/ekim/workspace/personal/dd-bot/dev/build'
 
         # G:\Imports\IR\Door Dash\DD Daily Order Details # prod
 
@@ -156,7 +156,7 @@ class Main:
         return data_merger.add_store_numbers_to_orders()
 
     def output_json(self, json_str, filepath, log_message):
-        output_filepath = os.path.join(self.stdout_file_path, filepath)
+        output_filepath = os.path.join(self.json_build_file_path, filepath)
         self.order_handler.json_str_to_file(json_str=json_str, output_filepath=output_filepath, log_message=log_message)
 
     def convert_to_dataframes(self, orders_with_store_nums):
