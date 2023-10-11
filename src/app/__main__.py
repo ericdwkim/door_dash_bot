@@ -8,13 +8,15 @@ import logging
 from src.utils.log_config import setup_logger
 from src.utils.order_handler import OrderHandler
 from src.utils.data_merger import DataMerger
+from src.utils.pathhandler import PathHandler
 from src.utils.excel_formatter import ExcelFormatter
 
 class Main:
 
     # ---------------------------------- Instance attributes ----------------------------------
-    def __init__(self, headless=False):
+    def __init__(self, headless=False, env_type='dev'):
         self.base_driver = BaseDriver(headless=headless)
+        self.path_handler = PathHandler(env_type=env_type)
         self.os_type = self.base_driver.os_type
         self.orders_page_driver = OrdersPageDriver(self.base_driver)
         self.order_handler = OrderHandler()
@@ -176,6 +178,5 @@ if __name__ == '__main__':
     parser.add_argument('--env', type=str, default='dev', help='an environment type (default: dev)')
     args = parser.parse_args()
 
-    path_handler = PathHandler(env_type=args.env)
-    md = Main(headless=args.headless, path_handler=path_handler)
+    md = Main(headless=args.headless, env_type=args.env)
     md.run_main()
