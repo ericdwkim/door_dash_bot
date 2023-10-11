@@ -16,14 +16,11 @@ class Main:
     # ---------------------------------- Instance attributes ----------------------------------
     def __init__(self, headless=False, env_type='dev'):
         self.base_driver = BaseDriver(headless=headless)
-        self.path_handler = PathHandler(env_type=env_type)
-        self.os_type = self.base_driver.os_type
+        PathHandler(env_type=env_type).set_output_paths()  #@dev: sets excel_output_file_path & json_build_file_path instances
         self.orders_page_driver = OrdersPageDriver(self.base_driver)
         self.order_handler = OrderHandler()
         self.today = datetime.today().strftime('%m.%d.%y')
         self.excel_file_name = f'DD {self.today}.xlsx'
-        self.json_build_file_path = os.environ.get('DARWIN_DEV_JSON_BUILDS_PATH')
-        self.excel_output_file_path = f"/Users/ekim/workspace/txb/mock/g-drive/imports/ir/Door Dash/DD Daily Order Details/{self.excel_file_name}"
 
     # ---------------------------------- Instance attributes ----------------------------------
 
