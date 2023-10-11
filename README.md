@@ -47,16 +47,4 @@ file dump path
 G:\Imports\IR\Door Dash\DD Daily Order Details
 ```
 
-dotenv
-```
-DARWIN_DEV_EXCEL_PATH='/Users/ekim/workspace/txb/mock/g-drive/imports/ir/Door Dash/DD Daily Order Details/'
-DARWIN_DEV_JSON_BUILDS_PATH=/Users/ekim/workspace/personal/dd-bot/dev/build
-
-WINDOWS_STAGE_EXCEL_PATH=r'C:\Users\ekima\workspace\TXB\mock\g-drive\imports\ir\Door Dash\DD Daily Order Details\'
-WINDOWS_STAGE_JSON_BUILDS_PATH=r'C:\Users\ekima\workspace\TXB\dd-bot\dev\build'
-
-WINDOWS_PROD_EXCEL_PATH=r'G:\Imports\IR\Door Dash\DD Daily Order Details\'
-WINDOWS_PROD_JSON_BUILDS_PATH=r'C:\Users\ekima\workspace\doordash\build'
-
-```
 
