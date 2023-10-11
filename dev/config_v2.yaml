@@ -1,0 +1,21 @@
+dev:
+  home_dir: "/Users/{username}/workspace/"
+  username: "ekim"
+  workspace_type: "personal"
+  excel_tail_dir: "txb/mock/g-drive/Imports/IR/Door Dash/DD Daily Order Details/"
+  json_build_tail_dir: "personal/dd-bot/dev/build"
+
+stage:
+  home_dir: "C:\\Users\\{username}\\workspace\\"
+  username: "ekima"
+  workspace_type: "txb"
+  excel_tail_dir: "txb\\mock\\g-drive\\imports\\ir\\Door Dash\\DD Daily Order Details\\"
+  json_build_tail_dir: "txb\\dd-bot\\dev\\build"
+
+prod:
+  home_dir: "C:\\Users\\{username}\\workspace\\"
+  username: "ekima"
+  drive: "G:\\"
+  workspace_type: "txb"
+  excel_tail_dir: "Imports\\IR\\Door Dash\\DD Daily Order Details\\"
+  json_build_tail_dir: "doordash\\build"
