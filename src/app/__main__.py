@@ -97,7 +97,7 @@ class Main:
     def get_excel_output(self, orders_dfs):
         try:
             sheet_name_count = {}  # This dictionary will store the frequency of each sheet_name
-            with pd.ExcelWriter(self.path_handler.excel_output_file_path, engine='xlsxwriter') as writer:
+            with pd.ExcelWriter(os.path.join(self.path_handler.excel_output_file_path, self.excel_file_name), engine='xlsxwriter') as writer:
                 for idx, order_df in enumerate(orders_dfs):
                     sheet_name, success = self.get_sheet_name(order_df)
                     if not success:
