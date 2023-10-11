@@ -5,6 +5,9 @@ import platform
 
 class PathHandler:
     def __init__(self, env_type='dev'):
+        # @dev: enable for testing purposes
+        # self.json_build_file_path = None
+        # self.excel_output_file_path = None
         self.os_type = platform.system()  # 'Darwin' for MacOS, 'Windows' for Windows
 
         # self.os_type = 'Windows'  # @dev: only for testing purposes on mac; be sure to manually change `self.path_handler = PathHandler(env_type=<env_to_test>)` in main.py
@@ -33,13 +36,10 @@ class PathHandler:
         except KeyError:  # If 'drive' is not in self.config
             return self.config['excel_tail_dir']
 
-    def print_output_path(self, attribute, path):
+    @staticmethod
+    def print_output_path(attribute, path):
         print(f'\n| {attribute} | {path} |')
         print(f'Canonical string representation | {repr(path)} |')
-
-    # def print_output_path(self, attribute, path):
-    #     logging.info(f'\n| {attribute} | {path} |')
-    #     logging.info(f'Canonical string representation | {repr(path)} |')
 
     def set_output_paths(self):
         home_dir = self.config['home_dir'].format(username=self.config['username'])
