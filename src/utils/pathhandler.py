@@ -4,17 +4,17 @@ import platform
 
 class PathHandler:
     def __init__(self, env_type='dev'):
-        self.os_type = platform.system()  # 'Darwin' for MacOS, 'Windows' for Windows
-
+        # self.os_type = platform.system()  # 'Darwin' for MacOS, 'Windows' for Windows
+        self.os_type = 'Windows'
         if self.os_type == 'Darwin':
-            self.env_type = 'stage'
+            self.env_type = 'dev'
         else:
             self.env_type = env_type
 
-        print(f'Environment type set to: "{self.env_type}"')
+        print(f'| Operating System: {self.os_type} | Environment: {self.env_type} |')
 
         # Load from config.yaml
-        with open('app/config.yaml', 'r') as f:
+        with open('config.yaml', 'r') as f:
             self.config = yaml.safe_load(f)[self.env_type]
 
     def normalize_path(self, path):
@@ -29,28 +29,35 @@ class PathHandler:
             return self.config['excel_tail_dir']
 
     def print_output_path(self, attribute, path):
-        print(f'{attribute} set to: "{path}"')
-        print(f'Canonical string representation of `{attribute}` set to: "{repr(path)}"')
+        print(f'\n| {attribute} | {path} |')
+        print(f'Canonical string representation | {repr(path)} |')
 
     def set_output_paths(self):
         home_dir = self.config['home_dir'].format(username=self.config['username'])
-        self.print_output_path('home_dir', home_dir)
-
-        excel_tail_dir = self.format_excel_tail_dir()
-        self.print_output_path('excel_tail_dir', excel_tail_dir)
-
-
+        # self.print_output_path('home_dir', home_dir)
         json_build_tail_dir = self.config['json_build_tail_dir']
-        self.print_output_path('json_build_tail_dir', json_build_tail_dir)
+        # self.print_output_path('json_build_tail_dir', json_build_tail_dir)
 
+        if self.env_type == 'prod':
+            drive = self.config['drive']
+            # self.print_output_path('drive', drive)
 
-        self.excel_output_file_path = self.normalize_path(os.path.join(home_dir, excel_tail_dir))
+            excel_tail_dir = self.format_excel_tail_dir()
+            # self.print_output_path('excel_tail_dir', excel_tail_dir)
+
+            self.excel_output_file_path = f'{drive}{excel_tail_dir}'
+
+        else:
+            excel_tail_dir = self.format_excel_tail_dir()
+            # self.print_output_path('excel_tail_dir', excel_tail_dir)
+
+            self.excel_output_file_path = f'{home_dir}{excel_tail_dir}'
+
         self.print_output_path('self.excel_output_file_path', self.excel_output_file_path)
-
-        self.json_build_file_path = self.normalize_path(os.path.join(home_dir, json_build_tail_dir))
         self.print_output_path('self.json_build_file_path', self.json_build_file_path)
 
-# if __name__ == '__main__':
-#     # Example usage
-#     path_handler = PathHandler(env_type='dev')
-#     path_handler.set_output_paths()
+
+if __name__ == '__main__':
+    # Example usage
+    path_handler = PathHandler(env_type='dev')
+    path_handler.set_output_paths()
