@@ -5,7 +5,9 @@ import platform
 class PathHandler:
     def __init__(self, env_type='dev'):
         self.os_type = platform.system()  # 'Darwin' for MacOS, 'Windows' for Windows
-        # self.os_type = 'Windows'  # only for testing purposes on mac
+
+        # self.os_type = 'Windows'  # @dev: only for testing purposes on mac; be sure to manually change `self.path_handler = PathHandler(env_type=<env_to_test>)` in main.py
+
         if self.os_type == 'Darwin':
             self.env_type = 'dev'
         else:
@@ -59,7 +61,8 @@ class PathHandler:
         self.print_output_path('self.json_build_file_path', self.json_build_file_path)
 
 
-if __name__ == '__main__':
-    # Example usage
-    path_handler = PathHandler(env_type='dev')
-    path_handler.set_output_paths()
+# @dev: only for testing purposes
+# if __name__ == '__main__':
+#     # Example usage
+#     path_handler = PathHandler(env_type='dev')
+#     path_handler.set_output_paths()
