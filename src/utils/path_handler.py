@@ -54,15 +54,15 @@ class PathHandler:
             excel_tail_dir = self.format_excel_tail_dir()
             # self.print_output_path('excel_tail_dir', excel_tail_dir)
 
-            self.excel_output_file_path = f'{drive}{excel_tail_dir}'
+            self.excel_output_file_path = os.path.join(drive, excel_tail_dir)
 
         else:
             excel_tail_dir = self.format_excel_tail_dir()
             # self.print_output_path('excel_tail_dir', excel_tail_dir)
 
-            self.excel_output_file_path = f'{home_dir}{excel_tail_dir}'
+            self.excel_output_file_path = os.path.join(home_dir, excel_tail_dir)
 
-        self.json_build_file_path = f'{home_dir}{json_build_tail_dir}'
+        self.json_build_file_path = os.path.join(home_dir, json_build_tail_dir)
 
         self.print_output_path('self.excel_output_file_path', self.excel_output_file_path)
         self.print_output_path('self.json_build_file_path', self.json_build_file_path)
