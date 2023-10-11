@@ -13,9 +13,9 @@ from src.utils.excel_formatter import ExcelFormatter
 class Main:
 
     # ---------------------------------- Instance attributes ----------------------------------
-    def __init__(self, headless=False, env_type='dev'):
+    def __init__(self, headless=False, path_handler=None):
         self.base_driver = BaseDriver(headless=headless)
-        PathHandler(env_type=env_type).set_output_paths()  #@dev: sets excel_output_file_path & json_build_file_path instances
+        self.path_handler = path_handler if path_handler else PathHandler(env_type='dev')
         self.orders_page_driver = OrdersPageDriver(self.base_driver)
         self.order_handler = OrderHandler()
         self.today = datetime.today().strftime('%m.%d.%y')
@@ -23,6 +23,9 @@ class Main:
 
     # ---------------------------------- Instance attributes ----------------------------------
 
+    def set_output_paths(self):
+        self.path_handler.set_output_paths()
+    #
     def switch_to_history_tab(self):
         switched_to_history_tab = self.orders_page_driver.switch_to_history_tab()
         if not switched_to_history_tab:
@@ -94,7 +97,7 @@ class Main:
     def get_excel_output(self, orders_dfs):
         try:
             sheet_name_count = {}  # This dictionary will store the frequency of each sheet_name
-            with pd.ExcelWriter(self.excel_output_file_path, engine='xlsxwriter') as writer:
+            with pd.ExcelWriter(self.path_handler.excel_output_file_path, engine='xlsxwriter') as writer:
                 for idx, order_df in enumerate(orders_dfs):
                     sheet_name, success = self.get_sheet_name(order_df)
                     if not success:
@@ -137,11 +140,12 @@ class Main:
         if not excel_output:
             logging.error(f'Orders spreadsheet could not be exported.')
         else:
-            logging.info(f'Orders Spreadsheet has been saved to: {self.excel_output_file_path}\nExiting....')
+            logging.info(f'Orders Spreadsheet has been saved to: {self.path_handler.excel_output_file_path}\nExiting....')
             self.base_driver.teardown_driver()
 
     def setup(self):
         setup_logger()
+        self.set_output_paths()
 
     def get_raw_orders(self):
         return self.get_orders()
@@ -154,7 +158,7 @@ class Main:
         return data_merger.add_store_numbers_to_orders()
 
     def output_json(self, json_str, filepath, log_message):
-        output_filepath = os.path.join(self.json_build_file_path, filepath)
+        output_filepath = os.path.join(self.path_handler.json_build_file_path, filepath)
         self.order_handler.json_str_to_file(json_str=json_str, output_filepath=output_filepath, log_message=log_message)
 
     def convert_to_dataframes(self, orders_with_store_nums):
@@ -174,5 +178,7 @@ if __name__ == '__main__':
     parser.add_argument('--env', type=str, default='dev', help='an environment type (default: dev)')
     args = parser.parse_args()
 
-    md = Main(headless=args.headless, env_type=args.env)
+    # Inject path_handler class outside of Main class
+    path_handler = PathHandler(env_type=args.env)
+    md = Main(headless=args.headless, path_handler=path_handler)
     md.run_main()
