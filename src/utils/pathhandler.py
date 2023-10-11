@@ -4,8 +4,8 @@ import platform
 
 class PathHandler:
     def __init__(self, env_type='dev'):
-        # self.os_type = platform.system()  # 'Darwin' for MacOS, 'Windows' for Windows
-        self.os_type = 'Windows'
+        self.os_type = platform.system()  # 'Darwin' for MacOS, 'Windows' for Windows
+        # self.os_type = 'Windows'  # only for testing purposes on mac
         if self.os_type == 'Darwin':
             self.env_type = 'dev'
         else:
@@ -52,6 +52,8 @@ class PathHandler:
             # self.print_output_path('excel_tail_dir', excel_tail_dir)
 
             self.excel_output_file_path = f'{home_dir}{excel_tail_dir}'
+
+        self.json_build_file_path = f'{home_dir}{json_build_tail_dir}'
 
         self.print_output_path('self.excel_output_file_path', self.excel_output_file_path)
         self.print_output_path('self.json_build_file_path', self.json_build_file_path)
