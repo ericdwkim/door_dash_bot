@@ -1,6 +1,7 @@
 import os
 import yaml
 import platform
+# import logging  # todo: re-enable once logging output issue is resolved
 
 class PathHandler:
     def __init__(self, env_type='dev'):
@@ -14,6 +15,8 @@ class PathHandler:
             self.env_type = env_type
 
         print(f'| Operating System: {self.os_type} | Environment: {self.env_type} |')
+
+        # logging.info(f'| Operating System: {self.os_type} | Environment: {self.env_type} |')
 
         # Load from config.yaml
         with open('config.yaml', 'r') as f:
@@ -33,6 +36,10 @@ class PathHandler:
     def print_output_path(self, attribute, path):
         print(f'\n| {attribute} | {path} |')
         print(f'Canonical string representation | {repr(path)} |')
+
+    # def print_output_path(self, attribute, path):
+    #     logging.info(f'\n| {attribute} | {path} |')
+    #     logging.info(f'Canonical string representation | {repr(path)} |')
 
     def set_output_paths(self):
         home_dir = self.config['home_dir'].format(username=self.config['username'])
