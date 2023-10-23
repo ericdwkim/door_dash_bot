@@ -22,8 +22,8 @@ echo "Redirecting standard error to ${stderr_dir}/${today}_err.log"
 # Print the current working directory
 echo "The current working directory is: $(pwd)"
 
-# Run the entrypoint python script and redirect stdout and stderr
-python -m src.app.__main__ > "${stdout_dir}/${today}_out.log" 2> "${stderr_dir}/${today}_err.log"
+# Run entrypoint, redirect stdout (print stmts only) and stderr (logging module logs only), sanitize via `sed` to remove ANSI escapes (from coloring logs)
+python -m src.app.__main__  > "${stdout_dir}/${today}_out.log" 2> >(sed 's/\x1b\[[0-9;]*m//g' > "${stderr_dir}/${today}_err.log")
 
 echo "Redirection complete. Check ${stdout_dir}/${today}_out.log and ${stderr_dir}/${today}_err.log for logs."
 
