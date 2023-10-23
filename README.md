@@ -47,4 +47,12 @@ file dump path
 G:\Imports\IR\Door Dash\DD Daily Order Details
 ```
 
+NOTE: Chromedriver executable paths may vary. Confirm it is configured correctly according to your machine.
+###  src.app.drivers
+```
+    def _get_chromedriver_executable_path(self):
+        return '/opt/homebrew/bin/chromedriver' if self.os_type == 'Darwin' else 'C:\\Users\\ekima\\AppData\\Local\\anaconda3\\envs\\bots\\Lib\\site-packages\\seleniumbase\\drivers\\chromedriver.exe'
+```
+
+
 
