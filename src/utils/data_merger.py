@@ -3,7 +3,7 @@ import json, logging
 
 class DataMerger:
     def __init__(self, orders_json):
-        self.master_dataset_file_path = '/Users/ekim/workspace/personal/dd-bot/dev/store_list.xlsx'
+        self.master_dataset_file_path = '/Users/ekim/workspace/personal/dd-bot/dev/store_list.xlsx'  # todo
         self.orders = orders_json
         self.master_df = None
         self.order_to_location_df = None
