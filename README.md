@@ -50,8 +50,13 @@ G:\Imports\IR\Door Dash\DD Daily Order Details
 NOTE: Chromedriver executable paths may vary. Confirm it is configured correctly according to your machine.
 ###  src.app.drivers
 ```
-    def _get_chromedriver_executable_path(self):
-        return '/opt/homebrew/bin/chromedriver' if self.os_type == 'Darwin' else 'C:\\Users\\ekima\\AppData\\Local\\anaconda3\\envs\\bots\\Lib\\site-packages\\seleniumbase\\drivers\\chromedriver.exe'
+_get_chromedriver_executable_path()
+        
+BOTS VM : 'C:\\chromedriver-win64\\chromedriver.exe'
+HOST Windows: 'C:\\Users\\ekima\\AppData\\Local\\anaconda3\\envs\\bots\\Lib\\site-packages\\seleniumbase\\drivers\\chromedriver.exe' ?
+Mac i9: /usr/local/bin/chromedriver
+Mac M1: /opt/homebrew/bin/chromedriver
+
 ```
 
 
