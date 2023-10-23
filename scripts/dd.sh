@@ -12,9 +12,24 @@ today=$(date +"%m-%d-%Y")
 stdout_dir="/Users/ekim/workspace/personal/dd-bot/dev/build/logs/stdout"
 stderr_dir="/Users/ekim/workspace/personal/dd-bot/dev/build/logs/stderr"
 
-# prod stdout/stderr
-#stdout_dir="C:/Users/bots/workspace/doordash/stdout"
-#stderr_dir="C:/Users/bots/workspace/doordash/stderr"
+# --------------------------------------  prod  ----------------------------------------
+#stdout_dir="C:/Users/ekima/workspace/doordash/logs/stdout"
+#stderr_dir="C:/Users/ekima/workspace/doordash/logs/stderr"
+
+## Print the current working directory
+#echo "The current working directory is: $(pwd)"
+#
+## Change directories to repo
+## shellcheck disable=SC2164
+#cd /c/Users/ekima/workspace/txb/dd-bot
+#
+## Confirm changed directories
+#echo "The new current working directory is: $(pwd)"
+# --------------------------------------  prod  ----------------------------------------
+
+
+
+
 
 echo "Redirecting standard output to ${stdout_dir}/${today}_out.log"
 echo "Redirecting standard error to ${stderr_dir}/${today}_err.log"
