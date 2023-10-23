@@ -140,7 +140,7 @@ class Main:
         if not excel_output:
             logging.error(f'Orders spreadsheet could not be exported.')
         else:
-            logging.info(f'Orders Spreadsheet has been saved to: {self.path_handler.excel_output_file_path}\nExiting....')
+            logging.info(f'Orders Spreadsheet has been saved to: {self.path_handler.excel_output_file_path}\nFilename: "{self.excel_file_name}"\nExiting....')
             self.base_driver.teardown_driver()
 
     def setup(self):
