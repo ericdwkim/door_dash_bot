@@ -33,3 +33,5 @@ def setup_logger():
     ch = logging.StreamHandler()
     ch.setFormatter(CustomFormatter())
     logger.addHandler(ch)
+
+# todo: add handle_errors decor and implement to funcs

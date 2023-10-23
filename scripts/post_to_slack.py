@@ -1,6 +1,4 @@
-import requests
-import os
-import datetime
+import requests, os, datetime
 
 today = datetime.date.today().strftime('%m-%d-%Y')
 

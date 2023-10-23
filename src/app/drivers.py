@@ -1,5 +1,5 @@
-import logging
-import platform
+import logging, platform
+from src.utils.log_config import setup_logger
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from ..pages.orderspage import OrdersPage
@@ -10,10 +10,10 @@ class BaseDriver:
         self.headless = headless
         self.os_type = platform.system()
         self.setup_driver()
+        setup_logger()
 
     def setup_driver(self):
-        print('Initializing BaseDriver...')
-        # logging.info('Initializing BaseDriver...')
+        logging.info('Initializing BaseDriver...')
         options = self._get_chrome_options()
         chromedriver_executable_path = self._get_chromedriver_executable_path()
 
@@ -22,13 +22,10 @@ class BaseDriver:
             options=options
         )
 
-        # logging.info(
-        #     f'Using operating system: "{self.os_type}".\nConstructing chromedriver instance using executable_path: "{chromedriver_executable_path}"'
-        # )
-
-        print(
+        logging.info(
             f'Using operating system: "{self.os_type}".\nConstructing chromedriver instance using executable_path: "{chromedriver_executable_path}"'
         )
+
 
     def _get_chrome_options(self):
         options = webdriver.ChromeOptions()

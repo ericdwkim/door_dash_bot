@@ -1,6 +1,4 @@
-import json
-import re
-import logging
+import json, re, logging
 import pandas as pd
 
 

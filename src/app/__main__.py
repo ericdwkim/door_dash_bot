@@ -1,9 +1,7 @@
 from src.app.drivers import BaseDriver, OrdersPageDriver
-import os
-import argparse
+import os, argparse, logging
 import pandas as pd
 from datetime import datetime
-import logging
 from src.utils.log_config import setup_logger
 from src.utils.order_handler import OrderHandler
 from src.utils.data_merger import DataMerger

@@ -1,8 +1,6 @@
 import pandas as pd
-import re
-import json
+import re, json, logging
 from datetime import datetime
-import logging
 
 class DataMerger:
     def __init__(self, orders_json):
