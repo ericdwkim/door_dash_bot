@@ -1,7 +1,7 @@
 #!/bin/bash
 eval "$(conda shell.bash hook)"
 conda activate bots
-export SLACK_OAUTH_TOKEN="xoxb-4099486963537-6000372605090-4MtiYma3T9ewvSzDJmqavbQc"
+export SLACK_OAUTH_TOKEN=REDACTED
 today=$(date +"%m-%d-%Y")
 
 # Get operating system name
